@@ -1,168 +1,151 @@
 
-# Import functions
+# Import libraries and functions
 
 from cohortextractor import (
     StudyDefinition, 
     patients, 
-    codelist, 
-    codelist_from_csv
+    combine_codelists,
 )
 
-# Import codelists
+from codelists import *
 
-chronic_cardiac_disease_codes = codelist_from_csv(
-    "codelists/opensafely-chronic-cardiac-disease.csv", system="ctv3", column="CTV3ID"
+from common_variables import (
+    demographic_variables, 
+    clinical_variables
 )
-chronic_liver_disease_codes = codelist_from_csv(
-    "codelists/opensafely-chronic-liver-disease.csv", system="ctv3", column="CTV3ID"
-)
-salbutamol_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-inhaler-salbutamol-medication.csv",
-    system="snomed",
-    column="id",
-)
-systolic_blood_pressure_codes = codelist(["2469."], system="ctv3")
-diastolic_blood_pressure_codes = codelist(["246A."], system="ctv3")
 
+import json
+
+# import global variables
+with open("./lib/global-variables.json") as f:
+  gbl_vars = json.load(f)
+
+## index dates
+index_date = gbl_vars["index_date"]
+start_date = gbl_vars["start_date"]
+end_date = gbl_vars["end_date"]
+reg_start_date = "2019-02-01"
 
 # Specifiy study defeinition
 
 study = StudyDefinition(
     # Configure the expectations framework
     default_expectations={
-        "date": {"earliest": "1900-01-01", "latest": "today"},
-        "rate": "exponential_increase",
+        "date": {"earliest": "2020-03-01", "latest": "2020-10-31"},
+        "rate": "uniform",
+        "incidence": 1
     },
-    # This line defines the study population
-    population=patients.registered_with_one_practice_between(
-        "2019-02-01", "2020-02-01"
+    
+    population=patients.satisfying(
+        """
+        registered
+        AND (age >=18 AND age <= 110)
+        AND discharged1_date
+        """,
+        registered=patients.registered_with_one_practice_between(
+            reg_start_date, start_date
+        ),
+        dead = patients.died_from_any_cause(
+            on_or_before=index_date,
+            returning="binary_flag"
+        ),
     ),
+    
+    
+    # Dates
 
-    # https://github.com/opensafely/risk-factors-research/issues/49
-    age=patients.age_as_of(
-        "2020-02-01",
-        return_expectations={
-            "rate": "universal",
-            "int": {"distribution": "population_ages"},
-        },
-    ),
-    
-    # https://github.com/opensafely/risk-factors-research/issues/46
-    sex=patients.sex(
-        return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"M": 0.49, "F": 0.51}},
-        }
-    ),
-    
-    # https://codelists.opensafely.org/codelist/opensafely/chronic-cardiac-disease/2020-04-08/
-    chronic_cardiac_disease=patients.with_these_clinical_events(
-        chronic_cardiac_disease_codes,
-        returning="date",
+    admitted1_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
-        include_month=True,
-        return_expectations={"incidence": 0.2},
+        return_expectations={
+            "date": {"earliest": "2020-03-01", "latest": "2020-05-31"},
+            "incidence": 0.1,
+        },
     ),
-
-    # https://codelists.opensafely.org/codelist/opensafely/chronic-liver-disease/2020-06-02/
-    chronic_liver_disease=patients.with_these_clinical_events(
-        chronic_liver_disease_codes,
-        returning="date",
+    discharged1_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
-        include_month=True,
         return_expectations={
-            "incidence": 0.2,
-            "date": {"earliest": "1950-01-01", "latest": "today"},
-        },
-    ),
-
-    # https://github.com/opensafely/risk-factors-research/issues/51
-    bmi=patients.most_recent_bmi(
-        on_or_after="2010-02-01",
-        minimum_age_at_measurement=16,
-        include_measurement_date=True,
-        include_month=True,
-        return_expectations={
-            "incidence": 0.6,
-            "float": {"distribution": "normal", "mean": 35, "stddev": 10},
-        },
-    ),
-
-    # https://github.com/opensafely/risk-factors-research/issues/48
-    bp_sys=patients.mean_recorded_value(
-        systolic_blood_pressure_codes,
-        on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
-        include_measurement_date=True,
-        include_month=True,
-        return_expectations={
-            "incidence": 0.6,
-            "float": {"distribution": "normal", "mean": 80, "stddev": 10},
+            "date": {"earliest": "2020-06-01", "latest": "2020-07-31"},
+            "incidence": 0.05,        
         },
     ),
     
-    # https://github.com/opensafely/risk-factors-research/issues/48
-    bp_dias=patients.mean_recorded_value(
-        diastolic_blood_pressure_codes,
-        on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
-        include_measurement_date=True,
-        include_month=True,
+    admitted1_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        find_first_match_in_period=True,
         return_expectations={
-            "incidence": 0.6,
-            "float": {"distribution": "normal", "mean": 120, "stddev": 10},
-        },
-    ),
-
-    # https://github.com/opensafely/risk-factors-research/issues/44
-    stp=patients.registered_practice_as_of(
-        "2020-02-01",
-        returning="stp_code",
-        return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"STP1": 0.5, "STP2": 0.5}},
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
         },
     ),
     
-    # https://github.com/opensafely/risk-factors-research/issues/44
-    msoa=patients.registered_practice_as_of(
-        "2020-02-01",
-        returning="msoa_code",
+    admitted2_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged1_date + 1 day",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
         return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"MSOA1": 0.5, "MSOA2": 0.5}},
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
         },
     ),
 
-    # https://github.com/opensafely/risk-factors-research/issues/45
-    imd=patients.address_as_of(
-        "2020-02-01",
-        returning="index_of_multiple_deprivation",
-        round_to_nearest=100,
+    discharged2_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged1_date + 1 day",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
         return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"100": 0.1, "200": 0.2, "300": 0.7}},
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
         },
     ),
 
-    # https://github.com/opensafely/risk-factors-research/issues/47
-    rural_urban=patients.address_as_of(
-        "2020-02-01",
-        returning="rural_urban_classification",
+    admitted2_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged1_date + 1 day",
+        find_first_match_in_period=True,
         return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"rural": 0.1, "urban": 0.9}},
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
         },
     ),
- 
-    # https://codelists.opensafely.org/codelist/opensafely/asthma-inhaler-salbutamol-medication/2020-04-15/
-    recent_salbutamol_count=patients.with_these_medications(
-        salbutamol_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
+
+    died_date=patients.died_from_any_cause(
+        returning="date_of_death",
+        date_format="YYYY-MM-DD",
         return_expectations={
-            "incidence": 0.6,
-            "int": {"distribution": "normal", "mean": 8, "stddev": 2},
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.1
         },
     ),
+
+    
+    # import demographic and clinical variables,
+    # calculated as at first admission date (=patient_index_date)
+    
+    patient_index_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-03-01", "latest": "2020-05-31"},
+            "incidence": 0.1,
+        },
+    ),
+    
+    **demographic_variables,
+    
+    **clinical_variables
 )
