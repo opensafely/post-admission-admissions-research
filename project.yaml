@@ -11,6 +11,15 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
 
+  create_dataset:
+    run: stata-mp:latest analysis/cr_create_analysis_dataset.do 
+    needs: [generate_study_population]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_analysis_dataset.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_analysis_dataset.log
+
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_population]

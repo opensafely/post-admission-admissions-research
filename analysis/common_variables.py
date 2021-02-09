@@ -35,16 +35,25 @@ demographic_variables = dict(
             "incidence": 0.75,
         },
     ),
-
-     imd=patients.address_as_of(
-         "patient_index_date",
-         returning="index_of_multiple_deprivation",
-         round_to_nearest=100,
-         return_expectations={
-             "incidence": 1,
-             "category": {"ratios": {"100": 0.1, "200": 0.2, "300": 0.2, "400": 0.2, "500": 0.3}},
-         },
-     ),
+    ethnicity_16=patients.with_these_clinical_events(
+        ethnicity_codes_16,
+        returning="category",
+        find_last_match_in_period=True,
+        include_date_of_match=True,
+        return_expectations={
+            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
+            "incidence": 0.75,
+        },
+    ),
+    imd=patients.address_as_of(
+        "patient_index_date",
+        returning="index_of_multiple_deprivation",
+        round_to_nearest=100,
+        return_expectations={
+            "incidence": 1,
+            "category": {"ratios": {"100": 0.1, "200": 0.2, "300": 0.2, "400": 0.2, "500": 0.3}},
+        },
+    ),
      
     # practice_id=patients.registered_practice_as_of(
     #     "patient_index_date",
@@ -150,6 +159,8 @@ clinical_variables = dict(
         systolic_blood_pressure_codes,
         on_most_recent_day_of_measurement=True,
         on_or_before="patient_index_date - 1 day",
+        include_measurement_date=True,
+        include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 80, "stddev": 10},
             "date": {"latest": "2020-02-29"},
@@ -219,22 +230,26 @@ clinical_variables = dict(
         return_expectations={"incidence": 0.05},
     ),
     
-    hba1c_percentage_1=patients.with_these_clinical_events(
+    hba1c_percentage=patients.with_these_clinical_events(
         hba1c_old_codes,
         find_last_match_in_period=True,
         between=["patient_index_date - 2 years", "patient_index_date - 1 day"],
         returning="numeric_value",
+        include_date_of_match=True,
+        include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 5, "stddev": 2},
             "incidence": 0.98,
         },
     ),
     
-    hba1c_mmol_per_mol_1=patients.with_these_clinical_events(
+    hba1c_mmol_per_mol=patients.with_these_clinical_events(
         hba1c_new_codes,
         find_last_match_in_period=True,
         between=["patient_index_date - 2 years", "patient_index_date - 1 day"],
         returning="numeric_value",
+        include_date_of_match=True,
+        include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 40.0, "stddev": 20},
             "incidence": 0.98,
@@ -298,20 +313,15 @@ clinical_variables = dict(
     
     # cancer
     
+
     lung_cancer=patients.with_these_clinical_events(
-        lung_cancer_codes,
-        on_or_before="patient_index_date - 1 day",
-        return_expectations={"incidence": 0.05},
+        lung_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
     haem_cancer=patients.with_these_clinical_events(
-        haem_cancer_codes,
-        on_or_before="patient_index_date - 1 day",
-        return_expectations={"incidence": 0.05},
+        haem_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
     other_cancer=patients.with_these_clinical_events(
-        other_cancer_codes,
-        on_or_before="patient_index_date - 1 day",
-        return_expectations={"incidence": 0.05},
+        other_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
     
     # immuno
@@ -332,9 +342,7 @@ clinical_variables = dict(
         return_expectations={"incidence": 0.05},
     ),
     aplastic_anaemia=patients.with_these_clinical_events(
-        aplastic_codes,
-        on_or_before="patient_index_date - 1 day",
-        return_expectations={"incidence": 0.05},
+        aplastic_codes, return_last_date_in_period=True, include_month=True,
     ),
     hiv=patients.with_these_clinical_events(
         hiv_codes,
@@ -347,9 +355,7 @@ clinical_variables = dict(
         return_expectations={"incidence": 0.05},
     ),
     temporary_immunodeficiency=patients.with_these_clinical_events(
-        temp_immune_codes,
-        on_or_before="patient_index_date - 1 day",
-        return_expectations={"incidence": 0.05},
+        temp_immune_codes, return_last_date_in_period=True, include_month=True,
     ),
     
     ra_sle_psoriasis=patients.with_these_clinical_events(
@@ -363,8 +369,8 @@ clinical_variables = dict(
     
     other_neuro=patients.with_these_clinical_events(
         other_neuro_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        on_or_before="patient_index_date - 1 day",
+        return_expectations={"incidence": 0.05},
     ),
     dementia=patients.with_these_clinical_events(
         dementia_codes,

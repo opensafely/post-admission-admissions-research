@@ -2,6 +2,7 @@
 
 from cohortextractor import codelist, codelist_from_csv
 
+covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 ## demographic codelists
 
@@ -11,7 +12,12 @@ ethnicity_codes = codelist_from_csv(
     column="Code",
     category_column="Grouping_6",
 )
-
+ethnicity_codes_16 = codelist_from_csv(
+    "codelists/opensafely-ethnicity.csv",
+    system="ctv3",
+    column="Code",
+    category_column="Grouping_16",
+)
 ## clinical finding codelists
 
 covid_codes = codelist_from_csv(
