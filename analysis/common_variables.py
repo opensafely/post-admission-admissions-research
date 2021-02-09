@@ -25,27 +25,27 @@ demographic_variables = dict(
         }
     ),
 
-    #ethnicity=patients.with_these_clinical_events(
-    #    ethnicity_codes,
-    #    returning="category",
-    #    find_last_match_in_period=True,
-    #    on_or_before="patient_index_date",
-    #    return_expectations={
-    #        "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
-    #        "incidence": 0.75,
-    #    },
-    #),
+    ethnicity=patients.with_these_clinical_events(
+        ethnicity_codes,
+        returning="category",
+        find_last_match_in_period=True,
+        on_or_before="patient_index_date",
+        return_expectations={
+            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
+            "incidence": 0.75,
+        },
+    ),
 
-    # imd=patients.address_as_of(
-    #     "patient_index_date",
-    #     returning="index_of_multiple_deprivation",
-    #     round_to_nearest=100,
-    #     return_expectations={
-    #         "incidence": 1,
-    #         "category": {"ratios": {"100": 0.1, "200": 0.2, "300": 0.2, "400": 0.2, "500": 0.3}},
-    #     },
-    # ),
-    # 
+     imd=patients.address_as_of(
+         "patient_index_date",
+         returning="index_of_multiple_deprivation",
+         round_to_nearest=100,
+         return_expectations={
+             "incidence": 1,
+             "category": {"ratios": {"100": 0.1, "200": 0.2, "300": 0.2, "400": 0.2, "500": 0.3}},
+         },
+     ),
+     
     # practice_id=patients.registered_practice_as_of(
     #     "patient_index_date",
     #     returning="pseudo_id",
@@ -64,35 +64,35 @@ demographic_variables = dict(
     # #     },
     # # ),
     # 
-    # stp=patients.registered_practice_as_of(
-    #     "patient_index_date",
-    #     returning="stp_code",
-    #     return_expectations={
-    #         "incidence": 0.99,
-    #         "category": {"ratios": {"STP1": 0.5, "STP2": 0.5}},
-    #     },
-    # ),
-    # 
-    # region=patients.registered_practice_as_of(
-    #         "patient_index_date",
-    #         returning="nuts1_region_name",
-    #         return_expectations={
-    #             "rate": "universal",
-    #             "category": {
-    #                 "ratios": {
-    #                     "North East": 0.1,
-    #                     "North West": 0.1,
-    #                     "Yorkshire and The Humber": 0.1,
-    #                     "East Midlands": 0.1,
-    #                     "West Midlands": 0.1,
-    #                     "East": 0.1,
-    #                     "London": 0.2,
-    #                     "South East": 0.1,
-    #                     "South West": 0.1,
-    #                 },
-    #             },
-    #         },
-    #     ),
+     stp=patients.registered_practice_as_of(
+         "patient_index_date",
+         returning="stp_code",
+         return_expectations={
+             "incidence": 0.99,
+             "category": {"ratios": {"1": 0.5, "2": 0.5}},
+         },
+     ),
+     
+     region=patients.registered_practice_as_of(
+             "patient_index_date",
+             returning="nuts1_region_name",
+             return_expectations={
+                 "rate": "universal",
+                 "category": {
+                     "ratios": {
+                         "North East": 0.1,
+                         "North West": 0.1,
+                         "Yorkshire and The Humber": 0.1,
+                         "East Midlands": 0.1,
+                         "West Midlands": 0.1,
+                         "East": 0.1,
+                         "London": 0.2,
+                         "South East": 0.1,
+                         "South West": 0.1,
+                     },
+                 },
+             },
+         ),
 
 )
 
@@ -111,36 +111,31 @@ clinical_variables = dict(
         },
     ),
     
-    # smoking_status=patients.categorised_as(
-    #     {
-    #         "S": "most_recent_smoking_code = 'S' OR smoked_last_18_months",
-    #         "E": """
-    #              (most_recent_smoking_code = 'E' OR (
-    #                most_recent_smoking_code = 'N' AND ever_smoked
-    #                )
-    #              ) AND NOT smoked_last_18_months
-    #         """,
-    #         "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
-    #         "M": "DEFAULT",
-    #     },
-    #     return_expectations={
-    #         "category": {"ratios": {"S": 0.6, "E": 0.1, "N": 0.2, "M": 0.1}}
-    #     },
-    #     most_recent_smoking_code=patients.with_these_clinical_events(
-    #         clear_smoking_codes,
-    #         find_last_match_in_period=True,
-    #         on_or_before=days_before(start_date, 1),
-    #         returning="category",
-    #     ),
-    #     ever_smoked=patients.with_these_clinical_events(
-    #         filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
-    #         on_or_before=days_before(start_date, 1),
-    #     ),
-    #     smoked_last_18_months=patients.with_these_clinical_events(
-    #         filter_codes_by_category(clear_smoking_codes, include=["S"]),
-    #         between=[days_before(start_date, 548), start_date],
-    #     ),
-    # ),
+     smoking_status=patients.categorised_as(
+         {
+            "S": "most_recent_smoking_code = 'S'",
+            "E": """
+                 most_recent_smoking_code = 'E' OR (
+                   most_recent_smoking_code = 'N' AND ever_smoked
+                 )
+            """,
+            "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
+            "M": "DEFAULT",
+         },
+         return_expectations={
+             "category": {"ratios": {"S": 0.6, "E": 0.1, "N": 0.2, "M": 0.1}}
+         },
+         most_recent_smoking_code=patients.with_these_clinical_events(
+             clear_smoking_codes,
+             find_last_match_in_period=True,
+             on_or_before="patient_index_date - 1 day",
+             returning="category",
+         ),
+         ever_smoked=patients.with_these_clinical_events(
+             filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
+             on_or_before="patient_index_date - 1 day",
+         ),
+     ),
     
     
     # cardiovascular
@@ -288,7 +283,7 @@ clinical_variables = dict(
         },
         recent_asthma_code=patients.with_these_clinical_events(
             asthma_codes,
-            between=["2017-02-01", "2020-02-01"],
+            between=["patient_index_date - 3 years", "patient_index_date - 1 day"],
         ),
         asthma_code_ever=patients.with_these_clinical_events(asthma_codes),
         copd_code_ever=patients.with_these_clinical_events(
@@ -296,7 +291,7 @@ clinical_variables = dict(
         ),
         prednisolone_last_year=patients.with_these_medications(
             prednisolone_codes,
-            between=["2019-02-01", "2020-02-01"],
+            between=["patient_index_date - 1 years", "patient_index_date - 1 day"],
             returning="number_of_matches_in_period",
         ),
     ),
@@ -343,11 +338,8 @@ clinical_variables = dict(
     ),
     hiv=patients.with_these_clinical_events(
         hiv_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        return_expectations={
-            "category": {"ratios": {"43C3.": 0.8, "XaFuL": 0.2}},
-        },
+        on_or_before="patient_index_date - 1 day",
+        return_expectations={"incidence": 0.05},
     ),
     permanent_immunodeficiency=patients.with_these_clinical_events(
         permanent_immune_codes,
@@ -404,106 +396,106 @@ clinical_variables = dict(
         
     # previous outcomes
     
-    previous_dvt=patients.categorised_as(
-        {
-            "0": "DEFAULT",
-            "1": """
-                        (historic_dvt_gp OR historic_dvt_hospital) 
-                AND NOT (recent_dvt_gp OR recent_dvt_hospital)
-                """,
-            "2": "recent_dvt_gp OR recent_dvt_hospital",
-        },
-        historic_dvt_gp=patients.with_these_clinical_events(
-            filter_codes_by_category(vte_gp_codes, include=["dvt"]),
-            on_or_before="patient_index_date - 3 months",
-        ),
-        recent_dvt_gp=patients.with_these_clinical_events(
-            filter_codes_by_category(vte_gp_codes, include=["dvt"]),
-            between=["patient_index_date - 3 months", "patient_index_date"],
-        ),
-        historic_dvt_hospital=patients.admitted_to_hospital(
-            with_these_diagnoses=filter_codes_by_category(
-                vte_hospital_codes, include=["dvt"]
-            ),
-            on_or_before="patient_index_date - 3 months",
-        ),
-        recent_dvt_hospital=patients.admitted_to_hospital(
-            with_these_diagnoses=filter_codes_by_category(
-                vte_hospital_codes, include=["dvt"]
-            ),
-            between=["patient_index_date - 3 months", "patient_index_date"],
-        ),
-        
-        return_expectations={
-            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
-        },
-    ),
-    
-    previous_pe=patients.categorised_as(
-        {
-            "0": "DEFAULT",
-            "1": """
-                        (historic_pe_gp OR historic_pe_hospital) 
-                AND NOT (recent_pe_gp OR recent_pe_hospital)
-                """,
-            "2": "recent_pe_gp OR recent_pe_hospital",
-        },
-        historic_pe_gp=patients.with_these_clinical_events(
-            filter_codes_by_category(vte_gp_codes, include=["pe"]),
-            on_or_before="patient_index_date - 3 months",
-        ),
-        recent_pe_gp=patients.with_these_clinical_events(
-            filter_codes_by_category(vte_gp_codes, include=["pe"]),
-            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-        ),
-        historic_pe_hospital=patients.admitted_to_hospital(
-            with_these_diagnoses=filter_codes_by_category(
-                vte_hospital_codes, include=["pe"]
-            ),
-            on_or_after="patient_index_date - 3 months",
-        ),
-        recent_pe_hospital=patients.admitted_to_hospital(
-            with_these_diagnoses=filter_codes_by_category(
-                vte_hospital_codes, include=["pe"]
-            ),
-            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-        ),
-        
-        return_expectations={
-            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
-        },
-    ),
-    
-    previous_stroke=patients.categorised_as(
-        {
-            "0": "DEFAULT",
-            "1": """
-                        (historic_pe_gp OR historic_pe_hospital) 
-                AND NOT (recent_pe_gp OR recent_pe_hospital)
-                """,
-            "2": "recent_pe_gp OR recent_pe_hospital",
-        },
-        historic_stroke_gp=patients.with_these_clinical_events(
-            stroke_gp_codes,
-            on_or_after="patient_index_date - 3 months",
-        ),
-        recent_stroke_gp=patients.with_these_clinical_events(
-            stroke_gp_codes,
-            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-            return_expectations={"incidence": 0.05},
-        ),
-        historic_stroke_hospital=patients.admitted_to_hospital(
-            with_these_diagnoses=stroke_hospital_codes,
-            on_or_after="patient_index_date - 3 months",
-        ),
-        recent_stroke_hospital=patients.admitted_to_hospital(
-            with_these_diagnoses=stroke_hospital_codes,
-            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-        ),
-        
-        return_expectations={
-            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
-        },
-    ),
+#    previous_dvt=patients.categorised_as(
+#        {
+#            "0": "DEFAULT",
+#            "1": """
+#                        (historic_dvt_gp OR historic_dvt_hospital) 
+#                AND NOT (recent_dvt_gp OR recent_dvt_hospital)
+#                """,
+#            "2": "recent_dvt_gp OR recent_dvt_hospital",
+#        },
+#        historic_dvt_gp=patients.with_these_clinical_events(
+#            filter_codes_by_category(vte_gp_codes, include=["dvt"]),
+#            on_or_before="patient_index_date - 3 months",
+#        ),
+#        recent_dvt_gp=patients.with_these_clinical_events(
+#            filter_codes_by_category(vte_gp_codes, include=["dvt"]),
+#            between=["patient_index_date - 3 months", "patient_index_date"],
+#        ),
+#        historic_dvt_hospital=patients.admitted_to_hospital(
+#            with_these_diagnoses=filter_codes_by_category(
+#                vte_hospital_codes, include=["dvt"]
+#            ),
+#            on_or_before="patient_index_date - 3 months",
+#        ),
+#        recent_dvt_hospital=patients.admitted_to_hospital(
+#            with_these_diagnoses=filter_codes_by_category(
+#                vte_hospital_codes, include=["dvt"]
+#            ),
+#            between=["patient_index_date - 3 months", "patient_index_date"],
+#        ),
+#        
+#        return_expectations={
+#            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
+#        },
+#    ),
+#    
+#    previous_pe=patients.categorised_as(
+#        {
+#            "0": "DEFAULT",
+#            "1": """
+#                        (historic_pe_gp OR historic_pe_hospital) 
+#                AND NOT (recent_pe_gp OR recent_pe_hospital)
+#                """,
+#            "2": "recent_pe_gp OR recent_pe_hospital",
+#        },
+#        historic_pe_gp=patients.with_these_clinical_events(
+#            filter_codes_by_category(vte_gp_codes, include=["pe"]),
+#            on_or_before="patient_index_date - 3 months",
+#        ),
+#        recent_pe_gp=patients.with_these_clinical_events(
+#            filter_codes_by_category(vte_gp_codes, include=["pe"]),
+#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
+#        ),
+#        historic_pe_hospital=patients.admitted_to_hospital(
+#            with_these_diagnoses=filter_codes_by_category(
+#                vte_hospital_codes, include=["pe"]
+#            ),
+#            on_or_after="patient_index_date - 3 months",
+#        ),
+#        recent_pe_hospital=patients.admitted_to_hospital(
+#            with_these_diagnoses=filter_codes_by_category(
+#                vte_hospital_codes, include=["pe"]
+#            ),
+#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
+#        ),
+#        
+#        return_expectations={
+#            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
+#        },
+#    ),
+#    
+#    previous_stroke=patients.categorised_as(
+#        {
+#            "0": "DEFAULT",
+#            "1": """
+#                        (historic_pe_gp OR historic_pe_hospital) 
+#                AND NOT (recent_pe_gp OR recent_pe_hospital)
+#                """,
+#            "2": "recent_pe_gp OR recent_pe_hospital",
+#        },
+#        historic_stroke_gp=patients.with_these_clinical_events(
+#            stroke_gp_codes,
+#            on_or_after="patient_index_date - 3 months",
+#        ),
+#        recent_stroke_gp=patients.with_these_clinical_events(
+#            stroke_gp_codes,
+#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
+#            return_expectations={"incidence": 0.05},
+#        ),
+#        historic_stroke_hospital=patients.admitted_to_hospital(
+#            with_these_diagnoses=stroke_hospital_codes,
+#            on_or_after="patient_index_date - 3 months",
+#        ),
+#        recent_stroke_hospital=patients.admitted_to_hospital(
+#            with_these_diagnoses=stroke_hospital_codes,
+#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
+#        ),
+#        
+#        return_expectations={
+#            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
+#        },
+#    ),
     
 )

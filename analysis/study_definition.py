@@ -14,16 +14,10 @@ from common_variables import (
     clinical_variables
 )
 
-import json
-
-# import global variables
-with open("./lib/global-variables.json") as f:
-  gbl_vars = json.load(f)
-
 ## index dates
-index_date = gbl_vars["index_date"]
-start_date = gbl_vars["start_date"]
-end_date = gbl_vars["end_date"]
+index_date = "2020-02-01"
+start_date = "2020-02-01"
+end_date = "2020-12-31"
 reg_start_date = "2019-02-01"
 
 # Specifiy study defeinition
