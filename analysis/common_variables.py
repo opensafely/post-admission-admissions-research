@@ -73,47 +73,35 @@ demographic_variables = dict(
     # #     },
     # # ),
     # 
-    stp=patients.registered_practice_as_of(
-        "2020-02-01",
-        returning="stp_code",
-        return_expectations={
-            "rate": "universal",
-            "category": {
-                "ratios": {
-                    "STP1": 0.1,
-                    "STP2": 0.1,
-                    "STP3": 0.1,
-                    "STP4": 0.1,
-                    "STP5": 0.1,
-                    "STP6": 0.1,
-                    "STP7": 0.1,
-                    "STP8": 0.1,
-                    "STP9": 0.1,
-                    "STP10": 0.1,
-                }
-            },
-        },
-    ),
-    # region - one of NHS England 9 regions
-    region=patients.registered_practice_as_of(
-        "2020-02-01",
-        returning="nuts1_region_name",
-        return_expectations={
-            "rate": "universal",
-            "category": {
-                "ratios": {
-                    "North East": 0.1,
-                    "North West": 0.1,
-                    "Yorkshire and the Humber": 0.1,
-                    "East Midlands": 0.1,
-                    "West Midlands": 0.1,
-                    "East of England": 0.1,
-                    "London": 0.2,
-                    "South East": 0.2,
-                },
-            },
-        },
-    ),
+     stp=patients.registered_practice_as_of(
+         "patient_index_date",
+         returning="stp_code",
+         return_expectations={
+             "incidence": 0.99,
+             "category": {"ratios": {"1": 0.5, "2": 0.5}},
+         },
+     ),
+     
+     region=patients.registered_practice_as_of(
+             "patient_index_date",
+             returning="nuts1_region_name",
+             return_expectations={
+                 "rate": "universal",
+                 "category": {
+                     "ratios": {
+                         "North East": 0.1,
+                         "North West": 0.1,
+                         "Yorkshire and The Humber": 0.1,
+                         "East Midlands": 0.1,
+                         "West Midlands": 0.1,
+                         "East": 0.1,
+                         "London": 0.2,
+                         "South East": 0.1,
+                         "South West": 0.1,
+                     },
+                 },
+             },
+         ),
 
 )
 
