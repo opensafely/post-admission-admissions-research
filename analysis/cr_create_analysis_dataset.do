@@ -24,8 +24,8 @@ cap log close
 log using ./analysis/output/cr_create_analysis_dataset, replace t
 
 clear
-noi di "import delimited ./output/input.csv"
-import delimited ./output/input.csv
+noi di "import delimited ./output/input_covdischarged.csv"
+import delimited ./output/input_covdischarged.csv
 
 di "STARTING COUNT FROM IMPORT:"
 cou
