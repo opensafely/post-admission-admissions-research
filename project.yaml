@@ -5,15 +5,75 @@ expectations:
 
 actions:
 
-  generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition
+  generate_study_pop_covdischarged:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_covdischarged
     outputs:
       highly_sensitive:
-        cohort: output/input.csv
+        cohort: output/input_covdischarged.csv
+        
+  generate_pool02:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool02
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool02.csv        
 
+  generate_pool03:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool03
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool03.csv        
+
+  generate_pool04:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool04
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool04.csv        
+
+  generate_pool05:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool05
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool05.csv        
+
+  generate_pool06:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool06
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool06.csv        
+
+  generate_pool07:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool07
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool07.csv        
+
+  generate_pool08:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool08
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool08.csv        
+           
+  generate_pool09:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool09
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool09.csv        
+
+  generate_pool10:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool10
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool10.csv        
+      
+  generate_pool11:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool11
+    outputs:
+      highly_sensitive:
+        cohort: output/input_pool11.csv        
+                   
   create_dataset:
     run: stata-mp:latest analysis/cr_create_analysis_dataset.do 
-    needs: [generate_study_population]
+    needs: [generate_study_pop_covdischarged]
     outputs:
       highly_sensitive:
         cohort: analysis/cr_create_analysis_dataset.dta
@@ -22,7 +82,7 @@ actions:
 
   run_model:
     run: stata-mp:latest analysis/model.do
-    needs: [generate_study_population]
+    needs: [generate_study_pop_covdischarged]
     outputs:
       moderately_sensitive:
         log: logs/model.log

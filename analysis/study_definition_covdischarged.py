@@ -15,7 +15,6 @@ from common_variables import (
 )
 
 ## index dates
-index_date = "2020-02-01"
 start_date = "2020-02-01"
 end_date = "2020-12-31"
 reg_start_date = "2019-02-01"
@@ -132,7 +131,17 @@ study = StudyDefinition(
     # import demographic and clinical variables,
     # calculated as at first admission date (=patient_index_date)
     
-    patient_index_date="index_date"
+    patient_index_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-03-01", "latest": "2020-05-31"},
+            "incidence": 0.1,
+        },
+    ),
     
     **demographic_variables,
     
