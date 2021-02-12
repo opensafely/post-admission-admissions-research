@@ -80,6 +80,97 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_create_analysis_dataset.log
 
+  create_pool02:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 02
+    needs: [generate_pool02]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_02.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_02.log
+
+  create_pool03:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 03
+    needs: [generate_pool03]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_03.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_03.log
+
+  create_pool04:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 04
+    needs: [generate_pool04]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_04.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_04.log
+
+  create_pool05:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 05
+    needs: [generate_pool05]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_05.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_05.log
+
+  create_pool06:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 06
+    needs: [generate_pool06]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_06.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_06.log
+
+  create_pool07:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 07
+    needs: [generate_pool07]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_07.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_07.log
+
+  create_pool08:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 08
+    needs: [generate_pool08]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_08.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_08.log
+
+  create_pool09:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 09
+    needs: [generate_pool09]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_09.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_09.log
+
+  create_pool10:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 10
+    needs: [generate_pool10]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_10.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_10.log
+
+  create_pool11:
+    run: stata-mp:latest analysis/cr_create_pool_basicdata.do 11
+    needs: [generate_pool11]
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_create_pool_basicdata_11.dta
+      moderately_sensitive:
+        log: analysis/output/cr_create_pool_basicdata_11.log
+
+
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]
