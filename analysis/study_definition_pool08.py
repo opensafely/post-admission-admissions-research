@@ -79,6 +79,28 @@ study = StudyDefinition(
         },
     ),
 
+    lastprioradmission_adm_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_before = patient_index_date_m1,
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-01-01", "latest": "2020-02-28"},
+            "incidence": 0.03,
+        },
+    ),
+
+    lastprioradmission_dis_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after=patient_index_date_m1,
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-03-01", "latest": "2020-04-30"},
+            "incidence": 0.02,
+        },
+    ),
+    
 # Deaths info
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
