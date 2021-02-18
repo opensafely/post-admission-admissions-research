@@ -93,7 +93,7 @@ study = StudyDefinition(
 
     lastprioradmission_dis_date=patients.admitted_to_hospital(
         returning="date_discharged",
-        on_or_after=patient_index_date_m1,
+        on_or_before=patient_index_date_m1,
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={

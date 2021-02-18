@@ -78,6 +78,7 @@ for num 1/5: gen long matchedto_X=.
 
 qui cou
 local totaltomatch = r(N)
+noi di "Total patients to match = `totaltomatch'" _n
 
 forvalues matchnum = 1/5{
 noi di "Getting match number `matchnum's"
