@@ -170,6 +170,26 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_create_pool_data_11.log
 
+  getmatches:
+    run: stata-mp:latest analysis/cr_getmatches
+    needs:
+      - create_dataset
+      - create_pool02
+      - create_pool03
+      - create_pool04
+      - create_pool05
+      - create_pool06
+      - create_pool07
+      - create_pool08
+      - create_pool09
+      - create_pool10
+      - create_pool11
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_getmatches.dta
+      moderately_sensitive:
+        log: analysis/output/cr_getmatches.log
+
 
   run_model:
     run: stata-mp:latest analysis/model.do

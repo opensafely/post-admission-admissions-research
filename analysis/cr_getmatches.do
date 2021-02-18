@@ -1,4 +1,9 @@
 
+cap log close
+log using ./analysis/output/cr_getmatches, replace t
+
+set seed 340590
+
 frames reset
 use ./analysis/cr_create_analysis_dataset, clear
 
@@ -21,22 +26,24 @@ frame create pool
 frame change pool
 
 **********PREPARE POOL
-use ./analysis/cr_create_pool_basicdata_02, clear
+use patient_id stp age male admitted_date discharged_date lastprior* using ./analysis/cr_create_pool_data_02, clear
 gen byte inpool2=1
 rename age age_p2
-*!drop from pool if in hospital on 1st of month [need to extract these columns using on_or_before in study def]
-
+*drop from pool if in hospital on 1st of month 
+drop if lastprioradmission_adm_date<d(1/2/2021) & lastprioradmission_dis_date >= d(1/2/2021) 
+drop lastprior*
 
 forvalues i = 3/11 {
 	
 	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
 	
-	merge 1:1 patient_id using ./analysis/cr_create_pool_basicdata_`ifull' 
-
+	merge 1:1 patient_id using ./analysis/cr_create_pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior*)
 	rename age age_p`i'
-	
-	*!drop from pool if in hospital on 1st of month [need to extract these columns using on_or_before in study def]
+
+	*drop from pool if in hospital on 1st of month 
+	drop if lastprioradmission_adm_date<d(1/`i'/2021) & lastprioradmission_dis_date >= d(1/`i'/2021) 
+	drop lastprior*
 	
 	gen byte inpool`i'=1 if (_merge==2|_merge==3)
 	drop _m
@@ -58,12 +65,7 @@ forvalues i = 2/11 {
 drop _merge monthfirstineligible
 drop admitted1_date admitted1_reason
 
-/*
-forvalues i = 1/32 {
-	frame put if (stp_p2==`i'|stp_p3==`i'|stp_p4==`i'|stp_p5==`i'|stp_p6==`i'|stp_p7==`i'|stp_p8==`i'|stp_p9==`i'|stp_p10==`i'|stp_p11==`i') & male==0, into(stp`i'_male0)
-	frame put if (stp_p2==`i'|stp_p3==`i'|stp_p4==`i'|stp_p5==`i'|stp_p6==`i'|stp_p7==`i'|stp_p8==`i'|stp_p9==`i'|stp_p10==`i'|stp_p11==`i') & male==1, into(stp`i'_male1)
-}
-*/
+*Make a frame for each stp/sex combo
 forvalues i = 1/32 {
 	frame put if stp==`i' & male==0, into(stp`i'_male0)
 	frame put if stp==`i' & male==1, into(stp`i'_male1)
@@ -89,7 +91,7 @@ noi di "Getting match number `matchnum's"
 		local TMstp = stp[`i']
 		local TMmale = male[`i']
 		local TMmonth = discharged1_month[`i']
-		
+			
 		cap frame drop eligiblematches
 		frame change stp`TMstp'_male`TMmale'
 		
@@ -111,8 +113,7 @@ noi di "Getting match number `matchnum's"
 }
 
 frame change tomatch
-keep patient_id matchedto*
-
+keep patient_id matchedto* discharged1_month
 
 reshape long matchedto_, i(patient_id)
 
@@ -125,23 +126,33 @@ drop expanded
 
 replace patient_id = -_n if patient_id==-999
 
-merge m:1 patient_id using "./analysis/cr_create_analysis_dataset.dta", keep(match master)
-
-gen discharged1_month = month(discharged1_date) if patient_id==setid
-sort setid discharged1_month
-by setid: replace discharged1_month=discharged1_month[1]
-
-
 sort setid patient_id
 safecount if setid!=setid[_n+1] & patient_id<0
 noi di r(N) " patients could not be matched at all"
-
 drop if patient_id<0
 
-stset stime_onsdeath, fail(onsdeath=1) 				///
-	id(patient_id) enter(enter_date) origin(enter_date)
+gen exposed = patient_id==setid
 
-gsort setid -hiv patient_id
+*Get correct variables from month-specific pool
+preserve 
+	keep if exposed==1
+	merge m:1 patient_id using "./analysis/cr_create_analysis_dataset.dta", keep(match master)
+	tempfile alldata 
+	save `alldata', replace
+restore 
 
-save cr_matchedcohort_STSET_onsdeath_fail1, replace 
+forvalues i=2/11{
+  	if `i'<10 local ifull "0`i'"
+	else local ifull "`i'"
+    preserve
+	keep if discharged1_month==`i' & exposed==0
+	merge m:1 patient_id using "./analysis/cr_create_pool_data_`ifull'.dta", keep(match master)
+	append using `alldata'
+	restore
+}
 
+use `alldata', clear
+gsort setid -exposed patient_id
+save ./analysis/cr_getmatches, replace 
+
+log close
