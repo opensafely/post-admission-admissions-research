@@ -148,6 +148,7 @@ forvalues i=2/11{
 	keep if discharged1_month==`i' & exposed==0
 	merge m:1 patient_id using "./analysis/cr_create_pool_data_`ifull'.dta", keep(match master)
 	append using `alldata'
+	save `alldata', replace
 	restore
 }
 
