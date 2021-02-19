@@ -95,7 +95,7 @@ noi di "Getting match number `matchnum's"
 		cap frame drop eligiblematches
 		frame change stp`TMstp'_male`TMmale'
 		
-		frame put if abs(age_p`TMmonth'-TMage)<=3, into(eligiblematches)
+		frame put if abs(age_p`TMmonth'-TMage)<=3 & inpool`TMmonth'==1, into(eligiblematches)
 		frame eligiblematches: qui cou
 		if r(N)>=1{
 			frame eligiblematches: gen u=uniform()
