@@ -54,7 +54,7 @@ forvalues i = 3/11 {
 *remove from pool once hospitalised for covid
 merge 1:1 patient_id using ./analysis/cr_create_analysis_dataset, keepusing(admitted1_date admitted1_reason)
 
-replace monthfirstineligible = month(admitted1_date)  if (admitted1_reason=="U071"|admitted1_reason=="U072") 
+gen monthfirstineligible = month(admitted1_date)  if (admitted1_reason=="U071"|admitted1_reason=="U072") 
 replace monthfirstineligible = 1 if monthfirst==13
 
 forvalues i = 2/11 {
