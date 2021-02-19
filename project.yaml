@@ -171,7 +171,7 @@ actions:
         log: analysis/output/cr_create_pool_data_11.log
 
   getmatches:
-    run: stata-mp:latest analysis/cr_getmatches
+    run: stata-mp:latest analysis/cr_getmatches.do
     needs:
       - create_dataset
       - create_pool02

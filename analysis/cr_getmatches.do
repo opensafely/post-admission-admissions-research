@@ -30,7 +30,7 @@ use patient_id stp age male admitted_date discharged_date lastprior* using ./ana
 gen byte inpool2=1
 rename age age_p2
 *drop from pool if in hospital on 1st of month 
-drop if lastprioradmission_adm_date<d(1/2/2021) & lastprioradmission_dis_date >= d(1/2/2021) 
+drop if lastprioradmission_adm_date<d(1/2/2020) & lastprioradmission_dis_date >= d(1/2/2020) 
 drop lastprior*
 
 forvalues i = 3/11 {
@@ -42,7 +42,7 @@ forvalues i = 3/11 {
 	rename age age_p`i'
 
 	*drop from pool if in hospital on 1st of month 
-	drop if lastprioradmission_adm_date<d(1/`i'/2021) & lastprioradmission_dis_date >= d(1/`i'/2021) 
+	drop if lastprioradmission_adm_date<d(1/`i'/2020) & lastprioradmission_dis_date >= d(1/`i'/2020) 
 	drop lastprior*
 	
 	gen byte inpool`i'=1 if (_merge==2|_merge==3)
