@@ -10,13 +10,28 @@ use ./analysis/cr_create_analysis_dataset, clear
 count
 
 keep if admitted1_reason=="U071"|admitted1_reason=="U072"
+
+*drop set if later than 60d before latest sus data
+summ discharged1_date, f d
+scalar censordate = r(max)
+drop if admitted1_date >= censordate-60 
+
+*tie together admissions that are within the same day of a previous discharge
+gen coviddischargedate = discharged1_date
+replace coviddischargedate = discharged2_date if discharged1_date==admission2_date
+replace coviddischargedate = discharged3_date if discharged1_date==admission2_date & discharged2_date==admission3_date
+replace coviddischargedate = discharged4_date if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+
 drop if discharged1_date>=d(1/12/2020)
 
-keep patient_id stp age male discharged1_date
+*drop if died date on/before discharge date
+drop if died_date_ons<=coviddischargedate
 
-sort discharged1_date
+keep patient_id stp age male coviddischargedate
 
-gen discharged1_month = month(discharged1_date)
+sort coviddischargedate
+
+gen discharged1_month = month(coviddischargedate)
 
 *frame put if discharged1_month==2, into(tomatch)
 
@@ -26,24 +41,30 @@ frame create pool
 frame change pool
 
 **********PREPARE POOL
-use patient_id stp age male admitted_date discharged_date lastprior* using ./analysis/cr_create_pool_data_02, clear
+use patient_id stp age male admitted_date discharged_date lastprior* died_date_ons using ./analysis/cr_create_pool_data_02, clear
 gen byte inpool2=1
 rename age age_p2
 *drop from pool if in hospital on 1st of month 
 drop if lastprioradmission_adm_date<d(1/2/2020) & lastprioradmission_dis_date >= d(1/2/2020) 
 drop lastprior*
+*drop from pool if died on/before 1st of month 
+drop if died_date_ons<=d(1/2/2020) 
 
 forvalues i = 3/11 {
 	
 	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
 	
-	merge 1:1 patient_id using ./analysis/cr_create_pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior*)
+	merge 1:1 patient_id using ./analysis/cr_create_pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior* died_date_ons)
 	rename age age_p`i'
 
 	*drop from pool if in hospital on 1st of month 
 	drop if lastprioradmission_adm_date<d(1/`i'/2020) & lastprioradmission_dis_date >= d(1/`i'/2020) 
 	drop lastprior*
+	
+	*drop from pool if died on/before 1st of month 
+	drop if died_date_ons<=d(1/`i'/2020) 
+	drop died_date_ons
 	
 	gen byte inpool`i'=1 if (_merge==2|_merge==3)
 	drop _m
@@ -137,6 +158,22 @@ gen exposed = patient_id==setid
 preserve 
 	keep if exposed==1
 	merge m:1 patient_id using "./analysis/cr_create_analysis_dataset.dta", keep(match master)
+	
+	*tie together admissions that are within the same day of a previous discharge (as above pre-matching - this time also produce readmission date)
+	gen coviddischargedate = discharged1_date
+	replace coviddischargedate = discharged2_date if discharged1_date==admission2_date
+	replace coviddischargedate = discharged3_date if discharged1_date==admission2_date & discharged2_date==admission3_date
+	replace coviddischargedate = discharged4_date if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+
+	gen readmission_date = admitted2_date 
+	gen readmission_reason = admitted2_reason
+	replace readmission_date = admitted3_date if discharged1_date==admission2_date
+	replace readmission_reason = admitted3_reason if discharged1_date==admission2_date
+	replace readmission_date = admitted4_date if discharged1_date==admission2_date & discharged2_date==admission3_date
+	replace readmission_reason = admitted4_reason if discharged1_date==admission2_date & discharged2_date==admission3_date
+	replace readmission_date = admitted5_date if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+	replace readmission_reason = admitted5_reason if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+		
 	tempfile alldata 
 	save `alldata', replace
 restore 
