@@ -109,6 +109,102 @@ study = StudyDefinition(
         },
     ),
 
+    admitted3_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged2_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged3_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged2_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted3_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged2_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted4_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged3_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged4_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged3_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted4_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged3_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted5_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged4_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged5_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged4_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted5_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged4_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
 # Deaths info
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
