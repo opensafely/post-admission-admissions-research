@@ -22,7 +22,7 @@ replace coviddischargedate = discharged2_date if discharged1_date==admitted2_dat
 replace coviddischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
 replace coviddischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
 
-drop if discharged1_date>=d(1/12/2020)
+drop if coviddischargedate>=d(1/12/2020)
 
 *drop if died date on/before discharge date
 drop if died_date_ons<=coviddischargedate
