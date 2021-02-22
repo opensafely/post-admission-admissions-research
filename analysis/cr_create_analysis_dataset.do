@@ -66,6 +66,12 @@ foreach var of varlist 	admitted1_date					///
 						discharged1_date				///
 						admitted2_date					///
 						discharged2_date				///
+						admitted3_date					///
+						discharged3_date				///
+						admitted4_date					///
+						discharged4_date				///
+						admitted5_date					///
+						discharged5_date				///
 						died_date_ons 					///
 						patient_index_date				{
 							confirm string variable `var'

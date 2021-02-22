@@ -18,9 +18,9 @@ drop if admitted1_date >= censordate-60
 
 *tie together admissions that are within the same day of a previous discharge
 gen coviddischargedate = discharged1_date
-replace coviddischargedate = discharged2_date if discharged1_date==admission2_date
-replace coviddischargedate = discharged3_date if discharged1_date==admission2_date & discharged2_date==admission3_date
-replace coviddischargedate = discharged4_date if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+replace coviddischargedate = discharged2_date if discharged1_date==admitted2_date
+replace coviddischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
+replace coviddischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
 
 drop if discharged1_date>=d(1/12/2020)
 
@@ -161,18 +161,18 @@ preserve
 	
 	*tie together admissions that are within the same day of a previous discharge (as above pre-matching - this time also produce readmission date)
 	gen coviddischargedate = discharged1_date
-	replace coviddischargedate = discharged2_date if discharged1_date==admission2_date
-	replace coviddischargedate = discharged3_date if discharged1_date==admission2_date & discharged2_date==admission3_date
-	replace coviddischargedate = discharged4_date if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+	replace coviddischargedate = discharged2_date if discharged1_date==admitted2_date
+	replace coviddischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
+	replace coviddischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
 
 	gen readmission_date = admitted2_date 
 	gen readmission_reason = admitted2_reason
-	replace readmission_date = admitted3_date if discharged1_date==admission2_date
-	replace readmission_reason = admitted3_reason if discharged1_date==admission2_date
-	replace readmission_date = admitted4_date if discharged1_date==admission2_date & discharged2_date==admission3_date
-	replace readmission_reason = admitted4_reason if discharged1_date==admission2_date & discharged2_date==admission3_date
-	replace readmission_date = admitted5_date if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
-	replace readmission_reason = admitted5_reason if discharged1_date==admission2_date & discharged2_date==admission3_date & discharged3_date==admission4_date
+	replace readmission_date = admitted3_date if discharged1_date==admitted2_date
+	replace readmission_reason = admitted3_reason if discharged1_date==admitted2_date
+	replace readmission_date = admitted4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
+	replace readmission_reason = admitted4_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date
+	replace readmission_date = admitted5_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
+	replace readmission_reason = admitted5_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
 		
 	tempfile alldata 
 	save `alldata', replace
