@@ -58,16 +58,17 @@ forvalues i = 3/11 {
 	merge 1:1 patient_id using ./analysis/cr_create_pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior* died_date_ons)
 	rename age age_p`i'
 
+	gen byte inpool`i'=1 if (_merge==2|_merge==3)
+	drop _m
+	
 	*drop from pool if in hospital on 1st of month 
-	drop if lastprioradmission_adm_date<d(1/`i'/2020) & lastprioradmission_dis_date >= d(1/`i'/2020) 
+	replace inpool`i' = 0 if lastprioradmission_adm_date<d(1/`i'/2020) & lastprioradmission_dis_date >= d(1/`i'/2020) 
 	drop lastprior*
 	
 	*drop from pool if died on/before 1st of month 
-	drop if died_date_ons<=d(1/`i'/2020) 
+	replace inpool`i' = 0 if died_date_ons<=d(1/`i'/2020) 
 	drop died_date_ons
-	
-	gen byte inpool`i'=1 if (_merge==2|_merge==3)
-	drop _m
+
 	sort patient_id
 
 }
