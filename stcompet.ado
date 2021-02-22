@@ -55,7 +55,9 @@ program define stcompet, sortpreserve
 	
 	syntax /* ... */  [if] [in] , COMPET1(numlist missingokay) [ COMPET2(numlist  missingokay) /*
 		*/  COMPET3(numlist  missingokay) COMPET4(numlist missingokay) COMPET5(numlist missingokay) /*
-		*/  COMPET6(numlist missingokay) BY(varname) ALLIGNol Level(integer $S_level) ]
+		*/  COMPET6(numlist missingokay) COMPET7(numlist missingokay) COMPET8(numlist missingokay) /*
+		*/ COMPET9(numlist missingokay) COMPET10(numlist missingokay) COMPET11(numlist missingokay) /*
+		*/ COMPET12(numlist missingokay) COMPET13(numlist missingokay) BY(varname) ALLIGNol Level(integer $S_level) ]
 	marksample touse
 	qui replace `touse' = 0 if _st==0
 	local type : set type
