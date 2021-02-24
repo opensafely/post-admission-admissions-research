@@ -12,7 +12,7 @@ syntax, variable(varname) condition(string)
 	*put the varname and condition to left so that alignment can be checked vs shell
 	file write tablecontent ("`variable'") _tab ("`condition'") _tab
 	
-	foreach exposed of numlist 0 1{
+	foreach exposed of numlist 1 0{
 	
 	safecount if exposed==`exposed'
 	local denom_exposed_`exposed'=r(N)
