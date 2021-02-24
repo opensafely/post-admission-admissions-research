@@ -21,7 +21,7 @@ syntax, variable(varname) condition(string)
 	local cellcount = r(N)
 	local colpct = 100*(r(N)/`denom_exposed_`exposed'')
 	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
-	if `exposed'==0 file write tablecontent _tab
+	if `exposed'==1 file write tablecontent _tab
 		else file write tablecontent _n
 	}
 	
