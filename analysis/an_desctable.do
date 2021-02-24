@@ -21,7 +21,7 @@ syntax, variable(varname) condition(string)
 	local cellcount = r(N)
 	local colpct = 100*(r(N)/`denom_exposed_`exposed'')
 	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
-	if `exposed'==1 file write tablecontent _tab
+	if `exposed'==0 file write tablecontent _tab
 		else file write tablecontent _n
 	}
 	
@@ -67,7 +67,7 @@ tabulatevariable, variable(agegroup) start(1) end(6)
 qui summ age if exposed==0, d
 file write tablecontent ("age") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
 qui summ age if exposed==1, d
-file write tablecontent _tab %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _n
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _n
 
 file write tablecontent _n 
 tabulatevariable, variable(male) start(1) end(0) 
@@ -105,7 +105,7 @@ file write tablecontent _n
 tabulatevariable, variable(cancer_haem_cat) start(2) end(4)  /*<1, 1-4.9, 5+ years ago*/
 file write tablecontent _n
 *REDUCED KIDNEY FUNCTION
-tabulatevariable, variable(reduced_kidney_function_cat2) start(2) end(3) 
+tabulatevariable, variable(reduced_kidney_function_cat2) start(2) end(4) 
 *DIALYSIS
 *tabulatevariable, variable(dialysis) start(1) end(1) 
 *LIVER
