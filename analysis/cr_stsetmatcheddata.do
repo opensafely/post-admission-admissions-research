@@ -146,7 +146,7 @@ label define codspecificlab 100 "Other circulatory" 200 "Other cancers" ///
  600 "Nervous system" 700 "Genitourinary" 800 "Endocrine, nutritional and metabolic" ///
  900 "External causes" 1000 "COVID" 1100 "Other infections" 1200 "Musculoskeletal" 1300 "Other", modify
 
-label define exposedlab 0 "Control" 1 "Prior COVID hospitalisation"
+label define exposedlab 0 "Control" 1 "Exposed (prior COVID hospitalisation)"
 label values exposed exposedlab
 
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
