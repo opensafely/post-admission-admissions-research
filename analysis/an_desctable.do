@@ -47,17 +47,7 @@ end
 cap file close tablecontent
 file open tablecontent using ./analysis/output/an_desctable.txt, write text replace
 
-use ./analysis/cr_getmatches,clear
-
-*drop set if first covid admission/discharge is same day
-gen todrop = admitted1_date==discharged1_date & exposed==1
-by setid: drop if todrop[1]==1
-drop todrop
-
-*drop set if entry/exit on same day (artefact of single day admissions looping in study def)
-gen todrop = coviddischarge == readmission_date & exposed==1
-by setid: drop if todrop[1]==1
-drop todrop
+use analysis/cr_stsetmatcheddata, clear
 
 gen byte cons=1
 tabulatevariable, variable(cons) start(1) end(1) 
