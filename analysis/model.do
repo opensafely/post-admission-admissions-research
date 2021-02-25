@@ -6,4 +6,4 @@ do analysis/cr_getmatches
 do analysis/cr_stsetmatcheddata
 
 do analysis/an_desctable
-do analysis/an_cumulativeincidence_cov_noncov_death
+do analysis/an_cumulativeincidence

@@ -52,7 +52,7 @@
 	<text x="1230.08" y="215.42" style="font-family:'Helvetica';font-size:93.56px;fill:#000000" text-anchor="middle">Control</text>
 	<rect x="2141.00" y="135.39" width="1683.49" height="122.89" style="fill:#D9E6EB"/>
 	<rect x="2143.45" y="137.83" width="1678.60" height="117.99" style="fill:none;stroke:#D9E6EB;stroke-width:4.90"/>
-	<text x="2982.75" y="215.42" style="font-family:'Helvetica';font-size:93.56px;fill:#000000" text-anchor="middle">Prior COVID hospitalisation</text>
+	<text x="2982.75" y="215.42" style="font-family:'Helvetica';font-size:93.56px;fill:#000000" text-anchor="middle">Exposed (prior COVID hospitalisation)</text>
 	<rect x="438.20" y="2303.68" width="3183.47" height="326.46" style="fill:#FFFFFF"/>
 	<rect x="441.08" y="2306.56" width="3177.71" height="320.70" style="fill:none;stroke:#000000;stroke-width:5.76"/>
 	<line x1="481.39" y1="2396.86" x2="855.86" y2="2396.86" style="stroke:#1A476F;stroke-width:8.64"/>
