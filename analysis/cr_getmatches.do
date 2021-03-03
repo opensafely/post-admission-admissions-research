@@ -11,10 +11,9 @@ count
 
 keep if admitted1_reason=="U071"|admitted1_reason=="U072"
 
-*drop set if later than 60d before latest sus data
 summ discharged1_date, f d
-scalar censordate = r(max)
-drop if admitted1_date >= censordate-60 
+scalar censordate = r(max) - 60
+
 
 *tie together admissions that are within the same day of a previous discharge
 gen coviddischargedate = discharged1_date
@@ -22,11 +21,16 @@ replace coviddischargedate = discharged2_date if discharged1_date==admitted2_dat
 replace coviddischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
 replace coviddischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
 
-drop if coviddischargedate>=d(1/12/2020)
+*drop set if later than 60d before latest sus data
+drop if coviddischargedate >= censordate
+
+cou
 
 *drop if died date on/before discharge date
+cou if died_date_ons==coviddischargedate
+cou if died_date_ons<coviddischargedate
 drop if died_date_ons<=coviddischargedate
-
+cou
 keep patient_id stp age male coviddischargedate
 
 sort coviddischargedate
