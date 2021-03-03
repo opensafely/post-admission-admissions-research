@@ -1,0 +1,313 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cox_composite.log
+  log type:  text
+ opened on:   2 Mar 2021, 21:54:36
+
+. 
+. use analysis/cr_stsetmatcheddata, clear
+
+. 
+. safetab readmission exposed, col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+readmissio |        exposed
+         n |   Control  Exposed ( |     Total
+-----------+----------------------+----------
+         0 |    80,153     11,573 |    91,726 
+           |     89.60      64.68 |     85.44 
+-----------+----------------------+----------
+         1 |        98      1,108 |     1,206 
+           |      0.11       6.19 |      1.12 
+-----------+----------------------+----------
+         2 |     8,615      4,242 |    12,857 
+           |      9.63      23.71 |     11.98 
+-----------+----------------------+----------
+         3 |       592        970 |     1,562 
+           |      0.66       5.42 |      1.46 
+-----------+----------------------+----------
+     Total |    89,458     17,893 |   107,351 
+           |    100.00     100.00 |    100.00 
+
+. 
+. safetab readm_died_reason_b exposed, col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+readm_died_reason_bro |        exposed
+                   ad |   Control  Exposed ( |     Total
+----------------------+----------------------+----------
+          Circulatory |     1,259        574 |     1,833 
+                      |     14.10       9.32 |     12.15 
+----------------------+----------------------+----------
+              Cancers |       784        318 |     1,102 
+                      |      8.78       5.17 |      7.31 
+----------------------+----------------------+----------
+          Respiratory |       561        739 |     1,300 
+                      |      6.28      12.00 |      8.62 
+----------------------+----------------------+----------
+            Digestive |     1,067        361 |     1,428 
+                      |     11.95       5.86 |      9.47 
+----------------------+----------------------+----------
+        Mental health |       165        129 |       294 
+                      |      1.85       2.10 |      1.95 
+----------------------+----------------------+----------
+       Nervous system |       223        139 |       362 
+                      |      2.50       2.26 |      2.40 
+----------------------+----------------------+----------
+        Genitourinary |       514        319 |       833 
+                      |      5.76       5.18 |      5.52 
+----------------------+----------------------+----------
+Endocrine, nutritiona |       178        144 |       322 
+                      |      1.99       2.34 |      2.13 
+----------------------+----------------------+----------
+      External causes |       813        280 |     1,093 
+                      |      9.11       4.55 |      7.25 
+----------------------+----------------------+----------
+                COVID |       156      1,675 |     1,831 
+                      |      1.75      27.21 |     12.14 
+----------------------+----------------------+----------
+     Other infections |       202        176 |       378 
+                      |      2.26       2.86 |      2.51 
+----------------------+----------------------+----------
+      Musculoskeletal |       584        210 |       794 
+                      |      6.54       3.41 |      5.26 
+----------------------+----------------------+----------
+                Other |     2,421      1,092 |     3,513 
+                      |     27.12      17.74 |     23.29 
+----------------------+----------------------+----------
+                Total |     8,927      6,156 |    15,083 
+                      |    100.00     100.00 |    100.00 
+
+. 
+. stcox exposed, strata(setid)
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood =   -26439.1
+Iteration 1:   log likelihood = -23411.978
+Iteration 2:   log likelihood = -22508.489
+Iteration 3:   log likelihood = -22488.826
+Iteration 4:   log likelihood = -22488.826
+Refining estimates:
+Iteration 0:   log likelihood = -22488.826
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      107,351                  Number of obs    =     107,351
+No. of failures =       15,625
+Time at risk    =   16030728.5
+                                                LR chi2(1)       =     7900.55
+Log likelihood  =   -22488.826                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   5.490593    .101517    92.11   0.000     5.295186    5.693212
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+
+. stcox exposed i.ethnicity i.imd , strata(setid)
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -17316.295
+Iteration 1:   log likelihood = -14811.451
+Iteration 2:   log likelihood = -14561.412
+Iteration 3:   log likelihood =  -14559.22
+Iteration 4:   log likelihood =  -14559.22
+Refining estimates:
+Iteration 0:   log likelihood =  -14559.22
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       81,864                  Number of obs    =      81,864
+No. of failures =       12,000
+Time at risk    =     12157980
+                                                LR chi2(9)       =     5514.15
+Log likelihood  =    -14559.22                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                exposed |   5.462968    .126078    73.57   0.000     5.221365     5.71575
+                        |
+              ethnicity |
+                 Mixed  |   .7458982   .0997643    -2.19   0.028      .573893    .9694563
+Asian or Asian British  |   .8782179   .0424713    -2.69   0.007     .7987989    .9655328
+                 Black  |   .8286149   .0639927    -2.43   0.015     .7122225    .9640283
+                 Other  |   .7057787   .0733609    -3.35   0.001     .5756944     .865257
+                        |
+                    imd |
+                     2  |   1.008628   .0378284     0.23   0.819     .9371452    1.085563
+                     3  |   1.119136   .0420788     2.99   0.003     1.039629    1.204724
+                     4  |   1.185858    .044619     4.53   0.000     1.101553    1.276615
+       5 most deprived  |    1.29423    .049898     6.69   0.000     1.200036    1.395818
+-----------------------------------------------------------------------------------------
+                                                           Stratified by setid
+
+. stcox exposed i.ethnicity i.imd i.obese4cat i.smoke_nomiss, strata(setid) 
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -17316.295
+Iteration 1:   log likelihood = -14762.306
+Iteration 2:   log likelihood =  -14515.16
+Iteration 3:   log likelihood = -14513.093
+Iteration 4:   log likelihood = -14513.093
+Refining estimates:
+Iteration 0:   log likelihood = -14513.093
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       81,864                  Number of obs    =      81,864
+No. of failures =       12,000
+Time at risk    =     12157980
+                                                LR chi2(14)      =     5606.40
+Log likelihood  =   -14513.093                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                exposed |   5.409818   .1265386    72.18   0.000     5.167406    5.663602
+                        |
+              ethnicity |
+                 Mixed  |   .7644965   .1020212    -2.01   0.044     .5885504    .9930414
+Asian or Asian British  |   .9462267   .0464891    -1.13   0.261     .8593594    1.041875
+                 Black  |   .8669767   .0671539    -1.84   0.065     .7448614    1.009112
+                 Other  |   .7302202   .0760549    -3.02   0.003     .5953856    .8955904
+                        |
+                    imd |
+                     2  |   1.000207   .0376085     0.01   0.996      .929146    1.076702
+                     3  |   1.096328   .0413914     2.44   0.015     1.018131     1.18053
+                     4  |   1.149772   .0435532     3.68   0.000     1.067501    1.238383
+       5 most deprived  |   1.232734     .04806     5.37   0.000     1.142047    1.330623
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.017177   .0313804     0.55   0.581     .9574948    1.080579
+    Obese II (35-39.9)  |   1.205971   .0570959     3.96   0.000       1.0991    1.323233
+       Obese III (40+)  |   1.101957    .078225     1.37   0.171     .9588271    1.266454
+                        |
+           smoke_nomiss |
+                Former  |   1.156856   .0301346     5.59   0.000     1.099276    1.217453
+               Current  |   1.430058   .0609028     8.40   0.000     1.315537    1.554549
+-----------------------------------------------------------------------------------------
+                                                           Stratified by setid
+
+. stcox exposed i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia oth
+> er_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression, strata(setid)
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -17316.295
+Iteration 1:   log likelihood = -14160.808
+Iteration 2:   log likelihood = -13970.023
+Iteration 3:   log likelihood = -13969.031
+Iteration 4:   log likelihood = -13969.031
+Refining estimates:
+Iteration 0:   log likelihood = -13969.031
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       81,864                  Number of obs    =      81,864
+No. of failures =       12,000
+Time at risk    =     12157980
+                                                LR chi2(39)      =     6694.53
+Log likelihood  =   -13969.031                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                      exposed |   4.721135   .1149628    63.74   0.000     4.501105    4.951922
+                              |
+                    ethnicity |
+                       Mixed  |   .7635809    .102998    -2.00   0.046     .5861896    .9946539
+      Asian or Asian British  |   .9006271   .0455854    -2.07   0.039     .8155701    .9945548
+                       Black  |   .8388362   .0666291    -2.21   0.027     .7179032    .9801408
+                       Other  |   .7469516   .0792338    -2.75   0.006     .6067366    .9195699
+                              |
+                          imd |
+                           2  |   .9947112   .0380455    -0.14   0.890     .9228698    1.072145
+                           3  |   1.066999   .0410967     1.68   0.092      .989416    1.150665
+                           4  |   1.115102   .0430946     2.82   0.005     1.033758    1.202847
+             5 most deprived  |   1.168703   .0465761     3.91   0.000      1.08089     1.26365
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9924014   .0315668    -0.24   0.810     .9324207    1.056241
+          Obese II (35-39.9)  |   1.129661    .055238     2.49   0.013     1.026423    1.243284
+             Obese III (40+)  |   1.038238   .0759158     0.51   0.608     .8996162    1.198221
+                              |
+                 smoke_nomiss |
+                      Former  |   1.062964   .0287052     2.26   0.024     1.008166    1.120741
+                     Current  |    1.29066   .0569862     5.78   0.000     1.183665    1.407326
+                              |
+             htdiag_or_highbp |   1.059976   .0296787     2.08   0.038     1.003374    1.119771
+  chronic_respiratory_disease |   1.345929   .0459142     8.71   0.000     1.258882    1.438996
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   1.032044   .0371018     0.88   0.380     .9618282    1.107385
+                Yes with OCS  |   1.131597   .0752505     1.86   0.063     .9933161    1.289128
+                              |
+      chronic_cardiac_disease |   1.365864   .0389696    10.93   0.000     1.291582    1.444419
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.086996   .0348939     2.60   0.009     1.020712    1.157584
+       Uncontrolled diabetes  |   1.281507   .0579008     5.49   0.000     1.172903    1.400166
+  Diabetes, no hba1c measure  |   1.290669   .1298074     2.54   0.011     1.059757    1.571894
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   3.802441   .3282126    15.47   0.000     3.210628    4.503344
+               2-5 years ago  |   1.719421   .1025328     9.09   0.000      1.52976    1.932597
+                    5+ years  |   1.253916   .0503164     5.64   0.000     1.159076    1.356517
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.748203   .5736002     4.84   0.000     1.825524    4.137234
+               2-5 years ago  |   2.698797   .3912333     6.85   0.000     2.031305    3.585629
+                    5+ years  |   1.509665   .1644913     3.78   0.000     1.219368    1.869074
+                              |
+ reduced_kidney_function_cat2 |
+Stage 3a/3b egfr 30-60        |   1.066112   .0329594     2.07   0.038     1.003431    1.132708
+         Stage 4 egfr 15-<30  |   1.495194   .1101487     5.46   0.000     1.294169    1.727446
+Stage 5 egfr <15 or dialysis  |    2.94516   .3857613     8.25   0.000     2.278333    3.807154
+                              |
+        chronic_liver_disease |   1.557129   .1576834     4.37   0.000     1.276813    1.898987
+                       stroke |   1.375268   .0620434     7.06   0.000     1.258887    1.502409
+                     dementia |   1.489035   .1219104     4.86   0.000      1.26828    1.748214
+                  other_neuro |   1.713398   .1207742     7.64   0.000     1.492309    1.967242
+             organ_transplant |   .9899682   .2352537    -0.04   0.966     .6213606    1.577244
+                       spleen |   2.209837   .3936525     4.45   0.000     1.558584    3.133216
+             ra_sle_psoriasis |   1.101221   .0472314     2.25   0.025     1.012434    1.197796
+      other_immunosuppression |    1.37076   .3031131     1.43   0.154     .8886632    2.114393
+-----------------------------------------------------------------------------------------------
+                                                           Stratified by setid
+
+. 
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cox_composite.log
+  log type:  text
+ closed on:   2 Mar 2021, 21:54:51
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
