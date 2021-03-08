@@ -357,7 +357,7 @@ actions:
         log: analysis/output/cr_getmatches.log
 
   getmatches2019:
-    run: stata-mp:latest analysis/cr_getmatches.do
+    run: stata-mp:latest analysis/cr_getmatches2019.do
     needs:
       - create_dataset
       - create_2019pool02
