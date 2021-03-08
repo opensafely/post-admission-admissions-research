@@ -39,3 +39,4 @@ opensafely/temporary-immunosuppression/2020-04-24
 opensafely/stroke-updated/2020-06-02
 opensafely/direct-acting-oral-anticoagulants-doac/2020-10-05
 opensafely/warfarin/2020-10-05
+opensafely/pneumonia-secondary-care/2020-10-05

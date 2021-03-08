@@ -27,6 +27,13 @@ covid_codes = codelist_from_csv(
 )
 
 
+pneumonia_codes = codelist_from_csv(
+    "codelists/opensafely-pneumonia-secondary-care.csv",
+    system="icd10",
+    column="ICD code",
+)
+
+
 # Neuro
 
 dementia_codes = codelist_from_csv(
