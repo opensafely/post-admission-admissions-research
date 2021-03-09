@@ -59,7 +59,7 @@ forvalues i = 3/11 {
 	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
 	
-	merge 1:1 patient_id using ./analysis/cr_create_pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior* died_date_ons died_date_1ocare)
+	merge 1:1 patient_id using ./analysis/cr_create_2019pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior* died_date_ons died_date_1ocare)
 	rename age age_p`i'
 
 	gen byte inpool`i'=1 if (_merge==2|_merge==3)
