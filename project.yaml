@@ -376,7 +376,6 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_getmatches2019.log
 
-
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]
