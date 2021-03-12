@@ -56,7 +56,7 @@ study = StudyDefinition(
     ),
     discharged1_date=patients.admitted_to_hospital(
         returning="date_discharged",
-        with_these_diagnoses=covid_codes,
+        with_these_diagnoses=pneumonia_codes,
         on_or_after=start_date,
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
@@ -68,7 +68,7 @@ study = StudyDefinition(
     
     admitted1_reason = patients.admitted_to_hospital(
         returning="primary_diagnosis",
-        with_these_diagnoses=covid_codes,
+        with_these_diagnoses=pneumonia_codes,
         on_or_after=start_date,
         find_first_match_in_period=True,
         return_expectations={
