@@ -234,7 +234,7 @@ study = StudyDefinition(
     
     patient_index_date=patients.admitted_to_hospital(
         returning="date_admitted",
-        with_these_diagnoses=covid_codes,
+        with_these_diagnoses=pneumonia_codes,
         on_or_after=start_date,
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
