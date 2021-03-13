@@ -47,6 +47,8 @@ format %d pneumdischargedate
 cou if died_date_ons==pneumdischargedate &  analysispneum==1 & exposed==0
 cou if died_date_ons<pneumdischargedate &  analysispneum==1 & exposed==0
 drop if died_date_ons<=pneumdischargedate &  analysispneum==1 & exposed==0
+*drop if pneumonia date was after the censoring date
+drop if analysispneum==1 & exposed==0 & pneumdischargedate>censordate2019
 *get readmission date for pneumonia patients
 replace readmission_date = admitted2_date if  analysispneum==1 & exposed==0
 replace readmission_reason = admitted2_reason if    analysispneum==1 & exposed==0
