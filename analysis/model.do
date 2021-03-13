@@ -3,7 +3,7 @@ import delimited output/input_covdischarged.csv
 log close
 
 do analysis/cr_getmatches /*not re-run since correction to censor date - fixes currently at top of cr_..stset*/
-do analysis/cr_stsetmatcheddata
+do analysis/cr_stsetmatcheddata_ALLCONTROLS
 
 do analysis/an_desctable
 do analysis/an_cumulativeincidence

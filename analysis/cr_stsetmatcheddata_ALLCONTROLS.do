@@ -7,7 +7,8 @@ use ./analysis/cr_getmatches, clear
 gen data2020=1
 
 summ readmission_date, f d
-scalar censordate = r(max)-60
+scalar censordate2020 = r(max)-60
+scalar censordate2019 = r(max)-60-365
 
 **************************************
 /*TEMP - this is now done in cr_getmatches*/
@@ -42,6 +43,10 @@ replace pneumdischargedate = discharged2_date if discharged1_date==admitted2_dat
 replace pneumdischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysispneum==1 & exposed==0
 replace pneumdischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysispneum==1 & exposed==0
 format %d pneumdischargedate
+*drop if died date on/before pneum discharge date
+cou if died_date_ons==pneumdischargedate &  analysispneum==1 & exposed==0
+cou if died_date_ons<pneumdischargedate &  analysispneum==1 & exposed==0
+drop if died_date_ons<=pneumdischargedate &  analysispneum==1 & exposed==0
 *get readmission date for pneumonia patients
 replace readmission_date = admitted2_date if  analysispneum==1 & exposed==0
 replace readmission_reason = admitted2_reason if    analysispneum==1 & exposed==0
@@ -76,6 +81,8 @@ tab N if exposed==1
 restore
 }
 
+gen monthentry = month(coviddischargedate) if exposed==1
+by setid: replace monthentry = monthentry[1]
 
 gen entrydate  = coviddischargedate if exposed==1
 replace entrydate = mdy(monthentry,1,2020) if exposed==0 & analysis2020==1
@@ -83,18 +90,25 @@ replace entrydate = mdy(monthentry,1,2019) if exposed==0 & analysis2019==1
 replace entrydate = pneumdischargedate if exposed==0 & analysispneum==1
 
 format %d entrydate
+format %d readmission_date
+
 assert readmission_date>=entrydate if readmission_date<.
 assert admitted_date>=entrydate if admitted_date<.
-gen exitdate = readmission_date if exposed==1 & readmission_date<=censordate
-replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate
+gen exitdate = readmission_date if exposed==1 & readmission_date<=censordate2020
+replace exitdate = readmission_date if exposed==0 & analysispneum==1 & readmission_date<=censordate2019
+replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate2020 & analysis2020==1
+replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate2019 & analysis2019==1
 format %d exitdate
 gen readmission = (exitdate<.)
 
-replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate 
+replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2020 & (exposed==1|analysis2020==1)
+replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2019 & exposed==0 & (analysis2019==1|analysispneum==1)
+ 
 assert died_date_ons<. if readmission ==0 & exitdate<.
 replace readmission = 3 if readmission ==0 & exitdate<.
 
-replace exitdate = censordate if exitdate==.
+replace exitdate = censordate2020 if exitdate==. & (exposed==1|analysis2020==1)
+replace exitdate = censordate2019 if exitdate==. & exposed==0 & (analysis2019==1|analysispneum==1)
 
 replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") & exposed==1
 replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_reason!="U072")&exposed==0
@@ -209,6 +223,6 @@ label values exposed exposedlab
 
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
 
-save analysis/cr_stsetmatcheddata, replace
+save analysis/cr_stsetmatcheddata_ALLCONTROLS, replace
 
 log close
