@@ -118,8 +118,8 @@ replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_re
 replace exitdate = exitdate+0.5 if exitdate==entrydate
 
 **CLASSIFY READMISSIONS
-gen icd10_3 = substr(readmission_reason,1,3) if exposed==1 & (readmission==1|readmission==2)
-replace icd10_3 = substr(admitted_reason,1,3) if exposed==0 & (readmission==1|readmission==2)
+gen icd10_3 = substr(readmission_reason,1,3) if (exposed==1|analysispn==1) & (readmission==1|readmission==2)
+replace icd10_3 = substr(admitted_reason,1,3) if (exposed==0 & (analysis2019==1|analysis2020==1)) & (readmission==1|readmission==2)
 replace icd10_3 = substr(died_cause_ons,1,3) if readmission==3
 
 
@@ -143,15 +143,16 @@ replace readm_died_reason_broad = 10 if icd10_3=="U07" & (readmission_reason=="U
 replace readm_died_reason_broad = 11 if substr(icd10_3,1,1)=="A"
 replace readm_died_reason_broad = 12 if substr(icd10_3,1,1)=="M"
 replace readm_died_reason_broad = 13 if readm_died_reason_broad==. & icd!=""
+replace readm_died_reason_broad = 0 if readmission==0
 
-label define readm_died_reason_broadlab 1 "Circulatory" 2 "Cancers" ///
+label define readm_died_reason_broadlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
  3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
  6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
  9 "External causes" 10 "COVID" 11 "Other infections" 12 "Musculoskeletal" 13 "Other", modify
  label values readm_died_reason_broad readm_died_reason_broadlab
 
 gen readm_died_reason_specific = readm_died_reason_broad
-label define readm_died_reason_specificlab 1 "Circulatory" 2 "Cancers" ///
+label define readm_died_reason_specificlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
  3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
  6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
  9 "External causes" 10 "COVID" 11 "Infections" 12 "Musculoskeletal" 13 "Other", modify
@@ -222,6 +223,13 @@ label define readm_died_reason_specificlab 100 "Other circulatory" 200 "Other ca
 
 label define exposedlab 0 "Control" 1 "Exposed (prior COVID hospitalisation)"
 label values exposed exposedlab
+
+gen exposed_allcontrols = exposed
+replace exposed_allcontrols = 2 if exposed==0 & analysis2020==1
+replace exposed_allcontrols = 3 if exposed==0 & analysis2019==1
+replace exposed_allcontrols = 4 if exposed==0 & analysispneum==1
+label define exposed_allcontrolslab 1 "Exposed" 2 "2020 general pop" 3 "2019 general pop" 4 "2019 hospitalised pneumonia"
+label values exposed_allcontrols exposed_allcontrolslab
 
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
 
