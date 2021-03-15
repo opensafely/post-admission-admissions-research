@@ -13,7 +13,7 @@ scalar censordate2019 = r(max)-60-365
 **************************************
 /*TEMP - this is now done in cr_getmatches*/
 *drop set if first covid discharge is <censor date
-gen todrop = (coviddischargedate>=censordate) & exposed==1
+gen todrop = (coviddischargedate>=censordate2020) & exposed==1
 by setid: drop if todrop[1]==1
 drop todrop
 safetab ex
