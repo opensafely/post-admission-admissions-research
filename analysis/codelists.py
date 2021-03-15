@@ -4,6 +4,8 @@ from cohortextractor import codelist, codelist_from_csv
 
 covid_codelist = codelist(["U071", "U072"], system="icd10")
 
+influenza_codes = codelist(["J090", "J100", "J101", "J108", "J110", "J111", "J118"], system="icd10")
+
 ## demographic codelists
 
 ethnicity_codes = codelist_from_csv(

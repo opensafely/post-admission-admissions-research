@@ -1,6 +1,6 @@
 ********************************************************************************
 *
-*	Do-file:		cr_pneum2019.do
+*	Do-file:		cr_flu2019.do
 *
 *	Project:		Post COVID-admission admissions
 *
@@ -21,11 +21,11 @@
 
 * Open a log file
 cap log close
-log using ./analysis/output/cr_pneum2019, replace t
+log using ./analysis/output/cr_flu2019, replace t
 
 clear
-noi di "import delimited ./output/input_pneum2019.csv"
-import delimited ./output/input_pneum2019.csv
+noi di "import delimited ./output/input_flu2019.csv"
+import delimited ./output/input_flu2019.csv
 
 di "STARTING COUNT FROM IMPORT:"
 cou
@@ -510,7 +510,7 @@ order patient_id region stp imd age agegroup male ethnicity ethnicity_16 bmi bmi
 
 sort patient_id
 
-save ./analysis/cr_pneum2019, replace
+save ./analysis/cr_flu2019, replace
 
 log close
 

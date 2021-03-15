@@ -366,8 +366,8 @@ order cancer_exhaem_cat cancer_haem_cat, after(other_cancer_date)
 * HIV, permanent immunodeficiency ever, OR 
 * temporary immunodeficiency or aplastic anaemia last year
 gen temp1  = max(hiv, permanent_immunodeficiency)
-gen temp2  = inrange(temporary_immunodeficiency_date, `oneybefore', patient_index_date)
-gen temp3  = inrange(aplastic_anaemia_date, `oneybefore', patient_index_date)
+gen temp2  = inrange(temporary_immunodeficiency_date, oneybefore, patient_index_date)
+gen temp3  = inrange(aplastic_anaemia_date, oneybefore, patient_index_date)
 
 egen other_immunosuppression = rowmax(temp1 temp2 temp3)
 drop temp1 temp2 temp3
