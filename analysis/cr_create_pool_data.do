@@ -333,24 +333,24 @@ order spleen, after(sickle_cell)
 
 label define cancer 1 "Never" 2 "Last year" 3 "2-5 years ago" 4 "5+ years"
 
-local fiveybefore = patient_index_date-5*365.25
-local oneybefore = patient_index_date-365.25
+gen fiveybefore = patient_index_date-5*365.25
+gen oneybefore = patient_index_date-365.25
 
 * Haematological malignancies
-gen     cancer_haem_cat = 4 if inrange(haem_cancer_date, d(1/1/1900), `fiveybefore')
-replace cancer_haem_cat = 3 if inrange(haem_cancer_date, `fiveybefore', `oneybefore')
-replace cancer_haem_cat = 2 if inrange(haem_cancer_date, `oneybefore', patient_index_date)
+gen     cancer_haem_cat = 4 if inrange(haem_cancer_date, d(1/1/1900), fiveybefore)
+replace cancer_haem_cat = 3 if inrange(haem_cancer_date, fiveybefore, oneybefore)
+replace cancer_haem_cat = 2 if inrange(haem_cancer_date, oneybefore, patient_index_date)
 recode  cancer_haem_cat . = 1
 label values cancer_haem_cat cancer
 
 
 * All other cancers
-gen     cancer_exhaem_cat = 4 if inrange(lung_cancer_date,  d(1/1/1900), `fiveybefore') | ///
-								 inrange(other_cancer_date, d(1/1/1900), `fiveybefore') 
-replace cancer_exhaem_cat = 3 if inrange(lung_cancer_date,  `fiveybefore', `oneybefore') | ///
-								 inrange(other_cancer_date, `fiveybefore', `oneybefore') 
-replace cancer_exhaem_cat = 2 if inrange(lung_cancer_date,  `oneybefore', patient_index_date) | ///
-								 inrange(other_cancer_date, `oneybefore', patient_index_date)
+gen     cancer_exhaem_cat = 4 if inrange(lung_cancer_date,  d(1/1/1900), fiveybefore) | ///
+								 inrange(other_cancer_date, d(1/1/1900), fiveybefore) 
+replace cancer_exhaem_cat = 3 if inrange(lung_cancer_date,  fiveybefore, oneybefore) | ///
+								 inrange(other_cancer_date, fiveybefore, oneybefore) 
+replace cancer_exhaem_cat = 2 if inrange(lung_cancer_date,  oneybefore, patient_index_date) | ///
+								 inrange(other_cancer_date, oneybefore, patient_index_date)
 recode  cancer_exhaem_cat . = 1
 label values cancer_exhaem_cat cancer
 
