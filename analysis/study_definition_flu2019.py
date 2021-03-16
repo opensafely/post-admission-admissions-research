@@ -15,9 +15,9 @@ from common_variables import (
 )
 
 ## index dates
-start_date = "2019-01-01"
+start_date = "2017-01-01"
 end_date = "2019-12-31"
-reg_start_date = "2018-01-01"
+#reg_start_date = "2018-01-01"
 
 # Specifiy study defeinition
 
@@ -36,7 +36,7 @@ study = StudyDefinition(
         AND discharged1_date
         """,
         registered=patients.registered_with_one_practice_between(
-            reg_start_date, start_date
+            "patient_index_date - 1 year", "patient_index_date"
         ),
     ),
     
