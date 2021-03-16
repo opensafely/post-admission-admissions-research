@@ -161,8 +161,8 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_pneum2019.log
  
-  create_flu2019:
-    run: stata-mp:latest analysis/cr_flu2019.do 
+  create_flu2017_19:
+    run: stata-mp:latest analysis/cr_flu2017_19.do 
     needs: [generate_study_pop_flu2019]
     outputs:
       highly_sensitive:
