@@ -12,7 +12,7 @@ syntax, variable(varname) condition(string)
 	*put the varname and condition to left so that alignment can be checked vs shell
 	file write tablecontent ("`variable'") _tab ("`condition'") _tab
 	
-	foreach column of any e u2020 u2019 p {
+	foreach column of any e u2020 u2019 f {
 	    
 	if "`column'"=="e" {
 	    local exposed = 1
@@ -21,7 +21,7 @@ syntax, variable(varname) condition(string)
 	if "`column'"!="e" local exposed = 0
 	if "`column'"=="u2020" local analysis "analysis2020"
 	if "`column'"=="u2019" local analysis "analysis2019"
-	if "`column'"=="p" local analysis "analysispneum"
+	if "`column'"=="f" local analysis "analysisflu"
 	
 	safecount if exposed==`exposed' & `analysis'==1
 	local denom_exposed_`exposed'=r(N)
@@ -30,7 +30,7 @@ syntax, variable(varname) condition(string)
 	local cellcount = r(N)
 	local colpct = 100*(r(N)/`denom_exposed_`exposed'')
 	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
-	if "`column'"=="p" file write tablecontent _n
+	if "`column'"=="f" file write tablecontent _n
 		else file write tablecontent _tab
 	}
 	
