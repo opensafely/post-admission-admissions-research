@@ -39,6 +39,8 @@ replace exposed=0 if analysispneum==1 & exposed!=1
 append using ./analysis/cr_flu2017_19
 gen analysisflu = exposed==1|(analysis2019!=1&analysis2020!=1&analysispneum!=1)
 replace exposed=0 if analysisflu==1 & exposed!=1
+*only keep where flu primary reason for hospitalisation
+drop if analysisflu==1 & exposed==0 & !(admitted1_reason=="J090"|admitted1_reason=="J100"|admitted1_reason=="J101"|admitted1_reason=="J108"|admitted1_reason=="J110"|admitted1_reason=="J111"|admitted1_reason=="J118")
 
 *FLU PNEUM PROCESSING
 foreach flupneum of any pneum flu{
@@ -71,6 +73,7 @@ foreach flupneum of any pneum flu{
 
 	
 for num 2019 2020: replace analysisX=0 if (analysispneum==1|analysisflu==1) & exposed!=1
+replace analysispneum=0 if analysisflu==1 & exposed!=1
 
 gsort setid -exposed analysis2019
 
@@ -102,37 +105,47 @@ replace entrydate = mdy(monthentry,1,2020) if exposed==0 & analysis2020==1
 replace entrydate = mdy(monthentry,1,2019) if exposed==0 & analysis2019==1
 replace entrydate = pneumdischargedate if exposed==0 & analysispneum==1
 replace entrydate = fludischargedate if exposed==0 & analysisflu==1
+drop monthentry
 
 format %d entrydate
 format %d readmission_date
 
+gen monthentry = month(entrydate)
+
+qui summ entrydate if analysis2020==1
+gen latestfupflu = fludischargedate + censordate2020 - r(min) if analysisflu==1 & exposed==0
+
 assert readmission_date>=entrydate if readmission_date<.
 assert admitted_date>=entrydate if admitted_date<.
 gen exitdate = readmission_date if exposed==1 & readmission_date<=censordate2020
-replace exitdate = readmission_date if exposed==0 & (analysispneum==1|analysisflu==1) & readmission_date<=censordate2019
+replace exitdate = readmission_date if exposed==0 & (analysispneum==1|analysisflu==1) & readmission_date<=censordate2019 & readmission_date<=latestfupflu
 replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate2020 & analysis2020==1
 replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate2019 & analysis2019==1
 format %d exitdate
 gen readmission = (exitdate<.)
 
 replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2020 & (exposed==1|analysis2020==1)
-replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2019 & exposed==0 & (analysis2019==1|analysispneum==1|analysisflu==1)
+replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2019 & exposed==0 & (analysis2019==1|analysispneum==1)
+replace exitdate = died_date_1ocare if died_date_1ocare<. & died_date_1ocare<exitdate & died_date_1ocare<=censordate2019 & exposed==0 & analysisflu==1 & died_date_1ocare<=latestfupflu
  
-assert died_date_ons<. if readmission ==0 & exitdate<.
+assert died_date_ons<. if readmission ==0 & exitdate<. & !(analysisflu==1&exposed==0)
+assert died_date_1ocare<. if readmission ==0 & exitdate<. & (analysisflu==1&exposed==0)
 replace readmission = 3 if readmission ==0 & exitdate<.
 
 replace exitdate = censordate2020 if exitdate==. & (exposed==1|analysis2020==1)
-replace exitdate = censordate2019 if exitdate==. & exposed==0 & (analysis2019==1|analysispneum==1|analysisflu==1)
+replace exitdate = censordate2019 if exitdate==. & exposed==0 & (analysis2019==1|analysispneum==1)
+replace exitdate = min(censordate2019, latestfupflu) if exitdate==. & exposed==0 & (analysisflu==1)
 
 replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") & exposed==1
-replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_reason!="U072")&exposed==0
+replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") & exposed==0 & (analysispneum==1|analysisflu==1)
+replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_reason!="U072") & exposed==0 & (analysis2020==1|analysis2019==1)
 
 replace exitdate = exitdate+0.5 if exitdate==entrydate
 
 **CLASSIFY READMISSIONS
-gen icd10_3 = substr(readmission_reason,1,3) if (exposed==1|analysispn==1) & (readmission==1|readmission==2)
+gen icd10_3 = substr(readmission_reason,1,3) if (exposed==1|analysispn==1|analysisflu==1) & (readmission==1|readmission==2)
 replace icd10_3 = substr(admitted_reason,1,3) if (exposed==0 & (analysis2019==1|analysis2020==1)) & (readmission==1|readmission==2)
-replace icd10_3 = substr(died_cause_ons,1,3) if readmission==3
+*replace icd10_3 = substr(died_cause_ons,1,3) if readmission==3
 
 
 gen readm_died_reason_broad = 1 if substr(icd10_3,1,1)=="I"
@@ -155,19 +168,20 @@ replace readm_died_reason_broad = 10 if icd10_3=="U07" & (readmission_reason=="U
 replace readm_died_reason_broad = 11 if substr(icd10_3,1,1)=="A"
 replace readm_died_reason_broad = 12 if substr(icd10_3,1,1)=="M"
 replace readm_died_reason_broad = 13 if readm_died_reason_broad==. & icd!=""
+replace readm_died_reason_broad = 14 if readmission==3
 replace readm_died_reason_broad = 0 if readmission==0
 
 label define readm_died_reason_broadlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
  3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
  6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
- 9 "External causes" 10 "COVID" 11 "Other infections" 12 "Musculoskeletal" 13 "Other", modify
+ 9 "External causes" 10 "COVID" 11 "Other infections" 12 "Musculoskeletal" 13 "Other" 14 "Any cause death", modify
  label values readm_died_reason_broad readm_died_reason_broadlab
 
 gen readm_died_reason_specific = readm_died_reason_broad
 label define readm_died_reason_specificlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
  3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
  6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
- 9 "External causes" 10 "COVID" 11 "Infections" 12 "Musculoskeletal" 13 "Other", modify
+ 9 "External causes" 10 "COVID" 11 "Infections" 12 "Musculoskeletal" 13 "Other" 14 "Any cause death", modify
  label values readm_died_reason_specific readm_died_reason_specificlab
 
 cap prog drop icdgroup
@@ -184,7 +198,7 @@ noi di "`endnum'"
 replace readm_died_reason_specific = 100*readm_died_reason_specific + `startnum' if substr(icd10_3,1,1)=="`keyletter'" & real(substr(icd10_3,2,2))>=`startnum'&real(substr(icd10_3,2,2))<=`endnum'
 sum readm_died_reason_specific if substr(icd10_3,1,1)=="`keyletter'" & real(substr(icd10_3,2,2))>=`startnum'&real(substr(icd10_3,2,2))<=`endnum'
 local newnum = r(mean)
-label define readm_died_reason_specificlab `newnum' "`name'", modify 
+if `newnum'!=. label define readm_died_reason_specificlab `newnum' "`name'", modify 
 end
 
 *Circulatory diseases
@@ -231,7 +245,7 @@ replace readm_died_reason_specific = 100*readm_died_reason_specific if readm_die
 label define readm_died_reason_specificlab 100 "Other circulatory" 200 "Other cancers" ///
  300 "Other respiratory" 400 "Other digestive" 500 "Other mental health" ///
  600 "Nervous system" 700 "Genitourinary" 800 "Endocrine, nutritional and metabolic" ///
- 900 "External causes" 1000 "COVID" 1100 "Other infections" 1200 "Musculoskeletal" 1300 "Other", modify
+ 900 "External causes" 1000 "COVID" 1100 "Other infections" 1200 "Musculoskeletal" 1300 "Other" 1400 "Any cause death", modify
 
 label define exposedlab 0 "Control" 1 "Exposed (prior COVID hospitalisation)"
 label values exposed exposedlab

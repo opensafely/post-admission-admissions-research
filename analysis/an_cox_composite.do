@@ -26,6 +26,13 @@ stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd if analysispneum==1
 stcox exposed age1 age2 age3 male i.stp  i.ethnicity i.imd i.obese4cat i.smoke_nomiss if analysispneum==1
 stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if analysispneum==1
 
+
+*vs 2017_19-flu controls
+stcox exposed age1 age2 age3 male i.stp i.monthentry if analysisflu==1
+stcox exposed age1 age2 age3 male i.stp i.monthentry i.ethnicity i.imd if analysisflu==1
+stcox exposed age1 age2 age3 male i.stp i.monthentry  i.ethnicity i.imd i.obese4cat i.smoke_nomiss if analysisflu==1
+stcox exposed age1 age2 age3 male i.stp i.monthentry i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if analysisflu==1
+
 *Circulatory readmissions only:
 preserve 
 keep if analysispn==1
