@@ -36,7 +36,7 @@ study = StudyDefinition(
         AND discharged1_date
         """,
         registered=patients.registered_with_one_practice_between(
-            reg_start_date, start_date
+            "patient_index_date - 1 year", "patient_index_date"
         ),
     ),
     
