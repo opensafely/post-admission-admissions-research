@@ -31,37 +31,46 @@ gen byte analysis2019 = exposed==1 | data2020==0
 
 drop data2020
 
+*PNEUMONIA
 append using ./analysis/cr_pneum2019
 gen analysispneum = exposed==1|(analysis2019!=1&analysis2020!=1)
 replace exposed=0 if analysispneum==1 & exposed!=1
 
-*Drop pneumonias before 2019
-drop if analysispneum==1 & exposed==0 & discharged1_date>d(31/12/2019)
-*tie together pneumonia admissions that are within the same day of a previous discharge
-gen pneumdischargedate = discharged1_date if  analysispneum==1 & exposed==0
-replace pneumdischargedate = discharged2_date if discharged1_date==admitted2_date &  analysispneum==1 & exposed==0
-replace pneumdischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysispneum==1 & exposed==0
-replace pneumdischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysispneum==1 & exposed==0
-format %d pneumdischargedate
-*drop if died date on/before pneum discharge date
-cou if died_date_ons==pneumdischargedate &  analysispneum==1 & exposed==0
-cou if died_date_ons<pneumdischargedate &  analysispneum==1 & exposed==0
-drop if died_date_ons<=pneumdischargedate &  analysispneum==1 & exposed==0
-*drop if pneumonia date was after the censoring date
-drop if analysispneum==1 & exposed==0 & pneumdischargedate>censordate2019
-*drop if pneumonia admission/discharge is the same day
-drop if admitted1_date==discharged1_date & analysispneum==1 & exposed==0
-*get readmission date for pneumonia patients
-replace readmission_date = admitted2_date if  analysispneum==1 & exposed==0
-replace readmission_reason = admitted2_reason if    analysispneum==1 & exposed==0
-replace readmission_date = admitted3_date if discharged1_date==admitted2_date &  analysispneum==1 & exposed==0
-replace readmission_reason = admitted3_reason if discharged1_date==admitted2_date &  analysispneum==1 & exposed==0
-replace readmission_date = admitted4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysispneum==1 & exposed==0
-replace readmission_reason = admitted4_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysispneum==1 & exposed==0
-replace readmission_date = admitted5_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysispneum==1 & exposed==0
-replace readmission_reason = admitted5_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysispneum==1 & exposed==0
+append using ./analysis/cr_flu2017_19
+gen analysisflu = exposed==1|(analysis2019!=1&analysis2020!=1&analysispneum!=1)
+replace exposed=0 if analysisflu==1 & exposed!=1
+
+*FLU PNEUM PROCESSING
+foreach flupneum of any pneum flu{
+	*Drop hosps before 2019
+	drop if analysis`flupneum'==1 & exposed==0 & discharged1_date>d(31/12/2019)
+	*tie together admissions that are within the same day of a previous discharge
+	gen `flupneum'dischargedate = discharged1_date if  analysis`flupneum'==1 & exposed==0
+	replace `flupneum'dischargedate = discharged2_date if discharged1_date==admitted2_date &  analysis`flupneum'==1 & exposed==0
+	replace `flupneum'dischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysis`flupneum'==1 & exposed==0
+	replace `flupneum'dischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysis`flupneum'==1 & exposed==0
+	format %d `flupneum'dischargedate
+	*drop if died date on/before discharge date
+	cou if died_date_ons==`flupneum'dischargedate &  analysis`flupneum'==1 & exposed==0
+	cou if died_date_ons<`flupneum'dischargedate &  analysis`flupneum'==1 & exposed==0
+	drop if died_date_ons<=`flupneum'dischargedate &  analysis`flupneum'==1 & exposed==0
+	*drop if disch date was after the censoring date
+	drop if analysis`flupneum'==1 & exposed==0 & `flupneum'dischargedate>censordate2019
+	*drop if admission/discharge is the same day
+	drop if admitted1_date==discharged1_date & analysis`flupneum'==1 & exposed==0
+	*get readmission date 
+	replace readmission_date = admitted2_date if  analysis`flupneum'==1 & exposed==0
+	replace readmission_reason = admitted2_reason if    analysis`flupneum'==1 & exposed==0
+	replace readmission_date = admitted3_date if discharged1_date==admitted2_date &  analysis`flupneum'==1 & exposed==0
+	replace readmission_reason = admitted3_reason if discharged1_date==admitted2_date &  analysis`flupneum'==1 & exposed==0
+	replace readmission_date = admitted4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysis`flupneum'==1 & exposed==0
+	replace readmission_reason = admitted4_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date &  analysis`flupneum'==1 & exposed==0
+	replace readmission_date = admitted5_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysis`flupneum'==1 & exposed==0
+	replace readmission_reason = admitted5_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date &  analysis`flupneum'==1 & exposed==0
+}
+
 	
-for num 2019 2020: replace analysisX=0 if analysispneum==1 & exposed!=1
+for num 2019 2020: replace analysisX=0 if (analysispneum==1|analysisflu==1) & exposed!=1
 
 gsort setid -exposed analysis2019
 
@@ -72,7 +81,7 @@ cou if todrop==1
 by setid: drop if todrop[1]==1
 
 drop todrop
-foreach analysistype of any 2019 2020 pneum{
+foreach analysistype of any 2019 2020 pneum flu {
 safetab ex if analysis`analysistype'==1
 }
 
@@ -92,6 +101,7 @@ gen entrydate  = coviddischargedate if exposed==1
 replace entrydate = mdy(monthentry,1,2020) if exposed==0 & analysis2020==1
 replace entrydate = mdy(monthentry,1,2019) if exposed==0 & analysis2019==1
 replace entrydate = pneumdischargedate if exposed==0 & analysispneum==1
+replace entrydate = fludischargedate if exposed==0 & analysisflu==1
 
 format %d entrydate
 format %d readmission_date
@@ -99,20 +109,20 @@ format %d readmission_date
 assert readmission_date>=entrydate if readmission_date<.
 assert admitted_date>=entrydate if admitted_date<.
 gen exitdate = readmission_date if exposed==1 & readmission_date<=censordate2020
-replace exitdate = readmission_date if exposed==0 & analysispneum==1 & readmission_date<=censordate2019
+replace exitdate = readmission_date if exposed==0 & (analysispneum==1|analysisflu==1) & readmission_date<=censordate2019
 replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate2020 & analysis2020==1
 replace exitdate = admitted_date if exposed==0 & admitted_date<=censordate2019 & analysis2019==1
 format %d exitdate
 gen readmission = (exitdate<.)
 
 replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2020 & (exposed==1|analysis2020==1)
-replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2019 & exposed==0 & (analysis2019==1|analysispneum==1)
+replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate2019 & exposed==0 & (analysis2019==1|analysispneum==1|analysisflu==1)
  
 assert died_date_ons<. if readmission ==0 & exitdate<.
 replace readmission = 3 if readmission ==0 & exitdate<.
 
 replace exitdate = censordate2020 if exitdate==. & (exposed==1|analysis2020==1)
-replace exitdate = censordate2019 if exitdate==. & exposed==0 & (analysis2019==1|analysispneum==1)
+replace exitdate = censordate2019 if exitdate==. & exposed==0 & (analysis2019==1|analysispneum==1|analysisflu==1)
 
 replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") & exposed==1
 replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_reason!="U072")&exposed==0
@@ -230,7 +240,9 @@ gen exposed_allcontrols = exposed
 replace exposed_allcontrols = 2 if exposed==0 & analysis2020==1
 replace exposed_allcontrols = 3 if exposed==0 & analysis2019==1
 replace exposed_allcontrols = 4 if exposed==0 & analysispneum==1
-label define exposed_allcontrolslab 1 "Exposed" 2 "2020 general pop" 3 "2019 general pop" 4 "2019 hospitalised pneumonia"
+replace exposed_allcontrols = 5 if exposed==0 & analysisflu==1
+
+label define exposed_allcontrolslab 1 "Exposed" 2 "2020 general pop" 3 "2019 general pop" 4 "2019 hospitalised pneumonia" 5 "2017_19 hospitalised flu"
 label values exposed_allcontrols exposed_allcontrolslab
 
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
