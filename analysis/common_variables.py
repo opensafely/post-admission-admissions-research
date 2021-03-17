@@ -55,24 +55,6 @@ demographic_variables = dict(
         },
     ),
      
-    # practice_id=patients.registered_practice_as_of(
-    #     "patient_index_date",
-    #     returning="pseudo_id",
-    #     return_expectations={
-    #         "int": {"distribution": "normal", "mean": 1000, "stddev": 100},
-    #         "incidence": 1,
-    #     },
-    # ),
-    # 
-    # # msoa=patients.registered_practice_as_of(
-    # #     "patient_index_date",
-    # #     returning="msoa_code",
-    # #     return_expectations={
-    # #         "incidence": 0.99,
-    # #         "category": {"ratios": {"MSOA1": 0.5, "MSOA2": 0.5}},
-    # #     },
-    # # ),
-    # 
      stp=patients.registered_practice_as_of(
          "patient_index_date",
          returning="stp_code",
@@ -396,112 +378,167 @@ clinical_variables = dict(
         return_expectations={"incidence": 0.05},
     ),
     
-    
-    # misc
-    
-        
-    # previous outcomes
-    
-#    previous_dvt=patients.categorised_as(
-#        {
-#            "0": "DEFAULT",
-#            "1": """
-#                        (historic_dvt_gp OR historic_dvt_hospital) 
-#                AND NOT (recent_dvt_gp OR recent_dvt_hospital)
-#                """,
-#            "2": "recent_dvt_gp OR recent_dvt_hospital",
-#        },
-#        historic_dvt_gp=patients.with_these_clinical_events(
-#            filter_codes_by_category(vte_gp_codes, include=["dvt"]),
-#            on_or_before="patient_index_date - 3 months",
-#        ),
-#        recent_dvt_gp=patients.with_these_clinical_events(
-#            filter_codes_by_category(vte_gp_codes, include=["dvt"]),
-#            between=["patient_index_date - 3 months", "patient_index_date"],
-#        ),
-#        historic_dvt_hospital=patients.admitted_to_hospital(
-#            with_these_diagnoses=filter_codes_by_category(
-#                vte_hospital_codes, include=["dvt"]
-#            ),
-#            on_or_before="patient_index_date - 3 months",
-#        ),
-#        recent_dvt_hospital=patients.admitted_to_hospital(
-#            with_these_diagnoses=filter_codes_by_category(
-#                vte_hospital_codes, include=["dvt"]
-#            ),
-#            between=["patient_index_date - 3 months", "patient_index_date"],
-#        ),
-#        
-#        return_expectations={
-#            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
-#        },
-#    ),
-#    
-#    previous_pe=patients.categorised_as(
-#        {
-#            "0": "DEFAULT",
-#            "1": """
-#                        (historic_pe_gp OR historic_pe_hospital) 
-#                AND NOT (recent_pe_gp OR recent_pe_hospital)
-#                """,
-#            "2": "recent_pe_gp OR recent_pe_hospital",
-#        },
-#        historic_pe_gp=patients.with_these_clinical_events(
-#            filter_codes_by_category(vte_gp_codes, include=["pe"]),
-#            on_or_before="patient_index_date - 3 months",
-#        ),
-#        recent_pe_gp=patients.with_these_clinical_events(
-#            filter_codes_by_category(vte_gp_codes, include=["pe"]),
-#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-#        ),
-#        historic_pe_hospital=patients.admitted_to_hospital(
-#            with_these_diagnoses=filter_codes_by_category(
-#                vte_hospital_codes, include=["pe"]
-#            ),
-#            on_or_after="patient_index_date - 3 months",
-#        ),
-#        recent_pe_hospital=patients.admitted_to_hospital(
-#            with_these_diagnoses=filter_codes_by_category(
-#                vte_hospital_codes, include=["pe"]
-#            ),
-#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-#        ),
-#        
-#        return_expectations={
-#            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
-#        },
-#    ),
-#    
-#    previous_stroke=patients.categorised_as(
-#        {
-#            "0": "DEFAULT",
-#            "1": """
-#                        (historic_pe_gp OR historic_pe_hospital) 
-#                AND NOT (recent_pe_gp OR recent_pe_hospital)
-#                """,
-#            "2": "recent_pe_gp OR recent_pe_hospital",
-#        },
-#        historic_stroke_gp=patients.with_these_clinical_events(
-#            stroke_gp_codes,
-#            on_or_after="patient_index_date - 3 months",
-#        ),
-#        recent_stroke_gp=patients.with_these_clinical_events(
-#            stroke_gp_codes,
-#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-#            return_expectations={"incidence": 0.05},
-#        ),
-#        historic_stroke_hospital=patients.admitted_to_hospital(
-#            with_these_diagnoses=stroke_hospital_codes,
-#            on_or_after="patient_index_date - 3 months",
-#        ),
-#        recent_stroke_hospital=patients.admitted_to_hospital(
-#            with_these_diagnoses=stroke_hospital_codes,
-#            between=["patient_index_date - 3 months", "patient_index_date - 1 day"],
-#        ),
-#        
-#        return_expectations={
-#            "category": {"ratios": {"0": 0.7, "1": 0.1, "2": 0.2}}
-#        },
-#    ),
-    
 )
+
+postadm_adm = dict(
+    
+    admitted2_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged2_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted2_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted3_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged2_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged3_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged2_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted3_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged2_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted4_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged3_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged4_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged3_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted4_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged3_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted5_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="discharged4_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    discharged5_date=patients.admitted_to_hospital(
+        returning="date_discharged",
+        on_or_after="discharged4_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-10-01", "latest": "2020-11-30"},
+            "incidence": 0.02,
+        },
+    ),
+
+    admitted5_reason = patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        on_or_after="discharged4_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
+            "incidence": 0.1,
+        },
+    ),  
+                
+)
+
+
+death_outcomes = dict(
+# Deaths info
+    died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
+        covid_codelist,
+        match_only_underlying_cause=False,
+        return_expectations={"date": {"earliest": "2020-03-01"}},
+    ),
+
+    died_date_ons=patients.died_from_any_cause(
+        returning="date_of_death",
+        include_month=True,
+        include_day=True,
+        return_expectations={"date": {"earliest": "2020-03-01"}},
+    ),
+
+    died_cause_ons=patients.died_from_any_cause(
+        returning="underlying_cause_of_death",
+        return_expectations={"category": {"ratios": {"U071":0.2, "I21":0.2, "C34":0.15, "C83":0.05 , "J09":0.05 , "J45":0.1 ,"G30":0.2, "A01":0.05}},},
+    ),     
+
+    died_date_1ocare=patients.with_death_recorded_in_primary_care(
+        returning="date_of_death",
+        date_format="YYYY-MM-DD",
+    ),              
+)
+
+
+
+            

@@ -23,66 +23,6 @@ actions:
       highly_sensitive:
         cohort: output/input_flu2017_19.csv
         
-  generate_pool02:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool02
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool02.csv        
-
-  generate_pool03:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool03
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool03.csv        
-
-  generate_pool04:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool04
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool04.csv        
-
-  generate_pool05:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool05
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool05.csv        
-
-  generate_pool06:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool06
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool06.csv        
-
-  generate_pool07:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool07
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool07.csv        
-
-  generate_pool08:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool08
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool08.csv        
-           
-  generate_pool09:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool09
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool09.csv        
-
-  generate_pool10:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool10
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool10.csv        
-      
-  generate_pool11:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_pool11
-    outputs:
-      highly_sensitive:
-        cohort: output/input_pool11.csv            
-               
   generate_2019pool02:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2019pool02
     outputs:
@@ -170,95 +110,7 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_flu2017_19.log
 
-  create_pool02:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 02
-    needs: [generate_pool02]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_02.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_02.log
 
-  create_pool03:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 03
-    needs: [generate_pool03]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_03.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_03.log
-
-  create_pool04:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 04
-    needs: [generate_pool04]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_04.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_04.log
-
-  create_pool05:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 05
-    needs: [generate_pool05]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_05.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_05.log
-
-  create_pool06:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 06
-    needs: [generate_pool06]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_06.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_06.log
-
-  create_pool07:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 07
-    needs: [generate_pool07]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_07.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_07.log
-
-  create_pool08:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 08
-    needs: [generate_pool08]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_08.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_08.log
-
-  create_pool09:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 09
-    needs: [generate_pool09]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_09.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_09.log
-
-  create_pool10:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 10
-    needs: [generate_pool10]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_10.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_10.log
-
-  create_pool11:
-    run: stata-mp:latest analysis/cr_create_pool_data.do 11
-    needs: [generate_pool11]
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_create_pool_data_11.dta
-      moderately_sensitive:
-        log: analysis/output/cr_create_pool_data_11.log
 
   create_2019pool02:
     run: stata-mp:latest analysis/cr_create_2019pool_data.do 02
@@ -350,25 +202,6 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_create_2019pool_data_11.log
 
-  getmatches:
-    run: stata-mp:latest analysis/cr_getmatches.do
-    needs:
-      - create_dataset
-      - create_pool02
-      - create_pool03
-      - create_pool04
-      - create_pool05
-      - create_pool06
-      - create_pool07
-      - create_pool08
-      - create_pool09
-      - create_pool10
-      - create_pool11
-    outputs:
-      highly_sensitive:
-        cohort: analysis/cr_getmatches.dta
-      moderately_sensitive:
-        log: analysis/output/cr_getmatches.log
 
   getmatches2019:
     run: stata-mp:latest analysis/cr_getmatches2019.do
