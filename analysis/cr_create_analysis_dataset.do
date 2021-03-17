@@ -31,6 +31,9 @@ if "`cpf'"=="COVID" import delimited ./output/input_covdischarged.csv
 else if "`cpf'"=="PNEUM" import delimited ./output/input_pneum2019.csv
 else if "`cpf'"=="FLU" import delimited ./output/input_flu2017_19.csv
 
+if "`cpf'"=="FLU" local diedsource "1ocare"
+else local diedsource "ons"
+
 di "STARTING COUNT FROM IMPORT:"
 cou
 
@@ -83,6 +86,9 @@ drop if imd>=.
 *  Convert strings to dates  *
 ******************************
 
+capture confirm var died_date_1ocare
+if _rc==0 local died_date_1ocare "died_date_1ocare"
+
 * Process variables with exact dates (admissions, deaths)
 foreach var of varlist 	admitted1_date					///
 						discharged1_date				///
@@ -94,7 +100,8 @@ foreach var of varlist 	admitted1_date					///
 						discharged4_date				///
 						admitted5_date					///
 						discharged5_date				///
-						died_date_ons 					///
+						died_date_ons					///
+						`died_date_1ocare'				///
 						patient_index_date				{
 							confirm string variable `var'
 							rename `var' _tmp
@@ -505,21 +512,24 @@ order patient_id region stp imd age agegroup male ethnicity ethnicity_16 bmi bmi
 
 *FURTHER EXCLUSIONS AND DATE PROCESSING:
 *drop if initial admission/discharge are on the same day
-drop if admitted1_date==discharged1_date & analysis`flupneum'==1 & exposed==0
+drop if admitted1_date==discharged1_date
 
 *tie together admissions that are within 1 week of previous discharge
 gen finaldischargedate = discharged1_date
-replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1date+7)
-replace finaldischargedate = discharged3_date if admitted3_date<=(discharged1date+7) & admitted3_date<=(discharged2date+7)
-replace finaldischargedate = discharged4_date if admitted4_date<=(discharged1date+7) & admitted3_date<=(discharged2date+7)
+replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1_date+7)
+replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
 format %d finaldischargedate
+*drop if there is a single day admission in the chain of admissions, as cannot then get f-up:
+drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
+*drop if we get to the 5th readmission with all short gaps
+drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
+
 
 gen entrydate = finaldischargedate+8
 format %d entrydate
 
 *drop if died date on/before discharge date
-if "`cpf'"=="f" local diedsource "1ocare"
-else local diedsource "ons"
 cou if died_date_`diedsource'==finaldischargedate
 cou if died_date_`diedsource'<finaldischargedate
 cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate
@@ -530,11 +540,11 @@ cou
 summ discharged1_date, f d
 scalar censordate = r(max) - 60
 drop if entrydate>=censordate
-if ("`cpf'"=="p"|"`cpf'"=="f") drop if entrydate>d(1/11/2019)
+if ("`cpf'"=="PNEUM"|"`cpf'"=="FLU") drop if entrydate>d(1/11/2019)
 
 *Only keep if COVID/FLU was the primary reason for hospitalisation
-if ("`cpf'"=="c") keep if admitted1_reason=="U071"|admitted1_reason=="U072"
-if ("`cpf'"=="f") keep if (admitted1_reason=="J090"|admitted1_reason=="J100"|admitted1_reason=="J101"|admitted1_reason=="J108"|admitted1_reason=="J110"|admitted1_reason=="J111"|admitted1_reason=="J118")
+if ("`cpf'"=="COVID") keep if admitted1_reason=="U071"|admitted1_reason=="U072"
+if ("`cpf'"=="FLU") keep if (admitted1_reason=="J090"|admitted1_reason=="J100"|admitted1_reason=="J101"|admitted1_reason=="J108"|admitted1_reason=="J110"|admitted1_reason=="J111"|admitted1_reason=="J118")
 
 *get readmission date 
 gen readmission_date = admitted2_date if finaldischargedate==discharged1_date
@@ -547,25 +557,24 @@ replace readmission_date = admitted5_date if finaldischargedate==discharged4_dat
 replace readmission_reason = admitted5_reason if finaldischargedate==discharged4_date
 format %d readmission_date
 
+
 *get exit dates
 summ readmission_date, f d
-if "`cpf'"=="c" scalar censordate = r(max)-60
-else if "`cpf'"=="p" scalar censordate = r(max)-60-365
-else if "`cpf'"=="f" {
+if "`cpf'"=="COVID" scalar censordate = r(max)-60
+else if "`cpf'"=="PNEUM" scalar censordate = r(max)-60-365
+else if "`cpf'"=="FLU" {
 	gen _overallcensor = r(max)-60-365
 	gen _latestfupdate = finaldischargedate + r(max)-60 - d(1/2/2020)
-	gen censordate = min(_overallcensor, latestfupdate)
+	gen censordate = min(_overallcensor, _latestfupdate)
 }
 
 gen exitdate = readmission_date if readmission_date<=censordate
 gen readmission = (exitdate<.)
 
-if "`cpf'"=="f" replace exitdate = died_date_1ocare if died_date_1ocare<. & died_date_1ocare<=exitdate & died_date_ons<=censordate
-else replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<=exitdate & died_date_ons<=censordate
-
+replace exitdate = died_date_`diedsource' if died_date_`diedsource'<. & died_date_`diedsource'<=exitdate & died_date_`diedsource'<=censordate
 format %d exitdate
 
-if "`cpf'"=="f" assert died_date_1ocare<. if readmission ==0 & exitdate<. 
+if "`cpf'"=="FLU" assert died_date_1ocare<. if readmission ==0 & exitdate<. 
 else assert died_date_ons<. if readmission ==0 & exitdate<. 
 replace readmission = 3 if readmission ==0 & exitdate<.
 
@@ -576,14 +585,13 @@ replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmiss
 replace exitdate = exitdate+0.5 if exitdate==entrydate
 
 
-
 ***************
 *  Save data  *
 ***************
 
 sort patient_id
 
-save ./analysis/cr_create_analysis_dataset, replace
+save ./analysis/cr_create_analysis_dataset_`cpf', replace
 
 log close
 

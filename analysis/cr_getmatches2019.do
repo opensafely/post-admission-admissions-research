@@ -5,39 +5,9 @@ log using ./analysis/output/cr_getmatches2019, replace t
 set seed 45092
 
 frames reset
-use ./analysis/cr_create_analysis_dataset, clear
+use ./analysis/cr_create_analysis_dataset_COVID, clear
 
-count
-
-keep if admitted1_reason=="U071"|admitted1_reason=="U072"
-
-summ discharged1_date, f d
-scalar censordate = r(max) - 60
-
-
-*tie together admissions that are within the same day of a previous discharge
-gen coviddischargedate = discharged1_date
-replace coviddischargedate = discharged2_date if discharged1_date==admitted2_date
-replace coviddischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
-replace coviddischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
-
-*drop set if later than 60d before latest sus data
-drop if coviddischargedate >= censordate
-
-cou
-
-*drop if died date on/before discharge date
-cou if died_date_ons==coviddischargedate
-cou if died_date_ons<coviddischargedate
-drop if died_date_ons<=coviddischargedate
-cou
-keep patient_id stp age male coviddischargedate
-
-sort coviddischargedate
-
-gen discharged1_month = month(coviddischargedate)
-
-*frame put if discharged1_month==2, into(tomatch)
+gen discharge_month = month(finaldischargedate)
 
 frame rename default tomatch
 
@@ -78,7 +48,7 @@ forvalues i = 3/11 {
 }
 
 *remove from pool once hospitalised for covid
-merge 1:1 patient_id using ./analysis/cr_create_analysis_dataset, keepusing(admitted1_date admitted1_reason)
+merge 1:1 patient_id using ./analysis/cr_create_analysis_dataset_COVID, keepusing(admitted1_date admitted1_reason)
 
 gen monthfirstineligible = month(admitted1_date)  if (admitted1_reason=="U071"|admitted1_reason=="U072") 
 replace monthfirstineligible = 1 if monthfirst==13
@@ -116,7 +86,7 @@ noi di "Getting match number `matchnum's"
 		scalar TMage = age[`i']
 		local TMstp = stp[`i']
 		local TMmale = male[`i']
-		local TMmonth = discharged1_month[`i']
+		local TMmonth = discharge_month[`i']
 			
 		cap frame drop eligiblematches
 		frame change stp`TMstp'_male`TMmale'
@@ -139,16 +109,12 @@ noi di "Getting match number `matchnum's"
 }
 
 frame change tomatch
-keep patient_id matchedto* discharged1_month
+keep patient_id matchedto* discharge_month
 
 reshape long matchedto_, i(patient_id)
 
 rename patient_id setid
 rename matchedto patient_id
-
-expand 2 if setid!=setid[_n-1], gen(expanded)
-replace patient_id=setid if expanded==1
-drop expanded
 
 replace patient_id = -_n if patient_id==-999
 
@@ -157,37 +123,17 @@ safecount if setid!=setid[_n+1] & patient_id<0
 noi di r(N) " patients could not be matched at all"
 drop if patient_id<0
 
-gen exposed = patient_id==setid
-
 *Get correct variables from month-specific pool
-preserve 
-	keep if exposed==1
-	merge m:1 patient_id using "./analysis/cr_create_analysis_dataset.dta", keep(match master)
-	
-	*tie together admissions that are within the same day of a previous discharge (as above pre-matching - this time also produce readmission date)
-	gen coviddischargedate = discharged1_date
-	replace coviddischargedate = discharged2_date if discharged1_date==admitted2_date
-	replace coviddischargedate = discharged3_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
-	replace coviddischargedate = discharged4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
-
-	gen readmission_date = admitted2_date 
-	gen readmission_reason = admitted2_reason
-	replace readmission_date = admitted3_date if discharged1_date==admitted2_date
-	replace readmission_reason = admitted3_reason if discharged1_date==admitted2_date
-	replace readmission_date = admitted4_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date
-	replace readmission_reason = admitted4_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date
-	replace readmission_date = admitted5_date if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
-	replace readmission_reason = admitted5_reason if discharged1_date==admitted2_date & discharged2_date==admitted3_date & discharged3_date==admitted4_date
-		
-	tempfile alldata 
-	save `alldata', replace
-restore 
-
+tempfile alldata
+preserve
+drop if patient_id<.
+save `alldata', replace
+restore
 forvalues i=2/11{
   	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
     preserve
-	keep if discharged1_month==`i' & exposed==0
+	keep if discharge_month==`i' 
 	merge m:1 patient_id using "./analysis/cr_create_2019pool_data_`ifull'.dta", keep(match master)
 	append using `alldata'
 	save `alldata', replace
@@ -195,7 +141,29 @@ forvalues i=2/11{
 }
 
 use `alldata', clear
-gsort setid -exposed patient_id
+sort setid patient_id
+
+summ discharged_date
+scalar censordate = r(max)-60-365
+
+gen entrydate = mdy(discharge_month,1,2019) 
+drop discharge_month
+format %d entrydate 
+
+gen exitdate = admitted_date if admitted_date<=censordate
+format %d exitdate
+assert exit>=entry
+gen readmission = (exitdate<.)
+
+replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<exitdate & died_date_ons<=censordate 
+replace readmission = 3 if readmission ==0 & exitdate<.
+
+replace exitdate = censordate if exitdate==. 
+
+replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_reason!="U072") 
+
+replace exitdate = exitdate+0.5 if exitdate==entrydate
+
 save ./analysis/cr_getmatches2019, replace 
 
 log close
