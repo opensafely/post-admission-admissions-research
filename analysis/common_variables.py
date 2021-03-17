@@ -84,6 +84,16 @@ demographic_variables = dict(
                  },
              },
          ),
+     
+    dereg_date=patients.date_deregistered_from_all_supported_practices(
+    on_or_after="patient_index_date",
+    date_format="YYYY-MM",
+    return_expectations={
+        "date": {"earliest": "2020-03-01"},
+        "incidence": 0.05
+    },
+    
+)
 
 )
 

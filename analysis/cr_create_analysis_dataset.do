@@ -19,13 +19,17 @@
 *  
 ********************************************************************************
 
+local cpf "`1'"
+
 * Open a log file
 cap log close
-log using ./analysis/output/cr_create_analysis_dataset, replace t
+log using ./analysis/output/cr_create_analysis_dataset_`cpf', replace t
 
 clear
-noi di "import delimited ./output/input_covdischarged.csv"
-import delimited ./output/input_covdischarged.csv
+noi di "importing csv"
+if "`cpf'"=="COVID" import delimited ./output/input_covdischarged.csv
+else if "`cpf'"=="PNEUM" import delimited ./output/input_pneum2019.csv
+else if "`cpf'"=="FLU" import delimited ./output/input_flu2017_19.csv
 
 di "STARTING COUNT FROM IMPORT:"
 cou
@@ -55,6 +59,24 @@ drop if age>105
 assert inlist(sex, "M", "F", "I", "U")
 noi di "DROPPING GENDER NOT M/F:" 
 drop if inlist(sex, "I", "U")
+
+/*  IMD  */
+* Group into 5 groups
+rename imd imd_o
+egen imd = cut(imd_o), group(5) icodes
+replace imd = imd + 1
+replace imd = . if imd_o==-1
+drop imd_o
+
+* Reverse the order (so high is more deprived)
+recode imd 5=1 4=2 3=3 2=4 1=5 .=.
+
+label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" 
+label values imd imd 
+
+noi di "DROPPING IF NO IMD" 
+drop if imd>=.
+
 
 
 ******************************
@@ -296,28 +318,6 @@ gen bphigh = (bpcat==4)
 order bpcat bphigh, after(bp_sys_date)
 
 
-
-
-/*  IMD  */
-
-* Group into 5 groups
-rename imd imd_o
-egen imd = cut(imd_o), group(5) icodes
-replace imd = imd + 1
-replace imd = . if imd_o==-1
-drop imd_o
-
-* Reverse the order (so high is more deprived)
-recode imd 5=1 4=2 3=3 2=4 1=5 .=.
-
-label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" 
-label values imd imd 
-
-noi di "DROPPING IF NO IMD" 
-drop if imd>=.
-
-
-
 ***************************
 *  Grouped comorbidities  *
 ***************************
@@ -502,6 +502,80 @@ label values diabcat diabcat
 drop hba1c_percentage* hba1c_mmol_per_mol* bmi_date_measured creatinine_date bp_sys_date *cancer_date aplastic_anaemia_date temporary_immunodeficiency_date SCr_adj min max egfr egfr_cat ckd hba1c_pct hba1ccat asthma diabetes ethnicity_16_date reduced_kidney_function_cat bphigh dysplenia sickle_cell permanent_immunodeficiency hiv creatinine 
 
 order patient_id region stp imd age agegroup male ethnicity ethnicity_16 bmi bmicat obese4cat smoke_nomiss patient_index_date admitted1_date admitted1_reason discharged1_date admitted2_date admitted2_reason discharged2_date died_date_ons died_cause_ons died_ons_covid_flag
+
+*FURTHER EXCLUSIONS AND DATE PROCESSING:
+*drop if initial admission/discharge are on the same day
+drop if admitted1_date==discharged1_date & analysis`flupneum'==1 & exposed==0
+
+*tie together admissions that are within 1 week of previous discharge
+gen finaldischargedate = discharged1_date
+replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1date+7)
+replace finaldischargedate = discharged3_date if admitted3_date<=(discharged1date+7) & admitted3_date<=(discharged2date+7)
+replace finaldischargedate = discharged4_date if admitted4_date<=(discharged1date+7) & admitted3_date<=(discharged2date+7)
+format %d finaldischargedate
+
+gen entrydate = finaldischargedate+8
+format %d entrydate
+
+*drop if died date on/before discharge date
+if "`cpf'"=="f" local diedsource "1ocare"
+else local diedsource "ons"
+cou if died_date_`diedsource'==finaldischargedate
+cou if died_date_`diedsource'<finaldischargedate
+cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate
+drop if died_date_`diedsource'<=entrydate
+cou
+
+*drop if later than 60d before latest sus data
+summ discharged1_date, f d
+scalar censordate = r(max) - 60
+drop if entrydate>=censordate
+if ("`cpf'"=="p"|"`cpf'"=="f") drop if entrydate>d(1/11/2019)
+
+*Only keep if COVID/FLU was the primary reason for hospitalisation
+if ("`cpf'"=="c") keep if admitted1_reason=="U071"|admitted1_reason=="U072"
+if ("`cpf'"=="f") keep if (admitted1_reason=="J090"|admitted1_reason=="J100"|admitted1_reason=="J101"|admitted1_reason=="J108"|admitted1_reason=="J110"|admitted1_reason=="J111"|admitted1_reason=="J118")
+
+*get readmission date 
+gen readmission_date = admitted2_date if finaldischargedate==discharged1_date
+gen readmission_reason = admitted2_reason if finaldischargedate==discharged1_date
+replace readmission_date = admitted3_date if finaldischargedate==discharged2_date
+replace readmission_reason = admitted3_reason if finaldischargedate==discharged2_date
+replace readmission_date = admitted4_date if finaldischargedate==discharged3_date
+replace readmission_reason = admitted4_reason if finaldischargedate==discharged3_date
+replace readmission_date = admitted5_date if finaldischargedate==discharged4_date
+replace readmission_reason = admitted5_reason if finaldischargedate==discharged4_date
+format %d readmission_date
+
+*get exit dates
+summ readmission_date, f d
+if "`cpf'"=="c" scalar censordate = r(max)-60
+else if "`cpf'"=="p" scalar censordate = r(max)-60-365
+else if "`cpf'"=="f" {
+	gen _overallcensor = r(max)-60-365
+	gen _latestfupdate = finaldischargedate + r(max)-60 - d(1/2/2020)
+	gen censordate = min(_overallcensor, latestfupdate)
+}
+
+gen exitdate = readmission_date if readmission_date<=censordate
+gen readmission = (exitdate<.)
+
+if "`cpf'"=="f" replace exitdate = died_date_1ocare if died_date_1ocare<. & died_date_1ocare<=exitdate & died_date_ons<=censordate
+else replace exitdate = died_date_ons if died_date_ons<. & died_date_ons<=exitdate & died_date_ons<=censordate
+
+format %d exitdate
+
+if "`cpf'"=="f" assert died_date_1ocare<. if readmission ==0 & exitdate<. 
+else assert died_date_ons<. if readmission ==0 & exitdate<. 
+replace readmission = 3 if readmission ==0 & exitdate<.
+
+replace exitdate = censordate if exitdate==. 
+
+replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") 
+
+replace exitdate = exitdate+0.5 if exitdate==entrydate
+
+
 
 ***************
 *  Save data  *
