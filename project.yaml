@@ -83,32 +83,32 @@ actions:
       highly_sensitive:
         cohort: output/input_2019pool11.csv        
                    
-  create_dataset:
-    run: stata-mp:latest analysis/cr_create_analysis_dataset.do 
+  create_covid:
+    run: stata-mp:latest analysis/cr_create_analysis_dataset.do COVID
     needs: [generate_study_pop_covdischarged]
     outputs:
       highly_sensitive:
-        cohort: analysis/cr_create_analysis_dataset.dta
+        cohort: analysis/cr_create_analysis_dataset_COVID.dta
       moderately_sensitive:
-        log: analysis/output/cr_create_analysis_dataset.log
+        log: analysis/output/cr_create_analysis_dataset_COVID.log
 
   create_pneum2019:
-    run: stata-mp:latest analysis/cr_pneum2019.do 
+    run: stata-mp:latest analysis/cr_create_analysis_dataset.do PNEUM 
     needs: [generate_study_pop_pneum2019]
     outputs:
       highly_sensitive:
-        cohort: analysis/cr_pneum2019.dta
+        cohort: analysis/cr_create_analysis_dataset_PNEUM.dta
       moderately_sensitive:
-        log: analysis/output/cr_pneum2019.log
+        log: analysis/output/cr_create_analysis_dataset_PNEUM.log
  
   create_flu2017_19:
-    run: stata-mp:latest analysis/cr_flu2017_19.do 
+    run: stata-mp:latest analysis/cr_create_analysis_dataset.do FLU 
     needs: [generate_study_pop_flu2017_19]
     outputs:
       highly_sensitive:
-        cohort: analysis/cr_flu2017_19.dta
+        cohort: analysis/cr_create_analysis_dataset_FLU.dta
       moderately_sensitive:
-        log: analysis/output/cr_flu2017_19.log
+        log: analysis/output/cr_create_analysis_dataset_FLU.log
 
 
 
@@ -206,7 +206,7 @@ actions:
   getmatches2019:
     run: stata-mp:latest analysis/cr_getmatches2019.do
     needs:
-      - create_dataset
+      - create_covid
       - create_2019pool02
       - create_2019pool03
       - create_2019pool04
