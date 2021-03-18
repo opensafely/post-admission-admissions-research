@@ -241,11 +241,11 @@ actions:
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        - analysis/output/cr_append_process_data.log
-        - analysis/output/an_desctable.txt
-        - analysis/output/an_cumulativeincidence*.svg
-        - analysis/output/an_cox.log
-        - analysis/output/models/an_cox*.ster
+        logs: analysis/output/cr_append_process_data.log
+        logs: analysis/output/an_cox.log
+        tables: analysis/output/an_desctable.txt
+        figures: analysis/output/an_cumulativeincidence*.svg
+        models: analysis/output/models/an_cox*.ster
 
   run_model:
     run: stata-mp:latest analysis/model.do
