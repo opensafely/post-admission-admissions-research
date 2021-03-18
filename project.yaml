@@ -223,6 +223,20 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_getmatches2019.log
 
+  appenddata:
+    run: stata-mp:latest analysis/cr_append_process_data.do
+    needs:
+      - create_covid
+      - create_pneum2019
+      - create_flu2017_19
+    outputs:
+      highly_sensitive:
+        cohort: analysis/cr_append_process_data.dta
+      moderately_sensitive:
+        log: analysis/output/cr_append_process_data.log
+
+
+
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]
