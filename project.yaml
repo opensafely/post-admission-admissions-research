@@ -241,8 +241,7 @@ actions:
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/cr_append_process_data.log
-        logs: analysis/output/an_cox.log
+        logs: analysis/output/cr_append_process_data.log analysis/output/an_cox.log
         tables: analysis/output/an_desctable.txt
         figures: analysis/output/an_cumulativeincidence*.svg
         models: analysis/output/models/an_cox*.ster
