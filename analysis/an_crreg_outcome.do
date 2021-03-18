@@ -3,7 +3,7 @@ local outcome `1'
 local comparison `2'
 
 cap log close
-log using analysis/output/an_crreg_outcome`outcome', replace t
+log using analysis/output/an_crreg_outcome`outcome'_c`comparison', replace t
 
 use analysis/cr_append_process_data, clear
 if `comparison'=="flu"{
