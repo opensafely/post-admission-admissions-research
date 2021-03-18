@@ -251,103 +251,103 @@ actions:
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c1.log
+        models: analysis/output/models/an_crreg_outcomeflu_c1*.ster
 
   ancrreg_flu2:
     run: stata-mp:latest analysis/an_crreg_outcome.do 2 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c2.log
+        models: analysis/output/models/an_crreg_outcomeflu_c2*.ster
 
   ancrreg_flu3:
     run: stata-mp:latest analysis/an_crreg_outcome.do 3 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c3.log
+        models: analysis/output/models/an_crreg_outcomeflu_c3*.ster
 
   ancrreg_flu4:
     run: stata-mp:latest analysis/an_crreg_outcome.do 4 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c4.log
+        models: analysis/output/models/an_crreg_outcomeflu_c4*.ster
 
   ancrreg_flu5:
     run: stata-mp:latest analysis/an_crreg_outcome.do 5 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c5.log
+        models: analysis/output/models/an_crreg_outcomeflu_c5*.ster
 
   ancrreg_flu6:
     run: stata-mp:latest analysis/an_crreg_outcome.do 6 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c6.log
+        models: analysis/output/models/an_crreg_outcomeflu_c6*.ster
 
   ancrreg_flu7:
     run: stata-mp:latest analysis/an_crreg_outcome.do 7 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c7.log
+        models: analysis/output/models/an_crreg_outcomeflu_c7*.ster
 
   ancrreg_flu8:
     run: stata-mp:latest analysis/an_crreg_outcome.do 8 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c8.log
+        models: analysis/output/models/an_crreg_outcomeflu_c8*.ster
 
   ancrreg_flu9:
     run: stata-mp:latest analysis/an_crreg_outcome.do 9 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c9.log
+        models: analysis/output/models/an_crreg_outcomeflu_c9*.ster
 
   ancrreg_flu11:
     run: stata-mp:latest analysis/an_crreg_outcome.do 11 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c11.log
+        models: analysis/output/models/an_crreg_outcomeflu_c11*.ster
 
   ancrreg_flu12:
     run: stata-mp:latest analysis/an_crreg_outcome.do 12 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c12.log
+        models: analysis/output/models/an_crreg_outcomeflu_c12*.ster
 
   ancrreg_flu13:
     run: stata-mp:latest analysis/an_crreg_outcome.do 13 flu
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcomeflu_c13.log
+        models: analysis/output/models/an_crreg_outcomeflu_c13*.ster
 
   ancrreg_2019gp1:
     run: stata-mp:latest analysis/an_crreg_outcome.do 1 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
+        logs: analysis/output/an_crreg_outcome2019gp_c1.log
         models: analysis/output/models/an_crreg_outcome*.ster
 
   ancrreg_2019gp2:
@@ -355,88 +355,88 @@ actions:
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c2.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c2*.ster
 
   ancrreg_2019gp3:
     run: stata-mp:latest analysis/an_crreg_outcome.do 3 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c3.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c3*.ster
 
   ancrreg_2019gp4:
     run: stata-mp:latest analysis/an_crreg_outcome.do 4 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c4.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c4*.ster
 
   ancrreg_2019gp5:
     run: stata-mp:latest analysis/an_crreg_outcome.do 5 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c5.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c5*.ster
 
   ancrreg_2019gp6:
     run: stata-mp:latest analysis/an_crreg_outcome.do 6 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c6.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c6*.ster
 
   ancrreg_2019gp7:
     run: stata-mp:latest analysis/an_crreg_outcome.do 7 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c7.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c7*.ster
 
   ancrreg_2019gp8:
     run: stata-mp:latest analysis/an_crreg_outcome.do 8 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c8.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c8*.ster
 
   ancrreg_2019gp9:
     run: stata-mp:latest analysis/an_crreg_outcome.do 9 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c9.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c9*.ster
 
   ancrreg_2019gp11:
     run: stata-mp:latest analysis/an_crreg_outcome.do 11 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c11.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c11*.ster
 
   ancrreg_2019gp12:
     run: stata-mp:latest analysis/an_crreg_outcome.do 12 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c12.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c12*.ster
 
   ancrreg_2019gp13:
     run: stata-mp:latest analysis/an_crreg_outcome.do 13 2019gp
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome*.log
-        models: analysis/output/models/an_crreg_outcome*.ster
+        logs: analysis/output/an_crreg_outcome2019gp_c13.log
+        models: analysis/output/models/an_crreg_outcome2019gp_c13*.ster
 
   run_model:
     run: stata-mp:latest analysis/model.do
