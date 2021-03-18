@@ -229,6 +229,7 @@ actions:
       - create_covid
       - create_pneum2019
       - create_flu2017_19
+      - getmatches2019
     outputs:
       highly_sensitive:
         cohort: analysis/cr_append_process_data.dta
