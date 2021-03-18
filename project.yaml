@@ -236,6 +236,17 @@ actions:
       moderately_sensitive:
         log: analysis/output/cr_append_process_data.log
 
+  andescriptives_composites:
+    run: stata-mp:latest analysis/model_descriptives_composites.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        - analysis/output/cr_append_process_data.log
+        - analysis/output/an_desctable.txt
+        - analysis/output/an_cumulativeincidence*.svg
+        - analysis/output/an_cox.log
+        - analysis/output/models/an_cox*.ster
+
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]
