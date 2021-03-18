@@ -6,12 +6,12 @@ cap log close
 log using analysis/output/an_crreg_outcome`outcome'_c`comparison', replace t
 
 use analysis/cr_append_process_data, clear
-if `comparison'=="flu"{
+if "`comparison'"=="flu"{
 	keep if group==1|group==2
 	local regionvar "region_real"
 	local seasonvar i.monthentry
 }
-if `comparison'=="2019gp" {
+if "`comparison'"=="2019gp" {
 	keep if group==1|group==4
 	local regionvar "stp"
 	local seasonvar
