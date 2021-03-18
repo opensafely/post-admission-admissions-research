@@ -1,0 +1,14 @@
+
+*Code chunk for looking at death outcome
+
+summ died_date_ons, f d
+scalar deathcensor = r(max)-30
+gen deathexit = died_date_ons if died_date_ons<deathcensor
+gen deathindicator = died_date_ons<deathcensor
+replace deathexit = deathcensor if deathexit==.
+gen deathfup = deathexit-entrydate
+summ deathfup if group==1
+local maxfupexposed = r(max)
+replace deathindicator = 0 if deathexit>(entrydate + `maxfupexposed')
+replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexposed')
+stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate)
