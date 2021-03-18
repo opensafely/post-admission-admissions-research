@@ -124,8 +124,11 @@ gen exposed=(group==1)
 label define exposedlab 0 "Control" 1 "Exposed (prior COVID hospitalisation)"
 label values exposed exposedlab
 
-label define grouplab 1 "Exposed" 2 "2017_19 hospitalised flu" 3 "2019 hospitalised pneumonia" 4 "2019 general pop" 
+label define grouplab 1 "Hospitalised COVID-19" 2 "Hospitalised flu 2017_19" 3 "Hospitalised pneumonia 2019" 4 "General pop 2019" 
 label values group grouplab
+
+gen monthentry = month(entrydate)
+encode region, gen(region_real)
 
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
 

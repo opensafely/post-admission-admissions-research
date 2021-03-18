@@ -12,25 +12,17 @@ syntax, variable(varname) condition(string)
 	*put the varname and condition to left so that alignment can be checked vs shell
 	file write tablecontent ("`variable'") _tab ("`condition'") _tab
 	
-	foreach column of any e u2020 u2019 f {
+	foreach group of numlist 1 2 4 {
+		/*1=covid 2=flu 3=gp2019*/
 	    
-	if "`column'"=="e" {
-	    local exposed = 1
-		local analysis "analysis2020"
-	}
-	if "`column'"!="e" local exposed = 0
-	if "`column'"=="u2020" local analysis "analysis2020"
-	if "`column'"=="u2019" local analysis "analysis2019"
-	if "`column'"=="f" local analysis "analysisflu"
-	
-	safecount if exposed==`exposed' & `analysis'==1
-	local denom_exposed_`exposed'=r(N)
+	safecount if group==`group'
+	local denom=r(N)
 		
-	safecount if `variable' `condition' & exposed==`exposed' & `analysis'==1
+	safecount if `variable' `condition' & group==`group'
 	local cellcount = r(N)
-	local colpct = 100*(r(N)/`denom_exposed_`exposed'')
+	local colpct = 100*(r(N)/`denom')
 	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
-	if "`column'"=="f" file write tablecontent _n
+	if `group'==4 file write tablecontent _n
 		else file write tablecontent _tab
 	}
 	
@@ -56,20 +48,18 @@ end
 cap file close tablecontent
 file open tablecontent using ./analysis/output/an_desctable.txt, write text replace
 
-use analysis/cr_stsetmatcheddata_ALLCONTROLS, clear
+use analysis/cr_append_process_data, clear
 
 gen byte cons=1
 tabulatevariable, variable(cons) start(1) end(1) 
 file write tablecontent _n 
 
 tabulatevariable, variable(agegroup) start(1) end(6)  
-qui summ age if exposed==1, d
+qui summ age if group==1, d
 file write tablecontent ("age") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if exposed==0 & analysis2020==1, d
+qui summ age if exposed==2 , d
 file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if exposed==0 & analysis2019==1, d
-file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if exposed==0 & analysispneum==1, d
+qui summ age if exposed==4 , d
 file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
 
 
