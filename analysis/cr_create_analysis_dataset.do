@@ -533,7 +533,7 @@ format %d entrydate
 cou if died_date_`diedsource'==finaldischargedate
 cou if died_date_`diedsource'<finaldischargedate
 cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate
-drop if died_date_`diedsource'<=entrydate
+drop if died_date_`diedsource'<entrydate
 cou
 
 *drop if later than 60d before latest sus data

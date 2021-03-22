@@ -2,6 +2,13 @@ cap log close
 log using analysis/output/cr_append_process_data, replace t
 use analysis/cr_append_process_data, clear
 
+preserve
+keep if group==1|group==4
+bysort setid: gen groupsize = _N
+tab groupsize if group==1
+restore
+
+
 histogram entrydate if (group==1|group==2|group==4), by(group, cols(1)) 
 graph export analysis/output/an_descriptive_EVENTSBYTIME.svg, as(svg) replace
 
