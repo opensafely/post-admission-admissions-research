@@ -355,7 +355,7 @@ actions:
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        logs: analysis/output/an_crreg_outcome2_c2019gplog
+        logs: analysis/output/an_crreg_outcome2_c2019gp.log
         models: analysis/output/models/an_crreg_outcome2_c2019gp*.ster
 
   ancrreg_2019gp3:
