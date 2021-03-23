@@ -57,9 +57,9 @@ file write tablecontent _n
 tabulatevariable, variable(agegroup) start(1) end(6)  
 qui summ age if group==1, d
 file write tablecontent ("age") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if exposed==2 , d
+qui summ age if group==2 , d
 file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if exposed==4 , d
+qui summ age if group==4 , d
 file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
 
 
