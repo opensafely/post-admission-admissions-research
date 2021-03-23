@@ -438,6 +438,37 @@ actions:
         logs: analysis/output/an_crreg_outcome13_c2019gp.log
         models: analysis/output/models/an_crreg_outcome13_c2019gp*.ster
 
+  ancrforests:
+    run: stata-mp:latest analysis/an_processoutregressionmodels_FOREST.do
+    needs:
+      - anccreg_flu1
+      - anccreg_flu2
+      - anccreg_flu3
+      - anccreg_flu4
+      - anccreg_flu5
+      - anccreg_flu6
+      - anccreg_flu7
+      - anccreg_flu8
+      - anccreg_flu9
+      - anccreg_flu11
+      - anccreg_flu12
+      - anccreg_flu3
+      - anccreg_2019gp1
+      - anccreg_2019gp2
+      - anccreg_2019gp3
+      - anccreg_2019gp4
+      - anccreg_2019gp5
+      - anccreg_2019gp6
+      - anccreg_2019gp7
+      - anccreg_2019gp8
+      - anccreg_2019gp9
+      - anccreg_2019gp11
+      - anccreg_2019gp12
+      - anccreg_2019gp13
+    outputs:
+      moderately_sensitive:
+        graphs: analysis/output/an_processout_regressionmodels_FOREST*.svg       
+      
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]
