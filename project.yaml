@@ -242,7 +242,7 @@ actions:
     outputs:
       moderately_sensitive:
         logs: analysis/output/*.log 
-        tables: analysis/output/an_desctable.txt
+        tables: analysis/output/an_desc*.txt
         figures: analysis/output/an_cumulativeincidence*.svg
         models: analysis/output/models/an_cox*.ster
 
