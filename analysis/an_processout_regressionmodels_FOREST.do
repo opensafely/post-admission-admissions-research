@@ -36,7 +36,7 @@ post estimates ("`ctrl'") ("`outcome'") ("full") (r(estimate)) (r(lb)) (r(ub))
 postclose estimates
 
 use `estimates', clear
-wd
+
 *COX GRAPHS OF NON-COMPETING OUTCOMES
 preserve
 	keep if outcome=="COMPOSITE"|outcome=="DEATH"
@@ -104,10 +104,10 @@ preserve
 	replace outcometext = "Other" if outcomereal==13 & adjustment=="matchfac" 
 
 	scatter graphorder shr if adjustment=="matchfac", m(Oh) msize(small) mcol(black) || rcap lci uci graphorder if adjustment=="matchfac", hor lw(thin) lc(black) ///
-	|| scatter graphorder shr if adjustment=="full", m(O) msize(small) mcol(black) || rcap lci uci graphorder if adjustment=="matchfac", hor lw(thin) lc(black) ///
+	|| scatter graphorder shr if adjustment=="full", m(O) msize(small) mcol(black) || rcap lci uci graphorder if adjustment=="full", hor lw(thin) lc(black) ///
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 	|| scatter graphorder modelpos, m(i) mlab(outcometext) mlabsize(vsmall) mlabcol(gs7)  ///
-	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(23)) legend(off) xtitle(Subdistribution HR and 95% CI) ///
+	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(23)) legend(cols(1) order(1 3) label(1 "Adjusted for matching factors") label(3 "Fully adjusted")) xtitle(Subdistribution HR and 95% CI) ///
 	text(75 0.015 "vs flu controls", size(small) placement(e)) ///
 	text(37 0.015 "vs 2019 general population controls", size(small) placement(e)) ///
 	text(75 35 "HR and 95% CI", size(vsmall) placement(e))
