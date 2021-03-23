@@ -1,5 +1,5 @@
 cap log close
-log using analysis/output/cr_append_process_data, replace t
+log using analysis/output/an_descriptive, replace t
 use analysis/cr_append_process_data, clear
 
 preserve
