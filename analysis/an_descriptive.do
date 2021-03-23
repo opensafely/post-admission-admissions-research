@@ -34,7 +34,7 @@ else local condition " & readm_reason_b == `outcome'"
 cou if group==`group' `condition'
 file write tablecontent (r(N))
 if `outcome'==-1 local denominator = r(N)
-if `outcome'>==0 file write tablecontent ("(") %4.1f (100*r(N)/`denominator') (")")
+if `outcome'>=0 file write tablecontent (" (") %3.1f (100*r(N)/`denominator') (")")
 if `group'<4 file write tablecontent _tab
 else file write tablecontent _n
 }
