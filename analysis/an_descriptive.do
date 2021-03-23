@@ -20,4 +20,29 @@ safetab readmission group, col
 
 safetab readm_reason_b group, col
 
+cap file close tablecontent
+file open tablecontent using ./analysis/output/an_descriptive_OUTCOMES.txt, write text replace
+
+gen byte cons=1
+
+foreach outcome of numlist -1 0/14 {
+
+foreach group of numlist 1 2 4 {
+
+if `outcome'==-1 local condition 
+else local condition " & readm_reason_b == `outcome'"
+cou if group==`group' `condition'
+file write tablecontent (r(N))
+if `outcome'==-1 local denominator = r(N)
+if `outcome'>==0 file write tablecontent ("(") %4.1f (100*r(N)/`denominator') (")")
+if `group'<4 file write tablecontent _tab
+else file write tablecontent _n
+}
+
+if `outcome'==-1|`outcome'==13 file write tablecontent _n
+
+}
+
+file close tablecontent
+
 log close
