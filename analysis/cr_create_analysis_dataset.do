@@ -525,9 +525,15 @@ drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_dat
 *drop if we get to the 5th readmission with all short gaps
 drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
 
-
 gen entrydate = finaldischargedate+8
 format %d entrydate
+
+*get total days in critical care, and binary flag
+generate totaldayscriticalcare = admitted1_dayscritical
+replace totaldayscriticalcare = totaldayscriticalcare + admitted2_dayscritical if discharged2_date<=finaldischargedate
+replace totaldayscriticalcare = totaldayscriticalcare + admitted3_dayscritical if discharged3_date<=finaldischargedate
+replace totaldayscriticalcare = totaldayscriticalcare + admitted4_dayscritical if discharged4_date<=finaldischargedate
+gen byte anycriticalcare = totaldayscriticalcare>0 & totaldayscriticalcare<.
 
 *drop if died date on/before discharge date
 cou if died_date_`diedsource'==finaldischargedate

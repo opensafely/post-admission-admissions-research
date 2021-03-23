@@ -391,7 +391,7 @@ clinical_variables = dict(
 )
 
 postadm_adm = dict(
-    
+       
     admitted2_date=patients.admitted_to_hospital(
         returning="date_admitted",
         on_or_after="discharged1_date",
@@ -414,6 +414,7 @@ postadm_adm = dict(
         },
     ),
 
+
     admitted2_reason = patients.admitted_to_hospital(
         returning="primary_diagnosis",
         on_or_after="discharged1_date",
@@ -421,6 +422,17 @@ postadm_adm = dict(
         return_expectations={
             "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
             "incidence": 0.1,
+        },
+    ),
+    
+
+    admitted2_dayscritical = patients.admitted_to_hospital(
+        returning="days_in_critical_care",
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"20": 0.5, "40": 0.5}},
+            "incidence": 0.95,
         },
     ),
 
@@ -456,6 +468,16 @@ postadm_adm = dict(
         },
     ),
 
+    admitted3_dayscritical = patients.admitted_to_hospital(
+        returning="days_in_critical_care",
+        on_or_after="discharged2_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"20": 0.5, "40": 0.5}},
+            "incidence": 0.95,
+        },
+    ),
+
     admitted4_date=patients.admitted_to_hospital(
         returning="date_admitted",
         on_or_after="discharged3_date",
@@ -488,6 +510,17 @@ postadm_adm = dict(
         },
     ),
 
+    admitted4_dayscritical = patients.admitted_to_hospital(
+        returning="days_in_critical_care",
+        on_or_after="discharged3_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"20": 0.5, "40": 0.5}},
+            "incidence": 0.95,
+        },
+    ),
+
+
     admitted5_date=patients.admitted_to_hospital(
         returning="date_admitted",
         on_or_after="discharged4_date",
@@ -519,6 +552,17 @@ postadm_adm = dict(
             "incidence": 0.1,
         },
     ),  
+    
+    admitted5_dayscritical = patients.admitted_to_hospital(
+        returning="days_in_critical_care",
+        on_or_after="discharged4_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"20": 0.5, "40": 0.5}},
+            "incidence": 0.95,
+        },
+    ),
+ 
                 
 )
 

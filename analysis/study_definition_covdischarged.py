@@ -78,6 +78,18 @@ study = StudyDefinition(
         },
     ),
     
+    admitted1_dayscritical = patients.admitted_to_hospital(
+        returning="days_in_critical_care",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"20": 0.5, "40": 0.5}},
+            "incidence": 0.95,
+        },
+        ),
+
+    
     
 # import demographic and clinical variables,
 # calculated as at first admission date (=patient_index_date)
