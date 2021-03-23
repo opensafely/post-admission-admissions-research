@@ -40,6 +40,7 @@ else file write tablecontent _n
 }
 
 if `outcome'==-1|`outcome'==13 file write tablecontent _n
+if `outcome'==0 file write tablecontent _n _n
 
 }
 
