@@ -439,7 +439,7 @@ actions:
         models: analysis/output/models/an_crreg_outcome13_c2019gp*.ster
 
   ancrforests:
-    run: stata-mp:latest analysis/an_processoutregressionmodels_FOREST.do
+    run: stata-mp:latest analysis/an_processout_regressionmodels_FOREST.do
     needs:
       - ancrreg_flu1
       - ancrreg_flu2
