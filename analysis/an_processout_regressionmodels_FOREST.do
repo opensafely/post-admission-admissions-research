@@ -3,7 +3,7 @@
 cap postutil clear
 tempfile estimates
 postfile estimates str6 ctrl str9 outcome str10 adjustment shr lci uci using `estimates', replace
-foreach ctrl of any flu 2019gp{
+foreach ctrl of any FLU 2019gp{
 
 foreach coxoutcome of any COMPOSITE DEATH {
 estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_MINADJ
