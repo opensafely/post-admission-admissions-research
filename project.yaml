@@ -441,6 +441,7 @@ actions:
   ancrforests:
     run: stata-mp:latest analysis/an_processout_regressionmodels_FOREST.do
     needs:
+      - andescriptives_composites
       - ancrreg_flu1
       - ancrreg_flu2
       - ancrreg_flu3
