@@ -10,13 +10,13 @@ use analysis/cr_append_process_data, clear
 preserve
 keep if group==1|group==2
 	stcox exposed age1 age2 age3 male i.stp i.monthentry 
-	estimates save analysis/output/models/an_cox_COMPOSITEvsFLU_MINADJ, replace
+	estimates save analysis/output/models/an_cox_COMPOSITEvsflu_MINADJ, replace
 	stcox exposed age1 age2 age3 male i.stp i.monthentry i.ethnicity i.imd 
-	estimates save analysis/output/models/an_cox_COMPOSITEvsFLU_DEMOGADJ, replace
+	estimates save analysis/output/models/an_cox_COMPOSITEvsflu_DEMOGADJ, replace
 	stcox exposed age1 age2 age3 male i.stp i.monthentry  i.ethnicity i.imd i.obese4cat i.smoke_nomiss 
-	estimates save analysis/output/models/an_cox_COMPOSITEvsFLU_DEMOGLSTYLADJ, replace
+	estimates save analysis/output/models/an_cox_COMPOSITEvsflu_DEMOGLSTYLADJ, replace
 	stcox exposed age1 age2 age3 male i.stp i.monthentry i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
-	estimates save analysis/output/models/an_cox_COMPOSITEvsFLU_FULLADJ, replace
+	estimates save analysis/output/models/an_cox_COMPOSITEvsflu_FULLADJ, replace
 restore
 
 *vs 2019 general pop age/sex/stp matched controls
