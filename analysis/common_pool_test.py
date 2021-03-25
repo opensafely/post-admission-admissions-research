@@ -22,7 +22,7 @@ allvariables = dict(
  
     admitted_date=patients.admitted_to_hospital(
         returning="date_admitted",
-        on_or_after= "patient_index_date",
+        on_or_after= patient_index_date,
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
         return_expectations={
