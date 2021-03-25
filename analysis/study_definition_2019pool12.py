@@ -21,7 +21,7 @@ from common_variables_pool import (
 
 study = StudyDefinition(
     
-    index_date = "2019-11-01",    
+    index_date = "2019-12-01",    
     
     # Configure the expectations framework
     default_expectations={

@@ -28,7 +28,8 @@ log using ./analysis/output/cr_create_2019pool_data_`poolnumber', replace t
 
 clear
 noi di "import delimited ./output/input_2019pool`poolnumber'.csv"
-import delimited "./output/input_2019_2019-`poolnumber'-01.csv"
+*import delimited "./output/input_2019_2019-`poolnumber'-01".csv
+import delimited "./output/input_2019pool`poolnumber'.csv"
 
 di "STARTING COUNT FROM IMPORT:"
 cou
@@ -67,9 +68,7 @@ drop if inlist(sex, "I", "U")
 ******************************
 
 * Process variables with exact dates (admissions, deaths)
-foreach var of varlist 	admitted_date					///
-						discharged_date					///
-						lastprioradmission_adm_date		///
+foreach var of varlist 	lastprioradmission_adm_date		///
 						lastprioradmission_dis_date 	///
 						died_date_ons 					///
 						died_date_1ocare				///
@@ -503,7 +502,7 @@ drop hba1c_percentage* hba1c_mmol_per_mol* bmi_date_measured creatinine_date bp_
 
 drop patient_index_date 
 
-order patient_id region stp imd age agegroup male ethnicity ethnicity_16 bmi bmicat obese4cat smoke_nomiss admitted_date admitted_reason discharged_date lastprioradmission_adm_date lastprioradmission_adm_date died_date_ons died_date_1ocare died_cause_ons died_ons_covid_flag
+order patient_id region stp imd age agegroup male ethnicity ethnicity_16 bmi bmicat obese4cat smoke_nomiss admitted_any_date admitted_any_reason lastprioradmission_adm_date lastprioradmission_adm_date died_date_ons died_date_1ocare died_cause_ons died_ons_covid_flag
 
 ***************
 *  Save data  *

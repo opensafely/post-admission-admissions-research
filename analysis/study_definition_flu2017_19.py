@@ -52,7 +52,7 @@ study = StudyDefinition(
         find_first_match_in_period=True,
         return_expectations={
             "date": {"earliest": "2017-01-01", "latest": "2019-12-31"},
-            "incidence": 0.1,
+            "incidence": 1,
         },
     ),
     discharged1_date=patients.admitted_to_hospital(
@@ -63,7 +63,7 @@ study = StudyDefinition(
         find_first_match_in_period=True,
         return_expectations={
             "date": {"earliest": "2017-01-01", "latest": "2019-12-31"},
-            "incidence": 0.05,        
+            "incidence": 1,        
         },
     ),
     
@@ -74,7 +74,7 @@ study = StudyDefinition(
         find_first_match_in_period=True,
         return_expectations={
             "category": {"ratios": {"U071": 0.1, "G060": 0.2, "I269": 0.7}},
-            "incidence": 0.1,
+            "incidence": 1,
         },
     ),
 
@@ -85,7 +85,7 @@ study = StudyDefinition(
         find_first_match_in_period=True,
         return_expectations={
             "category": {"ratios": {"20": 0.5, "40": 0.5}},
-            "incidence": 0.95,
+            "incidence": 1,
         },
         ),    
     
@@ -100,7 +100,7 @@ study = StudyDefinition(
         find_first_match_in_period=True,
         return_expectations={
             "date": {"earliest": "2017-01-01", "latest": "2019-12-31"},
-            "incidence": 0.1,
+            "incidence": 1,
         },
     ),
     
