@@ -28,7 +28,7 @@ log using ./analysis/output/cr_create_2019pool_data_`poolnumber', replace t
 
 clear
 noi di "import delimited ./output/input_2019pool`poolnumber'.csv"
-import delimited ./output/input_2019pool`poolnumber'.csv
+import delimited "./output/input_2019_2019-`poolnumber'-01.csv"
 
 di "STARTING COUNT FROM IMPORT:"
 cou
@@ -72,7 +72,8 @@ foreach var of varlist 	admitted_date					///
 						lastprioradmission_adm_date		///
 						lastprioradmission_dis_date 	///
 						died_date_ons 					///
-						died_date_1ocare				{
+						died_date_1ocare				///
+						admitted_*_date		{
 							confirm string variable `var'
 							rename `var' _tmp
 							gen `var' = date(_tmp, "YMD")
