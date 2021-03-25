@@ -264,6 +264,7 @@ actions:
         logs: analysis/output/*.log 
         tables: analysis/output/an_desc*.txt
         figures: analysis/output/an_cumulativeincidence*.svg
+        timefig: analysis/output/an_desc*.svg
         models: analysis/output/models/an_cox*.ster
 
   ancrreg_flu1:
