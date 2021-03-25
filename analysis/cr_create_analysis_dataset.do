@@ -102,7 +102,8 @@ foreach var of varlist 	admitted1_date					///
 						discharged5_date				///
 						died_date_ons					///
 						`died_date_1ocare'				///
-						patient_index_date				{
+						patient_index_date				///
+						admitted_*_date {
 							confirm string variable `var'
 							rename `var' _tmp
 							gen `var' = date(_tmp, "YMD")

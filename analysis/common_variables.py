@@ -391,7 +391,261 @@ clinical_variables = dict(
 )
 
 postadm_adm = dict(
-       
+
+    admitted_circulatory_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=circulatory_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+    
+    admitted_circulatory_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=circulatory_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+            
+    admitted_cancer_ex_nmsc_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=cancer_ex_nmsc_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_cancer_ex_nmsc_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=cancer_ex_nmsc_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_digestive_date =patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=digestive_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_digestive_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=digestive_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+ 
+
+    admitted_endo_nutr_metabol_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=endocrine_nutritional_metabolic_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_endo_nutr_metabol_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=endocrine_nutritional_metabolic_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_external_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=external_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),       
+    
+    admitted_external_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=external_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_genitourinary_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=genitourinary_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_genitourinary_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=genitourinary_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_mentalhealth_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=mentalhealth_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_mentalhealth_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=mentalhealth_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_musculoskeletal_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=musculoskeletal_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+    
+    admitted_musculoskeletal_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=musculoskeletal_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_nervoussystem_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=nervoussystem_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_nervoussystem_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=nervoussystem_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+    
+    admitted_otherinfections_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=otherinfections_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+    
+    admitted_otherinfections_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=otherinfections_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+    admitted_respiratory_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=respiratory_icd,
+        on_or_after="discharged1_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_respiratory_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=respiratory_icd,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
     admitted2_date=patients.admitted_to_hospital(
         returning="date_admitted",
         on_or_after="discharged1_date",

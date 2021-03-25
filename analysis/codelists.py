@@ -6,6 +6,85 @@ covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 influenza_codes = codelist(["J090", "J100", "J101", "J108", "J110", "J111", "J118"], system="icd10")
 
+## cause-specific hospitalisations
+circulatory_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_circulatory.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+cancer_ex_nmsc_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_cancer_ex_nmsc.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+digestive_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_digestive.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+endocrine_nutritional_metabolic_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_endocrine_nutritional_metabolic.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+external_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_external.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+genitourinary_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_genitourinary.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+mentalhealth_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_mentalhealth.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+circulatory_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_circulatory.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+circulatory_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_circulatory.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+musculoskeletal_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_musculoskeletal.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+nervoussystem_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_nervoussystem.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+otherinfections_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_otherinfections.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
+respiratory_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_respiratory.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
 ## demographic codelists
 
 ethnicity_codes = codelist_from_csv(
