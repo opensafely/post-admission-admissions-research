@@ -90,7 +90,7 @@ study = StudyDefinition(
 # import demographic and clinical variables,
 # calculated as at first admission date (=patient_index_date)
     
-    patient_index_date=patients.admitted_to_hospital(
+    index_date=patients.admitted_to_hospital(
         returning="date_admitted",
         with_these_diagnoses=pneumonia_codes,
         on_or_after=start_date,
