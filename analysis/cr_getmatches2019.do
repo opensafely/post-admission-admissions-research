@@ -160,7 +160,7 @@ replace readmission = 3 if readmission ==0 & exitdate<.
 
 replace exitdate = censordate if exitdate==. 
 
-replace readmission = 2 if readmission==1 & (admitted_reason!="U071"&admitted_reason!="U072") 
+replace readmission = 2 if readmission==1 & (admitted_any_reason!="U071"&admitted_any_reason!="U072") 
 
 replace exitdate = exitdate+0.5 if exitdate==entrydate
 
