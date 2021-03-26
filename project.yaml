@@ -23,13 +23,13 @@ actions:
       highly_sensitive:
         cohort: output/input_pneum2019.csv
 
-  generate_study_pop_flu2017_19:
+  generate_study_pop_flu2017_19_csvt:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_flu2017_19_csvt
     outputs:
       highly_sensitive:
         cohort: output/input_flu2017_19_csvt.csv
 
-  generate_study_pop_flu2017_19_csvt:
+  generate_study_pop_flu2017_19:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_flu2017_19
     outputs:
       highly_sensitive:
