@@ -15,7 +15,7 @@ frame create pool
 frame change pool
 
 **********PREPARE POOL
-use patient_id stp age male admitted_date discharged_date lastprior* died_date_ons using ./analysis/cr_create_2019pool_data_02, clear
+use patient_id stp age male admitted_any_date lastprior* died_date_ons using ./analysis/cr_create_2019pool_data_02, clear
 gen byte inpool2=1
 rename age age_p2
 *drop from pool if in hospital on 1st of month 
@@ -29,7 +29,7 @@ forvalues i = 3/11 {
 	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
 	
-	merge 1:1 patient_id using ./analysis/cr_create_2019pool_data_`ifull' , keepusing(patient_id stp age male admitted_date discharged_date lastprior* died_date_ons)
+	merge 1:1 patient_id using ./analysis/cr_create_2019pool_data_`ifull' , keepusing(patient_id stp age male admitted_any_date lastprior* died_date_ons)
 	rename age age_p`i'
 
 	gen byte inpool`i'=1 if (_merge==2|_merge==3)
@@ -143,14 +143,14 @@ forvalues i=2/11{
 use `alldata', clear
 sort setid patient_id
 
-summ discharged_date
+summ admitted_any_date
 scalar censordate = r(max)-60-365
 
 gen entrydate = mdy(discharge_month,1,2019) 
 drop discharge_month
 format %d entrydate 
 
-gen exitdate = admitted_date if admitted_date<=censordate
+gen exitdate = admitted_any_date if admitted_any_date<=censordate
 format %d exitdate
 assert exit>=entry
 gen readmission = (exitdate<.)
