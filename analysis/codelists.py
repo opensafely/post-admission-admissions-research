@@ -6,6 +6,12 @@ covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 influenza_codes = codelist(["J090", "J100", "J101", "J108", "J110", "J111", "J118"], system="icd10")
 
+i636_code = codelist(["I636"], system="icd10")
+i676_code = codelist(["I676"], system="icd10")
+g08_code = codelist(["G08", "G080"], system="icd10")
+
+
+
 ## cause-specific hospitalisations
 circulatory_icd = codelist_from_csv(
     "codelists/local-codelists/cr_icd10_circulatory.csv",

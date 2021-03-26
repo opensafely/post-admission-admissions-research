@@ -11,6 +11,12 @@ actions:
       highly_sensitive:
         cohort: output/input_covdischarged.csv
 
+  generate_study_pop_covdischarged_csvt:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_covdischarged_csvt
+    outputs:
+      highly_sensitive:
+        cohort: output/input_covdischarged_csvt.csv
+
   generate_study_pop_pneum2019:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_pneum2019
     outputs:
@@ -18,10 +24,17 @@ actions:
         cohort: output/input_pneum2019.csv
 
   generate_study_pop_flu2017_19:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_flu2017_19_csvt
+    outputs:
+      highly_sensitive:
+        cohort: output/input_flu2017_19_csvt.csv
+
+  generate_study_pop_flu2017_19_csvt:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_flu2017_19
     outputs:
       highly_sensitive:
         cohort: output/input_flu2017_19.csv
+
         
   generate_2019pool02:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2019pool02
