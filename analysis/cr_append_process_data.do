@@ -18,7 +18,7 @@ replace setid=patient_id if group==1
 
 **CLASSIFY READMISSIONS
 gen icd10_3 = substr(readmission_reason,1,3) if (group==1|group==2|group==3) & (readmission==1|readmission==2)
-replace icd10_3 = substr(admitted_reason,1,3) if group==4 & (readmission==1|readmission==2)
+replace icd10_3 = substr(admitted_any_reason,1,3) if group==4 & (readmission==1|readmission==2)
 
 gen readm_reason_broad = 1 if substr(icd10_3,1,1)=="I"
 replace readm_reason_broad = 2 if substr(icd10_3,1,1)=="C"
@@ -36,7 +36,7 @@ replace readm_reason_broad = 9 if substr(icd10_3,1,1)=="S" ///
  |substr(icd10_3,1,1)=="W" ///
  |(substr(icd10_3,1,1)=="X" ///
   & !(real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84))
-replace readm_reason_broad = 10 if icd10_3=="U07" & (readmission_reason=="U071"|admitted_reason=="U071"|died_cause_ons=="U071"|readmission_reason=="U072"|admitted_reason=="U072"|died_cause_ons=="U072")
+replace readm_reason_broad = 10 if icd10_3=="U07" & (readmission_reason=="U071"|admitted_any_reason=="U071"|died_cause_ons=="U071"|readmission_reason=="U072"|admitted_any_reason=="U072"|died_cause_ons=="U072")
 replace readm_reason_broad = 11 if substr(icd10_3,1,1)=="A"
 replace readm_reason_broad = 12 if substr(icd10_3,1,1)=="M"
 replace readm_reason_broad = 13 if readm_reason_broad==. & icd!=""
