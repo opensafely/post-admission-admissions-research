@@ -690,6 +690,55 @@ postadm_adm = dict(
             "incidence": 0.1,
         },
     ),
+    
+
+    admitted_respiratorylrti_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=respiratorylrti_icd,
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_respiratorylrti_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=respiratorylrti_icd,
+        on_or_after="index_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+
+
+    admitted_covid_date=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=covid_codelist,
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2020-08-01", "latest": "2020-09-30"},
+            "incidence": 0.03,
+        },
+    ),
+
+    admitted_covid_reason=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_primary_diagnoses=covid_codelist,
+        on_or_after="index_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"X999": 0.1, "Y999": 0.2, "Z999": 0.7}},
+            "incidence": 0.1,
+        },
+    ),
+    
                
 )
 

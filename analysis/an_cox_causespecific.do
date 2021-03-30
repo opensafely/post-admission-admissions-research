@@ -1,11 +1,11 @@
 cap log close
-log using analysis/an_cox_causespecific, replace t
+log using analysis/output/an_cox_causespecific, replace t
 
 local allgraphs
 
 foreach deathhandling of any csdeath alldeathcens {
 
-foreach csoutcome of any admitted_circulatory_date admitted_cancer_ex_nmsc_date admitted_respiratory_date admitted_digestive_date admitted_mentalhealth_date admitted_nervoussystem_date admitted_genitourinary_date admitted_endo_nutr_metabol_date admitted_external_date admitted_musculoskeletal_date  admitted_otherinfections_date*/  /*admitted_any_date*/ {
+foreach csoutcome of any admitted_circulatory_date admitted_cancer_ex_nmsc_date admitted_respiratory_date admitted_digestive_date admitted_mentalhealth_date admitted_nervoussystem_date admitted_genitourinary_date admitted_endo_nutr_metabol_date admitted_external_date admitted_musculoskeletal_date  admitted_otherinfections_date   /*admitted_any_date*/ {
 
 
 di _n _dup(50) "*" 

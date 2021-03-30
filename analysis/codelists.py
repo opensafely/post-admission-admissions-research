@@ -91,6 +91,12 @@ respiratory_icd = codelist_from_csv(
     column="icd10",  
     )
 
+respiratorylrti_icd = codelist_from_csv(
+    "codelists/local-codelists/cr_icd10_respiratorylrti.csv",
+    system="icd10",
+    column="icd10",  
+    )
+
 ## demographic codelists
 
 ethnicity_codes = codelist_from_csv(
