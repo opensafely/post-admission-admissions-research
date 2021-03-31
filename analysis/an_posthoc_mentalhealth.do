@@ -1,3 +1,6 @@
+
+cap log close
+log using analysis/an_posthoc_mentalhealth, replace t
 	
 use analysis/cr_append_process_data, clear
 drop if group==3|group==4
@@ -92,3 +95,5 @@ drop order
 order mentalhealthgrouped
 
 outsheet using analysis/output/an_posthoc_mentalhealth.txt, replace c 
+
+log close
