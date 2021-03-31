@@ -68,5 +68,5 @@ global allgraphs "$allgraphs `csoutcome'"
 
 grc1leg  $allgraphs, iscale(*.6)
 graph export analysis/output/an_cumulativeincidence_causespecific.svg, as(svg) replace
-}
+
 
