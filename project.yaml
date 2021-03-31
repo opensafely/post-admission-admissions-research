@@ -259,7 +259,9 @@ actions:
 
   andescriptives_models:
     run: stata-mp:latest analysis/model_descriptives_models.do
-    needs: [appenddata]
+    needs: 
+      - generate_study_pop_covdischarged
+      - appenddata
     outputs:
       moderately_sensitive:
         logs: analysis/output/*.log 
