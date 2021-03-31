@@ -20,41 +20,58 @@ replace setid=patient_id if group==1
 gen icd10_3 = substr(readmission_reason,1,3) if (group==1|group==2|group==3) & (readmission==1|readmission==2)
 replace icd10_3 = substr(admitted_any_reason,1,3) if group==4 & (readmission==1|readmission==2)
 
-gen readm_reason_broad = 1 if substr(icd10_3,1,1)=="I"
+
+gen readm_reason_broad = 1 if substr(icd10_3,1,1)=="A"
 replace readm_reason_broad = 2 if substr(icd10_3,1,1)=="C"
-replace readm_reason_broad = 3 if substr(icd10_3,1,1)=="J"
-replace readm_reason_broad = 4 if substr(icd10_3,1,1)=="K"
-replace readm_reason_broad = 5 if substr(icd10_3,1,1)=="F" ///
+replace readm_reason_broad = 3 if substr(icd10_3,1,1)=="E"
+replace readm_reason_broad = 4 if substr(icd10_3,1,1)=="F" ///
   |(substr(icd10_3,1,1)=="X" ///
   & (real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84))
-replace readm_reason_broad = 6 if substr(icd10_3,1,1)=="G"
-replace readm_reason_broad = 7 if substr(icd10_3,1,1)=="N"
-replace readm_reason_broad = 8 if substr(icd10_3,1,1)=="E"
-replace readm_reason_broad = 9 if substr(icd10_3,1,1)=="S" ///
+replace readm_reason_broad = 5 if substr(icd10_3,1,1)=="G"
+replace readm_reason_broad = 6 if substr(icd10_3,1,1)=="I"
+replace readm_reason_broad = 7 if (substr(icd10_3,1,1)=="J" & real(substr(icd10_3,2,2))>=09 & real(substr(icd10_3,2,2))<=22)|(icd10_3=="U071"|icd10_3=="U072")
+replace readm_reason_broad = 8 if substr(icd10_3,1,1)=="J" & real(substr(icd10_3,2,2))>=23
+replace readm_reason_broad = 9 if substr(icd10_3,1,1)=="K"
+replace readm_reason_broad = 10 if substr(icd10_3,1,1)=="M"
+replace readm_reason_broad = 11 if substr(icd10_3,1,1)=="N"
+replace readm_reason_broad = 12 if substr(icd10_3,1,1)=="S" ///
  |substr(icd10_3,1,1)=="T" ///
  |substr(icd10_3,1,1)=="V" ///
  |substr(icd10_3,1,1)=="W" ///
  |(substr(icd10_3,1,1)=="X" ///
   & !(real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84))
-replace readm_reason_broad = 10 if icd10_3=="U07" & (readmission_reason=="U071"|admitted_any_reason=="U071"|died_cause_ons=="U071"|readmission_reason=="U072"|admitted_any_reason=="U072"|died_cause_ons=="U072")
-replace readm_reason_broad = 11 if substr(icd10_3,1,1)=="A"
-replace readm_reason_broad = 12 if substr(icd10_3,1,1)=="M"
 replace readm_reason_broad = 13 if readm_reason_broad==. & icd!=""
 replace readm_reason_broad = 14 if readmission==3
 replace readm_reason_broad = 0 if readmission==0
 
-label define readm_reason_broadlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
- 3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
- 6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
- 9 "External causes" 10 "COVID" 11 "Other infections" 12 "Musculoskeletal" 13 "Other" 14 "Any cause death", modify
+label define readm_reason_broadlab ///
+0 "None" 	///
+1 "Other infections (A)" ///
+2 "Cancers (C)" ///
+3 "Endocrine, nutritional and metabolic (E)" ///
+4 "Mental and behavioural (F, X60-84)" ///
+5 "Nervous system (G)" ///
+6 "Circulatory (I)" ///
+7 "COVID/Influenza/Pneumonia/LRTI (J09-22, U07.1/2)" ///
+71 "COVID-19 (U07.1/2)" ///
+8 "Respiratory (J23-99)" ///
+9 "Digestive (K)" ///
+10 "Musculoskeletal (M)" /// 
+11 "Genitourinary (N)" ///
+12 "External causes (S-Y exc X60-84)" ///
+13 "Other" ///
+14 "Any cause death", modify
  label values readm_reason_broad readm_reason_broadlab
 
 gen readm_reason_specific = readm_reason_broad
-label define readm_reason_specificlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
+/*label define readm_reason_specificlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
  3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
  6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
  9 "External causes" 10 "COVID" 11 "Infections" 12 "Musculoskeletal" 13 "Other" 14 "Any cause death", modify
  label values readm_reason_specific readm_reason_specificlab
+*/
+label copy readm_reason_broadlab readm_reason_specificlab
+label values readm_reason_specific readm_reason_specificlab
 
 cap prog drop icdgroup
 prog define icdgroup
@@ -114,10 +131,11 @@ icdgroup, range(J09-J18) name("Influenza and pneumonia")
 icdgroup, range(K70-K77) name("Liver disease")
 
 replace readm_reason_specific = 100*readm_reason_specific if readm_reason_specific<100
+
 label define readm_reason_specificlab 100 "Other circulatory" 200 "Other cancers" ///
- 300 "Other respiratory" 400 "Other digestive" 500 "Other mental health" ///
- 600 "Nervous system" 700 "Genitourinary" 800 "Endocrine, nutritional and metabolic" ///
- 900 "External causes" 1000 "COVID" 1100 "Other infections" 1200 "Musculoskeletal" 1300 "Other" 1400 "Any cause death", modify
+ 300 "Endocrine, nutritional and metabolic" 400 "Other mental and behavioural" 500 "Other nervous system" ///
+ 600 "Other circulatory" 700 "Other LRTI" 800 "Other respiratory" ///
+ 900 "Other digestive" 1000 "Musculoskeletal" 1100 "Genitourinary" 1200 "External causes" 1300 "Other" 1400 "Any cause death", modify
 
 gen exposed=(group==1)
  
@@ -131,6 +149,69 @@ gen monthentry = month(entrydate)
 encode region, gen(region_real)
 
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
+
+*****PREP FOR CAUSE SPECIFIC ANALYSIS
+*include covid with flu/pneum/lrti
+replace admitted_respiratorylrti_date = min(admitted_respiratorylrti_date, admitted_covid_date)
+
+*classify cause of death
+gen d_icd10_3 = substr(died_cause_ons,1,3) 
+
+gen died_reason = 1 if substr(d_icd10_3,1,1)=="A"
+replace died_reason = 2 if substr(d_icd10_3,1,1)=="C"
+replace died_reason = 3 if substr(d_icd10_3,1,1)=="E"
+replace died_reason = 4 if substr(d_icd10_3,1,1)=="F" ///
+  |(substr(d_icd10_3,1,1)=="X" ///
+  & (real(substr(d_icd10_3,2,2))>=60 & real(substr(d_icd10_3,2,2))<=84))
+replace died_reason = 5 if substr(d_icd10_3,1,1)=="G"
+replace died_reason = 6 if substr(d_icd10_3,1,1)=="I"
+replace died_reason = 7 if (substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=09 & real(substr(d_icd10_3,2,2))<=22)|(d_icd10_3=="U071"|d_icd10_3=="U072")
+replace died_reason = 8 if substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=23
+replace died_reason = 9 if substr(d_icd10_3,1,1)=="K"
+replace died_reason = 10 if substr(d_icd10_3,1,1)=="M"
+replace died_reason = 11 if substr(d_icd10_3,1,1)=="N"
+replace died_reason = 12 if substr(d_icd10_3,1,1)=="S" ///
+ |substr(d_icd10_3,1,1)=="T" ///
+ |substr(d_icd10_3,1,1)=="V" ///
+ |substr(d_icd10_3,1,1)=="W" ///
+ |(substr(d_icd10_3,1,1)=="X" ///
+  & !(real(substr(d_icd10_3,2,2))>=60 & real(substr(d_icd10_3,2,2))<=84))
+replace died_reason = 13 if died_reason==. & d_icd!=""
+
+label copy readm_reason_broadlab died_reasonlab
+label values died_reason died_reasonlab
+
+
+foreach csoutcome of any circulatory cancer_ex_nmsc respiratory respiratorylrti digestive mentalhealth nervoussystem genitourinary endo_nutr_metabol external musculoskeletal  otherinfections {
+
+	
+	if "`csoutcome'"=="otherinfections" scalar thisreason = 1
+	if "`csoutcome'"=="cancer_ex_nmsc" scalar thisreason = 2 
+	if "`csoutcome'"=="endo_nutr_metabol" scalar thisreason = 3 
+	if "`csoutcome'"=="mentalhealth" scalar thisreason = 4 
+	if "`csoutcome'"=="nervoussystem" scalar thisreason = 5 
+	if "`csoutcome'"=="circulatory" scalar thisreason = 6 
+	if "`csoutcome'"=="respiratorylrti" scalar thisreason = 7 
+	if "`csoutcome'"=="respiratory" scalar thisreason = 8  
+	if "`csoutcome'"=="digestive" scalar thisreason = 9 
+	if "`csoutcome'"=="musculoskeletal" scalar thisreason = 10 
+	if "`csoutcome'"=="genitourinary" scalar thisreason = 11 
+	if "`csoutcome'"=="external" scalar thisreason = 12
+
+local thisreason = thisreason
+
+*get exit dates for cause specific
+summ readmission_date, f d
+replace censordate = r(max)-60 if group ==1
+replace censordate = r(max)-60-365 if group==3|group==4
+
+gen CSexit_`csoutcome' = admitted_`csoutcome'_date
+replace CSexit_`csoutcome' = died_date_ons if died_date_ons<=CSexit_`csoutcome'
+replace CSexit_`csoutcome' = censordate if censordate<CSexit_`csoutcome'
+format %d CSexit_`csoutcome'
+gen CSfail_`csoutcome' = (CSexit_`csoutcome'==admitted_`csoutcome'_date)|(CSexit_`csoutcome'==died_date_ons & died_reason==thisreason)
+replace CSexit_`csoutcome' = CSexit_`csoutcome'+0.5 if CSexit_`csoutcome'==entrydate
+}
 
 save analysis/cr_append_process_data, replace
 
