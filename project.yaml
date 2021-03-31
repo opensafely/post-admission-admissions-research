@@ -271,6 +271,7 @@ actions:
   anprocess_forestplots:
     run: stata-mp:latest analysis/model_forestplots.do
     needs: [andescriptives_models]
+    outputs:
       moderately_sensitive:
         graphs: analysis/output/an_processout_*.svg 
       
