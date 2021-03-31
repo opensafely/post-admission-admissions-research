@@ -180,7 +180,7 @@ cou
 *Only keep if COVID/FLU was the primary reason for hospitalisation
 keep if admitted1_reason=="U071"|admitted1_reason=="U072"
 cou 
-wd
+
 
 log close
 

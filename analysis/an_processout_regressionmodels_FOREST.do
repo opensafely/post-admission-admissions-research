@@ -19,7 +19,7 @@ estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_FULLADJ
 lincom exposed, eform
 post estimates ("`ctrl'") ("`coxoutcome'") ("full") (r(estimate)) (r(lb)) (r(ub))
 }
-
+/*
 foreach outcome of numlist 1/9 11/13{
 
 estimates use analysis/output/models/an_crreg_outcome`outcome'_c`ctrl'_MATCHFACONLY
@@ -31,6 +31,7 @@ lincom exposed, eform
 post estimates ("`ctrl'") ("`outcome'") ("full") (r(estimate)) (r(lb)) (r(ub))
 
 }
+*/
 }
 
 postclose estimates
@@ -63,13 +64,13 @@ preserve
 	scatter graphorder shr, msize(small) mcol(black) || rcap lci uci graphorder, hor lw(thin) lc(black) ///
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 	|| scatter graphorder modelpos, m(i) mlab(adjlong) mlabsize(vsmall) mlabcol(gs7)  ///
-	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(8) ytitle("") yscale(off range(23)) legend(off) ///
+	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(8) ylab(, nogrid) ytitle("") yscale(off range(23)) legend(off) ///
 	text(23 0.015 "vs flu controls", size(vsmall) placement(e)) text(22 0.017 "Outcome: hospitalisation or death (composite)", size(vsmall) placement(e)) text(17 0.017 "Outcome: mortality", size(vsmall) placement(e)) ///
 	text(11 0.015 "vs 2019 general population controls", size(vsmall) placement(e)) text(10 0.017 "Outcome: hospitalisation or death (composite)", size(vsmall) placement(e)) text(5 0.017 "Outcome: mortality", size(vsmall) placement(e)) ///
 	text(23 35 "HR and 95% CI", size(vsmall) placement(e)) 
 	graph export analysis/output/an_processout_regressionmodels_FOREST_COX.svg, as(svg) replace
 restore
-
+/*
 preserve
 	drop if outcome=="COMPOSITE"|outcome=="DEATH"
 
@@ -113,3 +114,4 @@ preserve
 	text(75 35 "HR and 95% CI", size(vsmall) placement(e))
 	graph export analysis/output/an_processout_regressionmodels_FOREST_FINEGRAY.svg, as(svg) replace
 restore
+*/

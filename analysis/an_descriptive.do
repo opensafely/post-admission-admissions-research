@@ -23,24 +23,29 @@ safetab readm_reason_b group, col
 cap file close tablecontent
 file open tablecontent using ./analysis/output/an_descriptive_OUTCOMES.txt, write text replace
 
+drop if group==3
+drop if group==2 & entrydate<d(1/1/2019)
+
 gen byte cons=1
 
-foreach outcome of numlist -1 0/14 {
+
+foreach csoutcome of any DENOM circulatory cancer_ex_nmsc respiratory respiratorylrti digestive mentalhealth nervoussystem genitourinary endo_nutr_metabol external musculoskeletal  otherinfections {
 
 foreach group of numlist 1 2 4 {
 
-if `outcome'==-1 local condition 
-else local condition " & readm_reason_b == `outcome'"
+if "`csoutcome'"=="DENOM" local condition 
+else local condition " & CSfail_`csoutcome' == 1"
+
 cou if group==`group' `condition'
 file write tablecontent (r(N))
-if `outcome'==-1 local denominator = r(N)
-if `outcome'>=0 file write tablecontent (" (") %3.1f (100*r(N)/`denominator') (")")
+if "`csoutcome'"=="DENOM" local denominator = r(N)
+if "`csoutcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`denominator') (")")
 if `group'<4 file write tablecontent _tab
 else file write tablecontent _n
 }
 
-if `outcome'==-1|`outcome'==13 file write tablecontent _n
-if `outcome'==0 file write tablecontent _n _n
+if "`csoutcome'"=="DENOM" file write tablecontent _n
+
 
 }
 

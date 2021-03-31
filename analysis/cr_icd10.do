@@ -78,6 +78,7 @@ keep if substr(icd10,1,1)=="S" ///
  |substr(icd10,1,1)=="T" ///
  |substr(icd10,1,1)=="V" ///
  |substr(icd10,1,1)=="W" ///
+ |substr(icd10,1,1)=="Y" ///
  |(substr(icd10,1,1)=="X" ///
   & !(real(substr(icd10,2,2))>=60 & real(substr(icd10,2,2))<=84))
 replace icd10 = icd10 + "X" if length(icd10)==3
