@@ -1,0 +1,3768 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /workspace/analysis/output/an_cox_causespecific.log
+  log type:  text
+ opened on:  31 Mar 2021, 23:41:50
+
+. 
+. local allgraphs
+
+. 
+. foreach csoutcome of any circulatory cancer_ex_nmsc respiratory respiratorylr
+> ti digestive mentalhealth nervoussystem genitourinary endo_nutr_metabol exter
+> nal musculoskeletal  otherinfections {
+  2.         
+. di _n _dup(50) "*" 
+  3. di "`csoutcome'"
+  4.         
+. use analysis/cr_append_process_data, clear
+  5. drop if group==3
+  6. drop if group==2 & entrydate<d(1/1/2019)
+  7. 
+. stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(en
+> trydate) 
+  8. 
+. *sts graph , by(group) fail name(`csoutcome', replace)
+. 
+. stcox exposed age male i.region_real if group==1|group==2
+  9. estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu
+> _MATCHFACONLY, replace
+ 10. 
+. stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_no
+> miss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i
+> .diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2
+>  chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra
+> _sle_psoriasis other_immunosuppression if group==1|group==2 
+ 11. estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu
+> _FULLADJ, replace
+ 12. 
+. stcox exposed if group==1|group==4, strata(setid)
+ 13. estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c201
+> 9gp_MATCHFACONLY, replace
+ 14. 
+. stcox exposed i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_res
+> piratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhae
+> m_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease 
+> stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_im
+> munosuppression if group==1|group==4, strata(setid)
+ 15. estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c201
+> 9gp_FULLADJ, replace
+ 16. 
+. local allgraphs "`allgraphs' `csoutcome'"
+ 17. 
+. }
+
+**************************************************
+circulatory
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_circulatory != 0 & CSfail_circulatory < .
+obs. time interval:  (origin, CSexit_circulatory]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+        126  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,022  observations remaining, representing
+      2,722  failures in single-record/single-failure data
+ 17512633.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_circulatory
+   analysis time _t:  (CSexit_circulatory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -11442.867
+Iteration 1:   log likelihood = -11192.223
+Iteration 2:   log likelihood = -11186.495
+Iteration 3:   log likelihood = -11186.487
+Refining estimates:
+Iteration 0:   log likelihood = -11186.487
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,514                  Number of obs    =      22,514
+No. of failures =        1,175
+Time at risk    =      3746702
+                                                LR chi2(11)      =      512.76
+Log likelihood  =   -11186.487                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .9132117   .0589609    -1.41   0.160     .8046633    1.036403
+         age |   1.041501   .0020827    20.33   0.000     1.037427    1.045591
+        male |   1.363269   .0809341     5.22   0.000     1.213522    1.531494
+             |
+ region_real |
+East Midl..  |   1.071258   .1009248     0.73   0.465     .8906379    1.288508
+     London  |   .8394966   .1067257    -1.38   0.169     .6543426    1.077042
+ North East  |   1.207047   .1446146     1.57   0.116     .9544277     1.52653
+ North West  |   .9653355   .1097697    -0.31   0.756     .7724795     1.20634
+ South East  |    .782413   .1229523    -1.56   0.118     .5750082    1.064629
+ South West  |   .9650907   .1104992    -0.31   0.756     .7710966     1.20789
+West Midl..  |   1.179634   .1591164     1.22   0.221     .9055904    1.536606
+Yorkshire..  |    .900418    .093548    -1.01   0.313     .7345299    1.103771
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificcirculatory_cflu_MATCHFA
+> CONLY.ster not found)
+file analysis/output/models/an_cox_causespecificcirculatory_cflu_MATCHFACONLY.s
+> ter saved
+
+         failure _d:  CSfail_circulatory
+   analysis time _t:  (CSexit_circulatory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -8472.1432
+Iteration 1:   log likelihood = -8165.6678
+Iteration 2:   log likelihood = -8109.2115
+Iteration 3:   log likelihood = -8107.9617
+Iteration 4:   log likelihood = -8107.9549
+Iteration 5:   log likelihood = -8107.9549
+Refining estimates:
+Iteration 0:   log likelihood = -8107.9549
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,488                  Number of obs    =      17,488
+No. of failures =          893
+Time at risk    =      2890409
+                                                LR chi2(49)      =      728.38
+Log likelihood  =   -8107.9549                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |    .949269   .0728628    -0.68   0.498     .8166837    1.103379
+         age |   1.031597   .0032249     9.95   0.000     1.025296    1.037937
+        male |   1.254869   .0888604     3.21   0.001     1.092252    1.441698
+             |
+ region_real |
+East Midl..  |   1.097264   .1199058     0.85   0.396     .8857156    1.359339
+     London  |   .8925199   .1354808    -0.75   0.454     .6628405    1.201785
+ North East  |   1.178006   .1581495     1.22   0.222     .9054658    1.532579
+ North West  |   .9324342   .1221692    -0.53   0.593     .7212607    1.205436
+ South East  |   .7128147   .1446213    -1.67   0.095      .478937    1.060901
+ South West  |   .8638942    .126719    -1.00   0.319     .6480422    1.151643
+West Midl..  |   1.224362   .1890657     1.31   0.190     .9046232    1.657113
+Yorkshire..  |   .8569757   .1045532    -1.27   0.206      .674714    1.088472
+             |
+   ethnicity |
+      Mixed  |   1.246745   .4015887     0.68   0.494     .6631281    2.344002
+Asian or ..  |    .726818   .1024903    -2.26   0.024     .5513098    .9581988
+      Black  |   .6234821   .1463196    -2.01   0.044      .393607    .9876092
+      Other  |   .3800549   .1720162    -2.14   0.033     .1565255    .9228001
+             |
+         imd |
+          2  |   1.041566   .1098576     0.39   0.699     .8470472    1.280755
+          3  |   .9669793    .105368    -0.31   0.758     .7810251    1.197207
+          4  |   .9064511   .1011143    -0.88   0.379     .7284389    1.127965
+5 most de..  |   1.047447   .1169523     0.42   0.678     .8415729    1.303685
+             |
+   obese4cat |
+Obese I ..)  |   .9949174   .0865537    -0.06   0.953     .8389499     1.17988
+Obese II..)  |   1.241008   .1381415     1.94   0.052     .9977551    1.543566
+Obese II..)  |   1.252282   .1843624     1.53   0.126     .9383987    1.671156
+             |
+smoke_nomiss |
+     Former  |   1.096583   .0875261     1.16   0.248     .9377799    1.282277
+    Current  |   1.234776   .1559121     1.67   0.095     .9640711    1.581493
+             |
+htdiag_or_~p |   1.292962   .1127127     2.95   0.003     1.089891     1.53387
+chronic_re~e |   1.006172    .083445     0.07   0.941     .8552227    1.183763
+             |
+   asthmacat |
+Yes, no OCS  |   1.158269   .1088802     1.56   0.118     .9633729    1.392594
+Yes with ..  |    1.18363   .1654717     1.21   0.228     .8999492    1.556733
+             |
+chronic_ca~e |   1.961839   .1446936     9.14   0.000     1.697789    2.266955
+             |
+     diabcat |
+Controlle..  |   .9606624    .085558    -0.45   0.652     .8067919    1.143879
+Uncontrol..  |    1.39083   .1325337     3.46   0.001     1.153884    1.676432
+Diabetes,..  |   1.171638   .3097525     0.60   0.549     .6978408    1.967118
+             |
+cancer_exh~t |
+  Last year  |   1.724041   .3289619     2.85   0.004     1.186127    2.505903
+2-5 years..  |   .9201089   .1724077    -0.44   0.657     .6372989     1.32842
+   5+ years  |   .8615365   .1025364    -1.25   0.210     .6822873    1.087878
+             |
+cancer_hae~t |
+  Last year  |   .7150052   .4151198    -0.58   0.563      .229148    2.231014
+2-5 years..  |   1.343306   .4530229     0.88   0.382     .6936046    2.601586
+   5+ years  |   .7222261   .2313656    -1.02   0.310     .3854697    1.353182
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.400387   .1157824     4.07   0.000      1.19089    1.646738
+Stage 4 e..  |   1.748488   .2717445     3.60   0.000     1.289352    2.371121
+Stage 5 e..  |   2.252718   .4266741     4.29   0.000     1.554124    3.265336
+             |
+chronic_li~e |   1.544043   .3241217     2.07   0.039      1.02324    2.329923
+      stroke |   1.247851   .1258191     2.20   0.028     1.024088    1.520507
+    dementia |   .7400066   .1655567    -1.35   0.178     .4773116    1.147279
+ other_neuro |   .7840867   .1469193    -1.30   0.194     .5430866    1.132033
+organ_tran~t |   1.031547   .3178715     0.10   0.920     .5638857    1.887066
+      spleen |   1.914057   .6485728     1.92   0.055     .9852076    3.718623
+ra_sle_pso~s |   1.130194   .1241489     1.11   0.265     .9112773      1.4017
+other_immu~n |   2.335803   .8945356     2.22   0.027     1.102691    4.947871
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificcirculatory_cflu_FULLADJ
+> .ster not found)
+file analysis/output/models/an_cox_causespecificcirculatory_cflu_FULLADJ.ster s
+> aved
+
+         failure _d:  CSfail_circulatory
+   analysis time _t:  (CSexit_circulatory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -3951.1409
+Iteration 1:   log likelihood = -3738.3048
+Iteration 2:   log likelihood = -3698.2429
+Iteration 3:   log likelihood = -3698.2306
+Refining estimates:
+Iteration 0:   log likelihood = -3698.2306
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       95,315                  Number of obs    =      95,315
+No. of failures =        2,272
+Time at risk    =   15995367.5
+                                                LR chi2(1)       =      505.82
+Log likelihood  =   -3698.2306                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   3.116785   .1479496    23.95   0.000      2.83989    3.420679
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificcirculatory_c2019gp_MATC
+> HFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificcirculatory_c2019gp_MATCHFACONL
+> Y.ster saved
+
+         failure _d:  CSfail_circulatory
+   analysis time _t:  (CSexit_circulatory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2501.0896
+Iteration 1:   log likelihood = -2112.0447
+Iteration 2:   log likelihood = -2104.3234
+Iteration 3:   log likelihood =  -2104.316
+Iteration 4:   log likelihood =  -2104.316
+Refining estimates:
+Iteration 0:   log likelihood =  -2104.316
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       71,689                  Number of obs    =      71,689
+No. of failures =        1,694
+Time at risk    =   11988835.5
+                                                LR chi2(39)      =      793.55
+Log likelihood  =    -2104.316                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |    2.70726   .1732425    15.56   0.000     2.388141    3.069021
+             |
+   ethnicity |
+      Mixed  |   .5986708   .2440971    -1.26   0.208     .2692317     1.33122
+Asian or ..  |   1.120906   .1441292     0.89   0.375     .8712033    1.442179
+      Black  |   .8535523   .1799524    -0.75   0.453     .5646422    1.290289
+      Other  |   .5724909   .1953535    -1.63   0.102     .2932982    1.117449
+             |
+         imd |
+          2  |   .9464268    .091878    -0.57   0.571     .7824443    1.144776
+          3  |   .8724806   .0881646    -1.35   0.177     .7157172     1.06358
+          4  |   1.079026   .1069727     0.77   0.443     .8884748    1.310444
+5 most de..  |   1.208937   .1218595     1.88   0.060     .9922093    1.473003
+             |
+   obese4cat |
+Obese I ..)  |   .9524761   .0781065    -0.59   0.553     .8110591    1.118551
+Obese II..)  |   1.205126   .1481529     1.52   0.129     .9470862    1.533471
+Obese II..)  |   1.352364   .2396515     1.70   0.088     .9555482    1.913967
+             |
+smoke_nomiss |
+     Former  |   1.172911   .0840875     2.22   0.026     1.019157     1.34986
+    Current  |   1.355384   .1608775     2.56   0.010     1.074061    1.710393
+             |
+htdiag_or_~p |   1.265431   .0963853     3.09   0.002     1.089944    1.469172
+chronic_re~e |   1.258362   .1072269     2.70   0.007     1.064814    1.487092
+             |
+   asthmacat |
+Yes, no OCS  |   .9999339   .0950158    -0.00   0.999     .8300197    1.204632
+Yes with ..  |   .9054122   .1564337    -0.58   0.565     .6453257    1.270322
+             |
+chronic_ca~e |    2.38155   .1630779    12.67   0.000     2.082444    2.723618
+             |
+     diabcat |
+Controlle..  |   1.021759   .0806861     0.27   0.785     .8752478    1.192796
+Uncontrol..  |   1.312453   .1434457     2.49   0.013     1.059378    1.625985
+Diabetes,..  |   1.616211   .3614704     2.15   0.032     1.042616     2.50537
+             |
+cancer_exh~t |
+  Last year  |   1.257298   .2982986     0.97   0.335     .7897462    2.001654
+2-5 years..  |   1.363552   .2047166     2.07   0.039     1.015961    1.830066
+   5+ years  |   .9271953    .098591    -0.71   0.477     .7527675    1.142041
+             |
+cancer_hae~t |
+  Last year  |   .8342126   .6170558    -0.25   0.806     .1957287    3.555486
+2-5 years..  |   1.451893   .4961371     1.09   0.275     .7431295    2.836645
+   5+ years  |   1.620832   .5047168     1.55   0.121     .8803982    2.983986
+             |
+reduced_ki~2 |
+Stage 3a/..  |    1.42028   .1048566     4.75   0.000     1.228942    1.641409
+Stage 4 e..  |   1.676543   .2686328     3.22   0.001     1.224691    2.295107
+Stage 5 e..  |   2.707735   .7434981     3.63   0.000     1.580813    4.638009
+             |
+chronic_li~e |   2.538743   .6083691     3.89   0.000     1.587237     4.06065
+      stroke |   1.530631   .1588987     4.10   0.000     1.248835    1.876014
+    dementia |   1.137427   .2539221     0.58   0.564     .7343434    1.761765
+ other_neuro |   1.264169   .2474188     1.20   0.231     .8614116    1.855236
+organ_tran~t |   .3347122   .2004851    -1.83   0.068     .1034715    1.082735
+      spleen |   1.657849   .9462842     0.89   0.376     .5416105    5.074609
+ra_sle_pso~s |   1.033488   .1174788     0.29   0.772       .82708    1.291408
+other_immu~n |   .3495808   .2160726    -1.70   0.089     .1040945    1.173998
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificcirculatory_c2019gp_FULL
+> ADJ.ster not found)
+file analysis/output/models/an_cox_causespecificcirculatory_c2019gp_FULLADJ.ste
+> r saved
+
+**************************************************
+cancer_ex_nmsc
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_cancer_ex_nmsc != 0 & CSfail_cancer_ex_nmsc < .
+obs. time interval:  (origin, CSexit_cancer_ex_nmsc]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         30  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,118  observations remaining, representing
+      1,765  failures in single-record/single-failure data
+ 17593819.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_cancer_ex_nmsc
+   analysis time _t:  (CSexit_cancer_ex_nmsc-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -7323.2837
+Iteration 1:   log likelihood = -7260.0047
+Iteration 2:   log likelihood = -7259.7787
+Iteration 3:   log likelihood = -7259.7787
+Refining estimates:
+Iteration 0:   log likelihood = -7259.7787
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,610                  Number of obs    =      22,610
+No. of failures =          746
+Time at risk    =    3793937.5
+                                                LR chi2(11)      =      127.01
+Log likelihood  =   -7259.7787                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .6533132   .0509062    -5.46   0.000     .5607841    .7611094
+         age |   1.018557   .0022521     8.32   0.000     1.014152     1.02298
+        male |   1.362028   .1016061     4.14   0.000     1.176758    1.576467
+             |
+ region_real |
+East Midl..  |   1.378246   .1647596     2.68   0.007     1.090365    1.742136
+     London  |   .9263099   .1540774    -0.46   0.645     .6686087    1.283337
+ North East  |   1.207553   .1916287     1.19   0.235     .8847644    1.648105
+ North West  |   1.285828    .179731     1.80   0.072     .9776948    1.691074
+ South East  |   1.134019   .2093978     0.68   0.496     .7896687    1.628529
+ South West  |    .988923   .1476978    -0.07   0.941     .7379614     1.32523
+West Midl..  |   1.308186   .2273079     1.55   0.122     .9306067    1.838961
+Yorkshire..  |   .9398355   .1293302    -0.45   0.652     .7176596    1.230793
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_cflu_MATC
+> HFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_cflu_MATCHFACONL
+> Y.ster saved
+
+         failure _d:  CSfail_cancer_ex_nmsc
+   analysis time _t:  (CSexit_cancer_ex_nmsc-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -5382.1765
+Iteration 1:   log likelihood = -4837.6023
+Iteration 2:   log likelihood = -4834.4626
+Iteration 3:   log likelihood = -4593.3867
+Iteration 4:   log likelihood = -4581.7134
+Iteration 5:   log likelihood = -4581.6074
+Iteration 6:   log likelihood = -4581.6074
+Refining estimates:
+Iteration 0:   log likelihood = -4581.6074
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,564                  Number of obs    =      17,564
+No. of failures =          563
+Time at risk    =    2926278.5
+                                                LR chi2(49)      =     1601.14
+Log likelihood  =   -4581.6074                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .7331646    .070087    -3.25   0.001     .6078981    .8842442
+         age |   1.007866   .0037681     2.10   0.036     1.000508    1.015278
+        male |   1.081071   .0981059     0.86   0.390      .904917    1.291516
+             |
+ region_real |
+East Midl..  |    1.66275   .2413082     3.50   0.000     1.251111    2.209828
+     London  |   1.231262   .2474052     1.04   0.301     .8304492    1.825525
+ North East  |   1.302467    .241096     1.43   0.153     .9061567    1.872105
+ North West  |   1.292418   .2205546     1.50   0.133     .9250026    1.805771
+ South East  |   1.083575   .2457132     0.35   0.723     .6947666    1.689969
+ South West  |    1.17427   .2188563     0.86   0.389     .8149371    1.692045
+West Midl..  |    1.38132   .2896609     1.54   0.123     .9157958    2.083484
+Yorkshire..  |   .9566269   .1613607    -0.26   0.793     .6873291    1.331437
+             |
+   ethnicity |
+      Mixed  |   1.372189   .5441468     0.80   0.425     .6307639    2.985116
+Asian or ..  |   .8481295   .1590558    -0.88   0.380     .5872597    1.224882
+      Black  |   .6626348   .2179639    -1.25   0.211     .3477636    1.262596
+      Other  |    .868431   .2882239    -0.43   0.671     .4531372    1.664336
+             |
+         imd |
+          2  |   .8565311   .1138963    -1.16   0.244     .6600176    1.111554
+          3  |   .8303833   .1124768    -1.37   0.170      .636769    1.082867
+          4  |   .9276019   .1264693    -0.55   0.581     .7100823    1.211754
+5 most de..  |   .9336875   .1326619    -0.48   0.629     .7067397    1.233512
+             |
+   obese4cat |
+Obese I ..)  |   .9186867   .1035861    -0.75   0.452     .7365303    1.145893
+Obese II..)  |   .6903714   .1182499    -2.16   0.031     .4934978    .9657849
+Obese II..)  |   .9451747   .2186933    -0.24   0.807     .6005679    1.487517
+             |
+smoke_nomiss |
+     Former  |   1.075565    .111155     0.70   0.481     .8783525    1.317058
+    Current  |   1.419048   .2100947     2.36   0.018     1.061632    1.896794
+             |
+htdiag_or_~p |   1.080445   .1050958     0.80   0.426     .8929054    1.307373
+chronic_re~e |   .9503756   .1068252    -0.45   0.651     .7624609    1.184603
+             |
+   asthmacat |
+Yes, no OCS  |   .6405159   .0963624    -2.96   0.003     .4769478    .8601791
+Yes with ..  |   .6528368   .1555538    -1.79   0.074     .4092472    1.041414
+             |
+chronic_ca~e |   .8765382   .0970285    -1.19   0.234     .7055812    1.088917
+             |
+     diabcat |
+Controlle..  |   .9659341   .1173502    -0.29   0.775     .7612652    1.225629
+Uncontrol..  |   .8498649   .1377241    -1.00   0.315      .618599    1.167591
+Diabetes,..  |   1.265588   .4556995     0.65   0.513     .6248855    2.563209
+             |
+cancer_exh~t |
+  Last year  |   37.98535    4.20325    32.87   0.000     30.57925    47.18516
+2-5 years..  |   11.73104    1.50519    19.19   0.000     9.122633    15.08525
+   5+ years  |   4.004284    .550225    10.10   0.000     3.058878    5.241888
+             |
+cancer_hae~t |
+  Last year  |    41.8101   7.001962    22.29   0.000     30.11133    58.05404
+2-5 years..  |   10.56923   1.730981    14.40   0.000     7.667213    14.56966
+   5+ years  |   5.688733   .9698825    10.20   0.000     4.072796    7.945815
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .9067909   .1083316    -0.82   0.413     .7174912    1.146035
+Stage 4 e..  |   .6015929   .1909943    -1.60   0.109     .3228958    1.120838
+Stage 5 e..  |   1.104166   .3663901     0.30   0.765      .576215    2.115849
+             |
+chronic_li~e |   1.399639   .4164245     1.13   0.258     .7812038    2.507656
+      stroke |   .7767536   .1423732    -1.38   0.168     .5423309    1.112506
+    dementia |   .0961005   .0964621    -2.33   0.020     .0134376    .6872744
+ other_neuro |   .6427429   .1972265    -1.44   0.150     .3522451    1.172815
+organ_tran~t |   .8245783   .4647777    -0.34   0.732     .2731793    2.488949
+      spleen |   .5489513   .3210226    -1.03   0.305     .1744848    1.727071
+ra_sle_pso~s |   1.142507   .1603303     0.95   0.342     .8677766    1.504214
+other_immu~n |   2.180505   .6995554     2.43   0.015     1.162712    4.089232
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_cflu_FULL
+> ADJ.ster not found)
+file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_cflu_FULLADJ.ste
+> r saved
+
+         failure _d:  CSfail_cancer_ex_nmsc
+   analysis time _t:  (CSexit_cancer_ex_nmsc-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2528.8285
+Iteration 1:   log likelihood = -2439.6368
+Iteration 2:   log likelihood = -2429.3114
+Iteration 3:   log likelihood = -2429.3003
+Refining estimates:
+Iteration 0:   log likelihood = -2429.3003
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       95,396                  Number of obs    =      95,396
+No. of failures =        1,440
+Time at risk    =     16067554
+                                                LR chi2(1)       =      199.06
+Log likelihood  =   -2429.3003                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   2.447231   .1460044    15.00   0.000     2.177166    2.750797
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_c2019gp_M
+> ATCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_c2019gp_MATCHFAC
+> ONLY.ster saved
+
+         failure _d:  CSfail_cancer_ex_nmsc
+   analysis time _t:  (CSexit_cancer_ex_nmsc-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1554.1319
+Iteration 1:   log likelihood = -919.52385
+Iteration 2:   log likelihood = -911.24721
+Iteration 3:   log likelihood = -911.15223
+Iteration 4:   log likelihood = -911.15211
+Refining estimates:
+Iteration 0:   log likelihood = -911.15211
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       71,752                  Number of obs    =      71,752
+No. of failures =        1,048
+Time at risk    =   12041648.5
+                                                LR chi2(39)      =     1285.96
+Log likelihood  =   -911.15211                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.927547   .2084683     6.07   0.000     1.559357    2.382672
+             |
+   ethnicity |
+      Mixed  |   1.121783   .6508816     0.20   0.843     .3597695    3.497788
+Asian or ..  |   .6148435   .1529908    -1.95   0.051     .3775383    1.001309
+      Black  |   .9032226   .3183412    -0.29   0.773     .4526771    1.802192
+      Other  |   .7326607   .3371199    -0.68   0.499       .29733    1.805374
+             |
+         imd |
+          2  |   1.032931   .1525262     0.22   0.826     .7733568     1.37963
+          3  |    1.01731   .1519689     0.11   0.909     .7590988    1.363353
+          4  |   1.031813   .1574655     0.21   0.837     .7650653    1.391564
+5 most de..  |   1.163574   .1834889     0.96   0.337     .8542098    1.584979
+             |
+   obese4cat |
+Obese I ..)  |   .9509874   .1193588    -0.40   0.689     .7436013    1.216212
+Obese II..)  |   .7728328   .1659802    -1.20   0.230     .5073108    1.177327
+Obese II..)  |   .7809127   .2850495    -0.68   0.498     .3818529    1.597014
+             |
+smoke_nomiss |
+     Former  |    1.08354   .1188394     0.73   0.464      .873952     1.34339
+    Current  |   1.748426   .3013066     3.24   0.001     1.247267    2.450953
+             |
+htdiag_or_~p |   .9255919   .1000192    -0.72   0.474     .7489261    1.143932
+chronic_re~e |   1.268852   .1723566     1.75   0.080     .9722691    1.655904
+             |
+   asthmacat |
+Yes, no OCS  |   1.055035   .1630094     0.35   0.729     .7793831    1.428179
+Yes with ..  |   .5936008   .1949649    -1.59   0.112      .311833     1.12997
+             |
+chronic_ca~e |   1.045382   .1231526     0.38   0.706     .8298474    1.316898
+             |
+     diabcat |
+Controlle..  |   1.099658   .1420037     0.74   0.462     .8537646    1.416371
+Uncontrol..  |   .8211753   .1615691    -1.00   0.317     .5584174    1.207571
+Diabetes,..  |   .8592136   .3282793    -0.40   0.691     .4063339    1.816851
+             |
+cancer_exh~t |
+  Last year  |   45.95584   9.759468    18.02   0.000     30.30919    69.67984
+2-5 years..  |   11.84417   1.886444    15.52   0.000     8.668261    16.18367
+   5+ years  |   4.975539   .6331955    12.61   0.000     3.877169    6.385067
+             |
+cancer_hae~t |
+  Last year  |   74.18029   44.83418     7.13   0.000      22.6896    242.5215
+2-5 years..  |   21.70517   7.767721     8.60   0.000     10.76316    43.77098
+   5+ years  |   8.953965   2.766067     7.10   0.000     4.887215    16.40474
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .9391666   .1142982    -0.52   0.606     .7398607    1.192162
+Stage 4 e..  |   1.189801   .3802221     0.54   0.587      .636001    2.225825
+Stage 5 e..  |   6.196181   3.385124     3.34   0.001     2.123694    18.07824
+             |
+chronic_li~e |     2.5994   1.199739     2.07   0.038     1.051976    6.423038
+      stroke |   .9726001    .204507    -0.13   0.895     .6441005    1.468639
+    dementia |    .314506   .1718263    -2.12   0.034     .1077918    .9176391
+ other_neuro |   .7277516   .2299783    -1.01   0.315     .3917358    1.351989
+organ_tran~t |     .41661   .3610353    -1.01   0.312     .0762213    2.277105
+      spleen |   .5675057   .5377237    -0.60   0.550      .088601    3.634978
+ra_sle_pso~s |   1.577495   .2750202     2.61   0.009     1.120907    2.220068
+other_immu~n |   1.429357   .9553059     0.53   0.593      .385694    5.297103
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_c2019gp_F
+> ULLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificcancer_ex_nmsc_c2019gp_FULLADJ.
+> ster saved
+
+**************************************************
+respiratory
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_respiratory != 0 & CSfail_respiratory < .
+obs. time interval:  (origin, CSexit_respiratory]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+        138  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,010  observations remaining, representing
+      1,465  failures in single-record/single-failure data
+ 17603613.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_respiratory
+   analysis time _t:  (CSexit_respiratory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -9062.1567
+Iteration 1:   log likelihood = -8963.5649
+Iteration 2:   log likelihood = -8962.8682
+Iteration 3:   log likelihood =  -8962.868
+Refining estimates:
+Iteration 0:   log likelihood =  -8962.868
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,502                  Number of obs    =      22,502
+No. of failures =          930
+Time at risk    =      3755597
+                                                LR chi2(11)      =      198.58
+Log likelihood  =    -8962.868                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .6058871   .0422133    -7.19   0.000      .528551    .6945388
+         age |   1.022196   .0020461    10.97   0.000     1.018194    1.026215
+        male |   1.048929   .0692023     0.72   0.469     .9216983    1.193723
+             |
+ region_real |
+East Midl..  |   1.095132   .1195771     0.83   0.405     .8841461    1.356466
+     London  |   .8451892   .1260013    -1.13   0.259     .6310392    1.132013
+ North East  |   1.126729   .1583929     0.85   0.396     .8553813    1.484156
+ North West  |   1.504628   .1751281     3.51   0.000      1.19772     1.89018
+ South East  |   .9545626   .1614459    -0.27   0.783     .6852358    1.329746
+ South West  |   .7910437   .1081121    -1.72   0.086     .6051549    1.034033
+West Midl..  |   1.137035   .1819362     0.80   0.422     .8309475    1.555873
+Yorkshire..  |   1.018814   .1194411     0.16   0.874     .8096622    1.281993
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificrespiratory_cflu_MATCHFA
+> CONLY.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratory_cflu_MATCHFACONLY.s
+> ter saved
+
+         failure _d:  CSfail_respiratory
+   analysis time _t:  (CSexit_respiratory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -6677.0678
+Iteration 1:   log likelihood =  -6316.834
+Iteration 2:   log likelihood = -6233.7249
+Iteration 3:   log likelihood = -6193.9661
+Iteration 4:   log likelihood = -6193.9242
+Iteration 5:   log likelihood = -6193.9242
+Refining estimates:
+Iteration 0:   log likelihood = -6193.9242
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,484                  Number of obs    =      17,484
+No. of failures =          704
+Time at risk    =      2896036
+                                                LR chi2(49)      =      966.29
+Log likelihood  =   -6193.9242                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .7814823   .0653766    -2.95   0.003     .6633001    .9207214
+         age |   1.009946   .0033979     2.94   0.003     1.003308    1.016628
+        male |   1.000688   .0785514     0.01   0.993     .8579888    1.167121
+             |
+ region_real |
+East Midl..  |   1.073812   .1356292     0.56   0.573     .8383323    1.375436
+     London  |   .9950016   .1675815    -0.03   0.976     .7152561    1.384159
+ North East  |   .7132276    .120295    -2.00   0.045     .5124625    .9926456
+ North West  |   1.219045    .164013     1.47   0.141     .9364777    1.586874
+ South East  |   .9160771   .1903477    -0.42   0.673     .6096274    1.376574
+ South West  |   .7008808   .1210601    -2.06   0.040     .4995969    .9832604
+West Midl..  |   1.071332   .1924646     0.38   0.701     .7533662      1.5235
+Yorkshire..  |   .8765158   .1207818    -0.96   0.339     .6690618    1.148294
+             |
+   ethnicity |
+      Mixed  |   1.026477   .4254771     0.06   0.950     .4555373    2.312992
+Asian or ..  |   .8201147     .13851    -1.17   0.240     .5889986    1.141918
+      Black  |   .6269861   .1958439    -1.49   0.135     .3399215    1.156478
+      Other  |   .8889331   .3240111    -0.32   0.747     .4351219    1.816048
+             |
+         imd |
+          2  |   1.107814   .1458944     0.78   0.437       .85579    1.434057
+          3  |   1.059074   .1380769     0.44   0.660     .8202591     1.36742
+          4  |   1.035948    .134532     0.27   0.786      .803152    1.336221
+5 most de..  |   1.177826   .1530024     1.26   0.208     .9130785    1.519338
+             |
+   obese4cat |
+Obese I ..)  |   .7888498   .0818165    -2.29   0.022     .6437405    .9666689
+Obese II..)  |   .7247817   .1075832    -2.17   0.030     .5418248    .9695172
+Obese II..)  |   .5364688   .1172656    -2.85   0.004     .3495281    .8233923
+             |
+smoke_nomiss |
+     Former  |   1.274028    .138406     2.23   0.026     1.029692    1.576342
+    Current  |   1.832429   .2320868     4.78   0.000     1.429611    2.348747
+             |
+htdiag_or_~p |   .9069297   .0775326    -1.14   0.253     .7670174    1.072364
+chronic_re~e |   6.773754   .6098337    21.25   0.000     5.678017    8.080946
+             |
+   asthmacat |
+Yes, no OCS  |   1.250235   .1238234     2.25   0.024     1.029647     1.51808
+Yes with ..  |   1.396933   .1707692     2.73   0.006     1.099309    1.775135
+             |
+chronic_ca~e |   1.186512   .1045742     1.94   0.052     .9982766    1.410242
+             |
+     diabcat |
+Controlle..  |   .8799982   .0937154    -1.20   0.230     .7142217    1.084253
+Uncontrol..  |   1.024523   .1322582     0.19   0.851     .7954956    1.319488
+Diabetes,..  |   1.144799    .323801     0.48   0.633     .6576138     1.99291
+             |
+cancer_exh~t |
+  Last year  |   1.334455   .3055812     1.26   0.208     .8518915     2.09037
+2-5 years..  |   1.170165   .2281786     0.81   0.420     .7984824    1.714861
+   5+ years  |   1.155808   .1543286     1.08   0.278     .8896708    1.501557
+             |
+cancer_hae~t |
+  Last year  |   .8047764   .5726382    -0.31   0.760     .1995277     3.24599
+2-5 years..  |   .4664009   .2706562    -1.31   0.189     .1495547    1.454516
+   5+ years  |    .742227   .2664231    -0.83   0.406     .3672798    1.499949
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .8858194   .0948063    -1.13   0.257     .7181975    1.092563
+Stage 4 e..  |   .7650109   .2121502    -0.97   0.334     .4442377    1.317407
+Stage 5 e..  |   1.999323   .5359694     2.58   0.010     1.182215    3.381187
+             |
+chronic_li~e |   1.451126   .3198496     1.69   0.091     .9420798    2.235232
+      stroke |   .9621358   .1342769    -0.28   0.782     .7318829    1.264827
+    dementia |   .7608241   .2341047    -0.89   0.374     .4162657    1.390586
+ other_neuro |   1.215036   .2225765     1.06   0.288     .8485192    1.739869
+organ_tran~t |   .5258788   .2599449    -1.30   0.194     .1995869    1.385605
+      spleen |   1.629923   .6734726     1.18   0.237     .7251979    3.663342
+ra_sle_pso~s |   1.116538   .1343495     0.92   0.360     .8819648    1.413501
+other_immu~n |   2.598841     .93531     2.65   0.008      1.28362    5.261662
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificrespiratory_cflu_FULLADJ
+> .ster not found)
+file analysis/output/models/an_cox_causespecificrespiratory_cflu_FULLADJ.ster s
+> aved
+
+         failure _d:  CSfail_respiratory
+   analysis time _t:  (CSexit_respiratory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1801.1037
+Iteration 1:   log likelihood =   -1560.63
+Iteration 2:   log likelihood = -1476.6559
+Iteration 3:   log likelihood = -1473.4239
+Iteration 4:   log likelihood = -1473.4239
+Refining estimates:
+Iteration 0:   log likelihood = -1473.4239
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,350                  Number of obs    =      95,350
+No. of failures =        1,024
+Time at risk    =   16100843.5
+                                                LR chi2(1)       =      655.36
+Log likelihood  =   -1473.4239                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |    5.90395   .3954773    26.51   0.000     5.177556    6.732255
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificrespiratory_c2019gp_MATC
+> HFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratory_c2019gp_MATCHFACONL
+> Y.ster saved
+
+         failure _d:  CSfail_respiratory
+   analysis time _t:  (CSexit_respiratory-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1166.9897
+Iteration 1:   log likelihood = -726.14278
+Iteration 2:   log likelihood = -718.40766
+Iteration 3:   log likelihood = -718.37175
+Iteration 4:   log likelihood = -718.37174
+Refining estimates:
+Iteration 0:   log likelihood = -718.37174
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,720                  Number of obs    =      71,720
+No. of failures =          781
+Time at risk    =   12062653.5
+                                                LR chi2(39)      =      897.24
+Log likelihood  =   -718.37174                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   4.360328    .455208    14.11   0.000     3.553495    5.350355
+             |
+   ethnicity |
+      Mixed  |   .6434228   .4963774    -0.57   0.568     .1418487    2.918553
+Asian or ..  |   1.213417   .2618628     0.90   0.370     .7949055    1.852271
+      Black  |   .3600184   .1523827    -2.41   0.016     .1570515    .8252915
+      Other  |   1.001748   .4809351     0.00   0.997     .3909311    2.566947
+             |
+         imd |
+          2  |   1.087006   .1928959     0.47   0.638     .7676816    1.539157
+          3  |   1.007323    .175155     0.04   0.967     .7164078    1.416371
+          4  |   1.181067   .2079054     0.95   0.344     .8364425    1.667682
+5 most de..  |   1.242057    .225234     1.20   0.232     .8705328     1.77214
+             |
+   obese4cat |
+Obese I ..)  |   .8936533   .1301156    -0.77   0.440     .6717914    1.188786
+Obese II..)  |   .9252021   .2050115    -0.35   0.726       .59927    1.428403
+Obese II..)  |   .7788965   .2514589    -0.77   0.439     .4136927    1.466499
+             |
+smoke_nomiss |
+     Former  |   1.426937   .1885182     2.69   0.007     1.101411    1.848674
+    Current  |   2.011889   .3762913     3.74   0.000     1.394442    2.902736
+             |
+htdiag_or_~p |   .9710911   .1190282    -0.24   0.811     .7637072     1.23479
+chronic_re~e |   7.336212   .9252576    15.80   0.000     5.729499    9.393493
+             |
+   asthmacat |
+Yes, no OCS  |   1.282781   .1913697     1.67   0.095     .9575624    1.718453
+Yes with ..  |   2.295165   .5342488     3.57   0.000     1.454383    3.622007
+             |
+chronic_ca~e |   1.239497   .1568363     1.70   0.090     .9672551    1.588364
+             |
+     diabcat |
+Controlle..  |   .9033454   .1330745    -0.69   0.490     .6768007    1.205721
+Uncontrol..  |   .9918909    .210013    -0.04   0.969     .6549966    1.502065
+Diabetes,..  |   .9055896   .4373725    -0.21   0.837     .3514202    2.333652
+             |
+cancer_exh~t |
+  Last year  |   1.486948   .5908721     1.00   0.318     .6824201    3.239961
+2-5 years..  |   2.006054   .5291907     2.64   0.008     1.196185     3.36424
+   5+ years  |   1.011228   .1949029     0.06   0.954       .69309    1.475396
+             |
+cancer_hae~t |
+  Last year  |   .4169839   .5884606    -0.62   0.535     .0262348    6.627675
+2-5 years..  |   .4821041   .3944175    -0.89   0.373     .0969971      2.3962
+   5+ years  |   1.137082   .7084666     0.21   0.837     .3353089    3.856014
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .9386995   .1356751    -0.44   0.662     .7071279    1.246107
+Stage 4 e..  |   1.442319   .4753059     1.11   0.266     .7560559    2.751495
+Stage 5 e..  |   3.915737   2.393532     2.23   0.026     1.181703    12.97534
+             |
+chronic_li~e |   .9124317   .3861824    -0.22   0.829     .3980461    2.091546
+      stroke |   1.656507   .3174475     2.63   0.008     1.137815    2.411652
+    dementia |   .7883974   .2987446    -0.63   0.530     .3751479    1.656868
+ other_neuro |   1.023536   .3196483     0.07   0.941     .5549763    1.887694
+organ_tran~t |   2.673883   3.623116     0.73   0.468     .1878291    38.06466
+      spleen |   .6375087   .7138451    -0.40   0.688     .0710167    5.722845
+ra_sle_pso~s |   1.200974   .2180932     1.01   0.313     .8413139    1.714388
+other_immu~n |   1.168806   1.066519     0.17   0.864     .1954488     6.98959
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificrespiratory_c2019gp_FULL
+> ADJ.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratory_c2019gp_FULLADJ.ste
+> r saved
+
+**************************************************
+respiratorylrti
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_respiratorylrti != 0 & CSfail_respiratorylrti < .
+obs. time interval:  (origin, CSexit_respiratorylrti]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+      1,061  observations end on or before enter()
+------------------------------------------------------------------------------
+    101,087  observations remaining, representing
+      1,848  failures in single-record/single-failure data
+ 17428272.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_respiratorylrti
+   analysis time _t:  (CSexit_respiratorylrti-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -12019.117
+Iteration 1:   log likelihood = -11805.541
+Iteration 2:   log likelihood = -11801.934
+Iteration 3:   log likelihood = -11801.931
+Refining estimates:
+Iteration 0:   log likelihood = -11801.931
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       21,579                  Number of obs    =      21,579
+No. of failures =        1,232
+Time at risk    =    3584285.5
+                                                LR chi2(11)      =      434.37
+Log likelihood  =   -11801.931                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.058112   .0682941     0.88   0.381     .9323786    1.200801
+         age |   1.035869   .0019582    18.64   0.000     1.032039    1.039715
+        male |   1.213844    .069963     3.36   0.001      1.08418    1.359014
+             |
+ region_real |
+East Midl..  |   1.427382   .1353102     3.75   0.000     1.185358    1.718821
+     London  |   1.040196   .1319382     0.31   0.756     .8112394    1.333771
+ North East  |   1.328321   .1647445     2.29   0.022     1.041677    1.693843
+ North West  |   1.376701   .1502275     2.93   0.003     1.111617    1.704998
+ South East  |   1.010644    .155043     0.07   0.945     .7481956    1.365152
+ South West  |   .9268617   .1173183    -0.60   0.548     .7232249    1.187836
+West Midl..  |   1.161359   .1662982     1.04   0.296     .8771638    1.537632
+Yorkshire..  |   1.291348   .1299848     2.54   0.011     1.060139    1.572981
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificrespiratorylrti_cflu_MAT
+> CHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratorylrti_cflu_MATCHFACON
+> LY.ster saved
+
+         failure _d:  CSfail_respiratorylrti
+   analysis time _t:  (CSexit_respiratorylrti-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -8844.0725
+Iteration 1:   log likelihood = -8604.6197
+Iteration 2:   log likelihood = -8573.2138
+Iteration 3:   log likelihood = -8572.2001
+Iteration 4:   log likelihood = -8572.1922
+Iteration 5:   log likelihood = -8572.1922
+Refining estimates:
+Iteration 0:   log likelihood = -8572.1922
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       16,760                  Number of obs    =      16,760
+No. of failures =          931
+Time at risk    =      2765756
+                                                LR chi2(49)      =      543.76
+Log likelihood  =   -8572.1922                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.146688   .0877012     1.79   0.074     .9870595    1.332131
+         age |   1.028891    .003017     9.71   0.000     1.022995    1.034822
+        male |   1.147961   .0788268     2.01   0.044     1.003409    1.313338
+             |
+ region_real |
+East Midl..  |   1.328857   .1471218     2.57   0.010     1.069644    1.650887
+     London  |    1.04823   .1535498     0.32   0.748     .7866261    1.396834
+ North East  |   1.215564   .1709315     1.39   0.165      .922747    1.601301
+ North West  |    1.13279   .1474891     0.96   0.338     .8776531    1.462095
+ South East  |   1.146209   .2042492     0.77   0.444     .8083209    1.625339
+ South West  |   .8949879   .1403717    -0.71   0.479      .658132    1.217086
+West Midl..  |   1.156487   .1871075     0.90   0.369     .8422192    1.588021
+Yorkshire..  |    1.18894   .1412462     1.46   0.145       .94197    1.500662
+             |
+   ethnicity |
+      Mixed  |   1.073098   .3631436     0.21   0.835     .5528242    2.083012
+Asian or ..  |   .9610638   .1240711    -0.31   0.758     .7462152    1.237771
+      Black  |   .8659126   .1867385    -0.67   0.504     .5674244    1.321418
+      Other  |   .6294357    .214486    -1.36   0.174     .3227725    1.227457
+             |
+         imd |
+          2  |   1.044663   .1126756     0.41   0.685     .8456044    1.290582
+          3  |   1.088311   .1173146     0.79   0.432     .8810446    1.344338
+          4  |   1.109285   .1203429     0.96   0.339     .8968073    1.372105
+5 most de..  |   1.034498   .1169568     0.30   0.764     .8288879    1.291111
+             |
+   obese4cat |
+Obese I ..)  |   .7988239   .0711841    -2.52   0.012     .6708101    .9512673
+Obese II..)  |   .9337352   .1131511    -0.57   0.572     .7363329    1.184059
+Obese II..)  |   .8088109   .1396401    -1.23   0.219      .576618    1.134503
+             |
+smoke_nomiss |
+     Former  |   1.105866   .0888014     1.25   0.210     .9448238    1.294358
+    Current  |   1.383866   .1607112     2.80   0.005     1.102154    1.737584
+             |
+htdiag_or_~p |   .9112777   .0698089    -1.21   0.225      .784231    1.058906
+chronic_re~e |   1.750603   .1327558     7.38   0.000      1.50882    2.031131
+             |
+   asthmacat |
+Yes, no OCS  |   1.050396   .1000509     0.52   0.606     .8715168    1.265991
+Yes with ..  |   1.213265   .1567774     1.50   0.135     .9418112    1.562958
+             |
+chronic_ca~e |   1.303495   .0971951     3.55   0.000     1.126262    1.508617
+             |
+     diabcat |
+Controlle..  |   1.068113    .090858     0.77   0.439     .9040881    1.261897
+Uncontrol..  |   .9580292   .1059578    -0.39   0.698     .7713226     1.18993
+Diabetes,..  |   .9606001   .2711555    -0.14   0.887      .552418    1.670388
+             |
+cancer_exh~t |
+  Last year  |   2.079017   .3576104     4.25   0.000     1.484033    2.912546
+2-5 years..  |    1.52718   .2319539     2.79   0.005     1.133982    2.056714
+   5+ years  |   1.154396   .1271245     1.30   0.192     .9302905    1.432488
+             |
+cancer_hae~t |
+  Last year  |   2.249773   .8062486     2.26   0.024     1.114537    4.541328
+2-5 years..  |   2.366978   .5847046     3.49   0.000     1.458564    3.841165
+   5+ years  |   2.453257   .4483197     4.91   0.000     1.714709    3.509907
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.142608   .0959075     1.59   0.112     .9692811     1.34693
+Stage 4 e..  |   1.109684   .2082986     0.55   0.579     .7681042    1.603165
+Stage 5 e..  |   1.746433   .3842636     2.53   0.011     1.134655    2.688065
+             |
+chronic_li~e |   1.322461   .2828961     1.31   0.191     .8695546    2.011263
+      stroke |   1.168169   .1249613     1.45   0.146     .9472203    1.440656
+    dementia |   .9754524   .2010704    -0.12   0.904     .6512497    1.461049
+ other_neuro |   1.471129   .2128001     2.67   0.008     1.107959    1.953339
+organ_tran~t |    1.72321   .5254486     1.78   0.074      .947952    3.132494
+      spleen |   .8424293   .3796396    -0.38   0.704     .3482897    2.037634
+ra_sle_pso~s |   1.126605   .1201024     1.12   0.263     .9141739      1.3884
+other_immu~n |   1.872053   .6715182     1.75   0.080     .9268006    3.781377
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificrespiratorylrti_cflu_FUL
+> LADJ.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratorylrti_cflu_FULLADJ.st
+> er saved
+
+         failure _d:  CSfail_respiratorylrti
+   analysis time _t:  (CSexit_respiratorylrti-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2497.3314
+Iteration 1:   log likelihood = -1927.0894
+Iteration 2:   log likelihood = -1812.8737
+Iteration 3:   log likelihood = -1746.7824
+Iteration 4:   log likelihood = -1746.6796
+Refining estimates:
+Iteration 0:   log likelihood = -1746.6796
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       94,560                  Number of obs    =      94,560
+No. of failures =        1,429
+Time at risk    =   15951905.5
+                                                LR chi2(1)       =     1501.30
+Log likelihood  =   -1746.6796                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   9.987673   .6091787    37.73   0.000      8.86231    11.25594
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificrespiratorylrti_c2019gp_
+> MATCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratorylrti_c2019gp_MATCHFA
+> CONLY.ster saved
+
+         failure _d:  CSfail_respiratorylrti
+   analysis time _t:  (CSexit_respiratorylrti-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1542.8589
+Iteration 1:   log likelihood = -965.33559
+Iteration 2:   log likelihood = -934.68875
+Iteration 3:   log likelihood = -933.81241
+Iteration 4:   log likelihood =  -933.8122
+Refining estimates:
+Iteration 0:   log likelihood =  -933.8122
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       71,090                  Number of obs    =      71,090
+No. of failures =        1,052
+Time at risk    =   11950065.5
+                                                LR chi2(39)      =     1218.09
+Log likelihood  =    -933.8122                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   8.781484   .7728982    24.69   0.000     7.390092    10.43485
+             |
+   ethnicity |
+      Mixed  |   1.007879   .5945227     0.01   0.989     .3171801    3.202661
+Asian or ..  |   1.084382   .2179905     0.40   0.687     .7312527    1.608041
+      Black  |   .8213038   .2869429    -0.56   0.573     .4141097    1.628892
+      Other  |   .3363369   .1997688    -1.83   0.067     .1050025    1.077332
+             |
+         imd |
+          2  |   1.154239   .1775106     0.93   0.351     .8538648    1.560278
+          3  |   1.037918    .161446     0.24   0.811     .7651745     1.40788
+          4  |   1.539781   .2381651     2.79   0.005     1.137103    2.085059
+5 most de..  |   1.350526   .2154549     1.88   0.060     .9878875    1.846285
+             |
+   obese4cat |
+Obese I ..)  |   1.042457   .1313695     0.33   0.741     .8143111    1.334522
+Obese II..)  |   1.199965   .2298661     0.95   0.341     .8243505    1.746728
+Obese II..)  |   1.630957    .483876     1.65   0.099     .9118136    2.917285
+             |
+smoke_nomiss |
+     Former  |   1.284585   .1397248     2.30   0.021     1.037952    1.589821
+    Current  |   1.855005   .3342022     3.43   0.001     1.303138    2.640582
+             |
+htdiag_or_~p |   1.021521   .1164931     0.19   0.852     .8169158    1.277372
+chronic_re~e |   2.348114   .2916498     6.87   0.000      1.84075    2.995322
+             |
+   asthmacat |
+Yes, no OCS  |   1.013273   .1442717     0.09   0.926      .766533    1.339436
+Yes with ..  |   1.183813    .289581     0.69   0.490     .7329331     1.91206
+             |
+chronic_ca~e |   1.749903   .1861424     5.26   0.000     1.420592    2.155554
+             |
+     diabcat |
+Controlle..  |   1.098728   .1376438     0.75   0.452     .8595193    1.404511
+Uncontrol..  |   1.163318   .2087566     0.84   0.399     .8183721    1.653659
+Diabetes,..  |    1.33381    .486671     0.79   0.430     .6523997    2.726932
+             |
+cancer_exh~t |
+  Last year  |    3.62659   1.259713     3.71   0.000     1.835818    7.164193
+2-5 years..  |   1.344256   .3041808     1.31   0.191     .8627212    2.094563
+   5+ years  |   1.225756   .1908389     1.31   0.191     .9033993    1.663138
+             |
+cancer_hae~t |
+  Last year  |    3.82686   3.090969     1.66   0.097     .7858212    18.63637
+2-5 years..  |   2.414637   1.118316     1.90   0.057     .9741503    5.985189
+   5+ years  |   1.396218   .5465815     0.85   0.394     .6482325    3.007292
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.252592   .1424722     1.98   0.048     1.002288    1.565406
+Stage 4 e..  |   1.611645   .4171118     1.84   0.065     .9704404    2.676516
+Stage 5 e..  |   4.673379   2.373872     3.04   0.002     1.726863    12.64748
+             |
+chronic_li~e |   2.151148   .8178737     2.01   0.044     1.021035    4.532105
+      stroke |   1.575578    .249358     2.87   0.004     1.155381    2.148597
+    dementia |   1.640398   .4865351     1.67   0.095     .9172473    2.933675
+ other_neuro |   1.233908   .3180924     0.82   0.415     .7444739    2.045108
+organ_tran~t |   2.732462   2.873749     0.96   0.339     .3478082    21.46686
+      spleen |   2.039379   1.712903     0.85   0.396     .3931533    10.57874
+ra_sle_pso~s |   1.399878   .2299762     2.05   0.041       1.0145    1.931648
+other_immu~n |   .6291282   .6785085    -0.43   0.667     .0759848    5.208967
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificrespiratorylrti_c2019gp_
+> FULLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificrespiratorylrti_c2019gp_FULLADJ
+> .ster saved
+
+**************************************************
+digestive
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_digestive != 0 & CSfail_digestive < .
+obs. time interval:  (origin, CSexit_digestive]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         73  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,075  observations remaining, representing
+      2,753  failures in single-record/single-failure data
+   17475679  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_digestive
+   analysis time _t:  (CSexit_digestive-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -8874.8863
+Iteration 1:   log likelihood = -8846.7419
+Iteration 2:   log likelihood = -8846.5955
+Iteration 3:   log likelihood = -8846.5954
+Refining estimates:
+Iteration 0:   log likelihood = -8846.5954
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,568                  Number of obs    =      22,568
+No. of failures =          915
+Time at risk    =      3767919
+                                                LR chi2(11)      =       56.58
+Log likelihood  =   -8846.5954                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .9288431   .0675335    -1.02   0.310     .8054785    1.071102
+         age |    1.01217   .0019608     6.24   0.000     1.008334     1.01602
+        male |   .9492625   .0631747    -0.78   0.434     .8331779    1.081521
+             |
+ region_real |
+East Midl..  |   1.126921   .1261663     1.07   0.286     .9048897    1.403431
+     London  |   1.145389     .15641     0.99   0.320     .8764275     1.49689
+ North East  |   1.059756   .1596203     0.39   0.700     .7888569    1.423685
+ North West  |    1.17229   .1516815     1.23   0.219      .909701    1.510675
+ South East  |   1.169091   .1926792     0.95   0.343     .8463712    1.614864
+ South West  |   1.323138   .1655426     2.24   0.025       1.0354    1.690838
+West Midl..  |   .7374052   .1419257    -1.58   0.113     .5056832     1.07531
+Yorkshire..  |   1.208904   .1405954     1.63   0.103     .9624917      1.5184
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificdigestive_cflu_MATCHFACO
+> NLY.ster not found)
+file analysis/output/models/an_cox_causespecificdigestive_cflu_MATCHFACONLY.ste
+> r saved
+
+         failure _d:  CSfail_digestive
+   analysis time _t:  (CSexit_digestive-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -6608.0412
+Iteration 1:   log likelihood = -6599.6544
+Iteration 2:   log likelihood = -6520.4809
+Iteration 3:   log likelihood = -6511.7293
+Iteration 4:   log likelihood = -6511.3783
+Iteration 5:   log likelihood = -6511.3774
+Refining estimates:
+Iteration 0:   log likelihood = -6511.3774
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,532                  Number of obs    =      17,532
+No. of failures =          700
+Time at risk    =    2904600.5
+                                                LR chi2(49)      =      193.33
+Log likelihood  =   -6511.3774                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .9448808   .0811486    -0.66   0.509      .798498    1.118099
+         age |   1.006206   .0030424     2.05   0.041     1.000261    1.012187
+        male |   .8154519   .0641669    -2.59   0.010     .6989053    .9514334
+             |
+ region_real |
+East Midl..  |   1.000895   .1283672     0.01   0.994     .7784308    1.286937
+     London  |   1.188776   .1872207     1.10   0.272     .8730601    1.618661
+ North East  |   .8924633   .1546532    -0.66   0.511     .6354587    1.253411
+ North West  |    1.03012   .1540924     0.20   0.843     .7683507    1.381073
+ South East  |   .9519837   .2007982    -0.23   0.816     .6296351    1.439362
+ South West  |   1.326969   .1929006     1.95   0.052     .9979809    1.764409
+West Midl..  |   .7117506   .1549059    -1.56   0.118      .464592    1.090395
+Yorkshire..  |   1.076688   .1452076     0.55   0.584     .8265945     1.40245
+             |
+   ethnicity |
+      Mixed  |   .6604531   .2732829    -1.00   0.316     .2935155    1.486117
+Asian or ..  |   .7864637   .1141912    -1.65   0.098     .5916813    1.045369
+      Black  |   .8498545   .1860528    -0.74   0.457     .5533462    1.305246
+      Other  |   .3165736   .1439839    -2.53   0.011      .129817    .7720011
+             |
+         imd |
+          2  |   1.017637   .1221672     0.15   0.884     .8042779    1.287596
+          3  |   .9555093   .1174769    -0.37   0.711     .7509004    1.215871
+          4  |   .9192307   .1151602    -0.67   0.501      .719096    1.175066
+5 most de..  |   1.060738   .1355985     0.46   0.645     .8256495    1.362765
+             |
+   obese4cat |
+Obese I ..)  |   1.053957   .0986858     0.56   0.575     .8772465    1.266263
+Obese II..)  |   .8289123   .1158947    -1.34   0.180     .6302278    1.090234
+Obese II..)  |   .6616113    .126327    -2.16   0.031     .4550675    .9619001
+             |
+smoke_nomiss |
+     Former  |   1.312948   .1177065     3.04   0.002     1.101379    1.565159
+    Current  |   1.139979   .1529351     0.98   0.329     .8764011    1.482828
+             |
+htdiag_or_~p |   1.135164   .1014618     1.42   0.156     .9527471    1.352507
+chronic_re~e |   .9704702   .0967656    -0.30   0.764     .7981947    1.179928
+             |
+   asthmacat |
+Yes, no OCS  |   1.192031     .11999     1.75   0.081     .9786001     1.45201
+Yes with ..  |    1.27263   .1848118     1.66   0.097     .9573932    1.691663
+             |
+chronic_ca~e |   1.282895   .1194337     2.68   0.007     1.068924    1.539698
+             |
+     diabcat |
+Controlle..  |   .9691539   .1005507    -0.30   0.763     .7908238    1.187697
+Uncontrol..  |   .7499742   .1028108    -2.10   0.036     .5732693    .9811467
+Diabetes,..  |   1.099221   .3244081     0.32   0.749     .6164162    1.960182
+             |
+cancer_exh~t |
+  Last year  |   1.574045   .3599531     1.98   0.047     1.005458    2.464167
+2-5 years..  |   .8417333   .1972697    -0.74   0.462     .5317234    1.332488
+   5+ years  |   .8046893   .1256506    -1.39   0.164     .5925361    1.092802
+             |
+cancer_hae~t |
+  Last year  |   2.313345   .8872806     2.19   0.029     1.090845    4.905889
+2-5 years..  |   1.744647   .5602653     1.73   0.083     .9297326    3.273839
+   5+ years  |   1.395967   .3943503     1.18   0.238     .8024481    2.428473
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .9448772   .1044516    -0.51   0.608     .7608152    1.173469
+Stage 4 e..  |    1.62907   .3544591     2.24   0.025     1.063487    2.495442
+Stage 5 e..  |   1.989163   .4696513     2.91   0.004     1.252269    3.159682
+             |
+chronic_li~e |   4.075846   .6571799     8.71   0.000     2.971475    5.590666
+      stroke |   1.114445     .15489     0.78   0.436     .8487019    1.463396
+    dementia |   .5749023   .2065147    -1.54   0.123     .2843334    1.162412
+ other_neuro |   .9693643   .1920602    -0.16   0.875     .6574132     1.42934
+organ_tran~t |   1.028862   .3410497     0.09   0.932     .5372778    1.970224
+      spleen |   1.272833   .5270945     0.58   0.560     .5653005    2.865917
+ra_sle_pso~s |   1.053083   .1337285     0.41   0.684     .8210513    1.350686
+other_immu~n |   1.410319   .6372065     0.76   0.447     .5817415    3.419046
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificdigestive_cflu_FULLADJ.s
+> ter not found)
+file analysis/output/models/an_cox_causespecificdigestive_cflu_FULLADJ.ster sav
+> ed
+
+         failure _d:  CSfail_digestive
+   analysis time _t:  (CSexit_digestive-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -4146.7555
+Iteration 1:   log likelihood = -4088.8342
+Iteration 2:   log likelihood = -4086.2099
+Iteration 3:   log likelihood = -4086.2083
+Refining estimates:
+Iteration 0:   log likelihood = -4086.2083
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,366                  Number of obs    =      95,366
+No. of failures =        2,376
+Time at risk    =     15956420
+                                                LR chi2(1)       =      121.09
+Log likelihood  =   -4086.2083                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.790044   .0901882    11.56   0.000     1.621725    1.975831
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificdigestive_c2019gp_MATCHF
+> ACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificdigestive_c2019gp_MATCHFACONLY.
+> ster saved
+
+         failure _d:  CSfail_digestive
+   analysis time _t:  (CSexit_digestive-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2688.2962
+Iteration 1:   log likelihood = -2540.4442
+Iteration 2:   log likelihood = -2537.0792
+Iteration 3:   log likelihood = -2537.0703
+Refining estimates:
+Iteration 0:   log likelihood = -2537.0703
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,729                  Number of obs    =      71,729
+No. of failures =        1,805
+Time at risk    =     11954919
+                                                LR chi2(39)      =      302.45
+Log likelihood  =   -2537.0703                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.536424   .1009483     6.54   0.000     1.350779    1.747584
+             |
+   ethnicity |
+      Mixed  |   1.075849   .3055487     0.26   0.797     .6166012    1.877148
+Asian or ..  |    .908932   .1099522    -0.79   0.430      .717072    1.152126
+      Black  |   1.006049   .1699557     0.04   0.972     .7224741    1.400928
+      Other  |   .6272636   .1624723    -1.80   0.072     .3775495     1.04214
+             |
+         imd |
+          2  |   1.111773   .0967992     1.22   0.224     .9373554    1.318646
+          3  |   .9653142   .0867028    -0.39   0.694     .8094971    1.151124
+          4  |   .9542861   .0877104    -0.51   0.611     .7969717    1.142653
+5 most de..  |   1.050342   .0980573     0.53   0.599     .8747114    1.261237
+             |
+   obese4cat |
+Obese I ..)  |   1.080445   .0782865     1.07   0.286     .9374037    1.245314
+Obese II..)  |   .9629953   .1067265    -0.34   0.734     .7749748    1.196633
+Obese II..)  |   .9360398    .159564    -0.39   0.698     .6701815    1.307363
+             |
+smoke_nomiss |
+     Former  |   1.285604   .0819825     3.94   0.000     1.134557     1.45676
+    Current  |   1.312202   .1273854     2.80   0.005     1.084846    1.587206
+             |
+htdiag_or_~p |   1.013937   .0652485     0.22   0.830     .8937887    1.150237
+chronic_re~e |   1.058957   .0913225     0.66   0.507     .8942777    1.253962
+             |
+   asthmacat |
+Yes, no OCS  |    1.24816   .1007721     2.75   0.006     1.065484    1.462155
+Yes with ..  |   1.621225   .2383313     3.29   0.001     1.215376    2.162598
+             |
+chronic_ca~e |   1.228664   .0899889     2.81   0.005     1.064364    1.418327
+             |
+     diabcat |
+Controlle..  |   1.195108   .0935391     2.28   0.023     1.025144    1.393251
+Uncontrol..  |   .9130392   .1081659    -0.77   0.443     .7238511    1.151674
+Diabetes,..  |   .6460817   .1723167    -1.64   0.101     .3830568    1.089712
+             |
+cancer_exh~t |
+  Last year  |   2.184683   .4653102     3.67   0.000     1.439107    3.316528
+2-5 years..  |   1.439384   .2185781     2.40   0.016     1.068851    1.938368
+   5+ years  |   1.307984   .1378644     2.55   0.011     1.063859    1.608129
+             |
+cancer_hae~t |
+  Last year  |   1.363197   .8553716     0.49   0.621     .3985212    4.663007
+2-5 years..  |   1.794145   .6618038     1.58   0.113     .8707154    3.696912
+   5+ years  |   1.583188   .4837046     1.50   0.133     .8698988    2.881353
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.183039   .0962838     2.07   0.039     1.008608    1.387636
+Stage 4 e..  |   1.565561   .3189372     2.20   0.028     1.050177    2.333874
+Stage 5 e..  |   2.456541    .770874     2.86   0.004     1.328046    4.543965
+             |
+chronic_li~e |   4.718091   .9122138     8.02   0.000      3.22992     6.89193
+      stroke |   1.648201    .200981     4.10   0.000     1.297822    2.093175
+    dementia |   .6736668   .1917755    -1.39   0.165     .3855938    1.176956
+ other_neuro |   1.127266   .2098476     0.64   0.520     .7826539    1.623614
+organ_tran~t |   .5144117    .252867    -1.35   0.176     .1962861    1.348131
+      spleen |   3.459704   1.623941     2.64   0.008     1.378783    8.681245
+ra_sle_pso~s |   1.171951   .1187928     1.57   0.117     .9607906    1.429519
+other_immu~n |   .5145905   .3017954    -1.13   0.257     .1630241     1.62432
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificdigestive_c2019gp_FULLAD
+> J.ster not found)
+file analysis/output/models/an_cox_causespecificdigestive_c2019gp_FULLADJ.ster 
+> saved
+
+**************************************************
+mentalhealth
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_mentalhealth != 0 & CSfail_mentalhealth < .
+obs. time interval:  (origin, CSexit_mentalhealth]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         41  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,107  observations remaining, representing
+        515  failures in single-record/single-failure data
+   17725075  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_mentalhealth
+   analysis time _t:  (CSexit_mentalhealth-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2452.3365
+Iteration 1:   log likelihood = -2290.9303
+Iteration 2:   log likelihood =  -2278.165
+Iteration 3:   log likelihood = -2277.8972
+Iteration 4:   log likelihood =  -2277.897
+Refining estimates:
+Iteration 0:   log likelihood =  -2277.897
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,599                  Number of obs    =      22,599
+No. of failures =          250
+Time at risk    =      3848482
+                                                LR chi2(11)      =      348.88
+Log likelihood  =    -2277.897                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.766128   .2823014     3.56   0.000     1.291114    2.415906
+         age |   1.085786   .0061779    14.47   0.000     1.073745    1.097962
+        male |   .8882485   .1139165    -0.92   0.355     .6908268    1.142088
+             |
+ region_real |
+East Midl..  |   1.223319   .2411595     1.02   0.307     .8312612    1.800286
+     London  |   .5995856   .1879899    -1.63   0.103     .3243182    1.108488
+ North East  |   1.380139   .3471849     1.28   0.200      .842939    2.259692
+ North West  |   .7632322   .2038254    -1.01   0.312     .4522083    1.288175
+ South East  |   .9323997   .2924813    -0.22   0.823     .5041869    1.724299
+ South West  |   .5782589   .1833582    -1.73   0.084     .3106116    1.076532
+West Midl..  |   1.138321   .3297674     0.45   0.655     .6451706     2.00842
+Yorkshire..  |   1.195236   .2466734     0.86   0.388     .7975944    1.791121
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificmentalhealth_cflu_MATCHF
+> ACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificmentalhealth_cflu_MATCHFACONLY.
+> ster saved
+
+         failure _d:  CSfail_mentalhealth
+   analysis time _t:  (CSexit_mentalhealth-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1804.1732
+Iteration 1:   log likelihood = -1766.7639
+Iteration 2:   log likelihood = -1633.8476
+Iteration 3:   log likelihood = -1625.4403
+Iteration 4:   log likelihood = -1625.1266
+Iteration 5:   log likelihood = -1625.0368
+Iteration 6:   log likelihood = -1625.0038
+Iteration 7:   log likelihood = -1624.9917
+Iteration 8:   log likelihood = -1624.9872
+Iteration 9:   log likelihood = -1624.9855
+Iteration 10:  log likelihood = -1624.9849
+Iteration 11:  log likelihood = -1624.9847
+Iteration 12:  log likelihood = -1624.9846
+Iteration 13:  log likelihood = -1624.9846
+Iteration 14:  log likelihood = -1624.9846
+Iteration 15:  log likelihood = -1624.9846
+Iteration 16:  log likelihood = -1624.9846
+Iteration 17:  log likelihood = -1624.9846
+Iteration 18:  log likelihood = -1624.9846
+Iteration 19:  log likelihood = -1624.9846
+Iteration 20:  log likelihood = -1624.9846
+Iteration 21:  log likelihood = -1624.9846
+Iteration 22:  log likelihood = -1624.9846
+Iteration 23:  log likelihood = -1624.9846
+Iteration 24:  log likelihood = -1624.9846
+Iteration 25:  log likelihood = -1624.9846
+Iteration 26:  log likelihood = -1624.9846
+Iteration 27:  log likelihood = -1624.9846
+Iteration 28:  log likelihood = -1624.9846
+Iteration 29:  log likelihood = -1624.9846
+Iteration 30:  log likelihood = -1624.9846
+Iteration 31:  log likelihood = -1624.9846
+Iteration 32:  log likelihood = -1624.9846
+Iteration 33:  log likelihood = -1624.9846
+Iteration 34:  log likelihood = -1624.9846
+Iteration 35:  log likelihood = -1624.9846
+Iteration 36:  log likelihood = -1624.9846
+Iteration 37:  log likelihood = -1624.9846
+Iteration 38:  log likelihood = -1624.9846
+Iteration 39:  log likelihood = -1624.9846
+Iteration 40:  log likelihood = -1624.9846
+Iteration 41:  log likelihood = -1624.9846
+Iteration 42:  log likelihood = -1624.9846
+Iteration 43:  log likelihood = -1624.9846
+Iteration 44:  log likelihood = -1624.9846
+Refining estimates:
+Iteration 0:   log likelihood = -1624.9846
+Iteration 1:   log likelihood = -1624.9846
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,556                  Number of obs    =      17,556
+No. of failures =          189
+Time at risk    =    2966514.5
+                                                LR chi2(47)      =      358.38
+Log likelihood  =   -1624.9846                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.751092   .3360645     2.92   0.004     1.202122    2.550757
+         age |   1.072023   .0080696     9.24   0.000     1.056323    1.087957
+        male |   .7814849   .1208412    -1.59   0.111     .5771638    1.058137
+             |
+ region_real |
+East Midl..  |   1.211117    .269886     0.86   0.390     .7825348    1.874426
+     London  |   .5837186   .1999813    -1.57   0.116     .2982517    1.142416
+ North East  |   1.097561   .3298539     0.31   0.757     .6089955    1.978078
+ North West  |   .6450748   .2017867    -1.40   0.161     .3494175    1.190901
+ South East  |   .5613501   .2687955    -1.21   0.228     .2196072    1.434898
+ South West  |   .7687744   .2700636    -0.75   0.454     .3861708    1.530447
+West Midl..  |   .8051832   .2768615    -0.63   0.529     .4104024    1.579718
+Yorkshire..  |   .9919296   .2435402    -0.03   0.974      .613045    1.604979
+             |
+   ethnicity |
+      Mixed  |   .7255487   .7318434    -0.32   0.750     .1004801    5.239054
+Asian or ..  |   .5251174   .2008225    -1.68   0.092     .2481581     1.11118
+      Black  |   2.354368   .7793987     2.59   0.010     1.230522    4.504631
+      Other  |   7.15e-20   1.80e-10    -0.00   1.000            0           .
+             |
+         imd |
+          2  |   .9134984   .2213531    -0.37   0.709     .5681331     1.46881
+          3  |   1.332395   .3082769     1.24   0.215     .8466234    2.096892
+          4  |    1.24286    .299446     0.90   0.367     .7750682    1.992989
+5 most de..  |   1.297209   .3169307     1.07   0.287     .8036127    2.093984
+             |
+   obese4cat |
+Obese I ..)  |   .5165115   .1202312    -2.84   0.005     .3272964    .8151149
+Obese II..)  |    .511503   .1789476    -1.92   0.055     .2576667    1.015402
+Obese II..)  |   .8442684   .3389846    -0.42   0.673      .384337    1.854594
+             |
+smoke_nomiss |
+     Former  |   1.203542   .2026013     1.10   0.271     .8653104     1.67398
+    Current  |   1.457948     .43673     1.26   0.208     .8105201     2.62253
+             |
+htdiag_or_~p |   .8800156   .1568721    -0.72   0.473     .6205185    1.248033
+chronic_re~e |   .7081852   .1413081    -1.73   0.084     .4789628    1.047109
+             |
+   asthmacat |
+Yes, no OCS  |   .9350295   .2078312    -0.30   0.762     .6048208    1.445519
+Yes with ..  |   .2420948   .1732253    -1.98   0.047     .0595563    .9841084
+             |
+chronic_ca~e |   1.193338   .1902196     1.11   0.267     .8731343    1.630971
+             |
+     diabcat |
+Controlle..  |   1.104342   .2008736     0.55   0.585     .7731695    1.577366
+Uncontrol..  |      1.224   .2972934     0.83   0.405     .7603892    1.970276
+Diabetes,..  |   1.324255   .6807407     0.55   0.585     .4835111    3.626908
+             |
+cancer_exh~t |
+  Last year  |   .5256298   .3758582    -0.90   0.368     .1294248    2.134727
+2-5 years..  |   1.057072   .3884291     0.15   0.880     .5144271    2.172126
+   5+ years  |   .4961891   .1494044    -2.33   0.020     .2750092    .8952558
+             |
+cancer_hae~t |
+  Last year  |   7.92e-20          .        .       .            .           .
+2-5 years..  |   .7042708   .7094903    -0.35   0.728     .0977754    5.072822
+   5+ years  |   .7462602   .5351284    -0.41   0.683     .1830251    3.042776
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .9961196   .1664754    -0.02   0.981     .7178858     1.38219
+Stage 4 e..  |   .6633453   .2875248    -0.95   0.344     .2836542     1.55128
+Stage 5 e..  |   .8483813   .6117095    -0.23   0.820     .2064658    3.486054
+             |
+chronic_li~e |   1.240013   .7300145     0.37   0.715     .3911208    3.931349
+      stroke |    1.41406   .2740263     1.79   0.074     .9671995    2.067376
+    dementia |   3.989545   .8171784     6.76   0.000     2.670372    5.960394
+ other_neuro |   .8123355   .2975727    -0.57   0.570     .3962099    1.665503
+organ_tran~t |   7.49e-20          .        .       .            .           .
+      spleen |   1.473368   1.488865     0.38   0.701     .2033089    10.67741
+ra_sle_pso~s |    .763243   .2138331    -0.96   0.335     .4407445    1.321718
+other_immu~n |   2.804566   2.841304     1.02   0.309      .385047    20.42761
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificmentalhealth_cflu_FULLAD
+> J.ster not found)
+file analysis/output/models/an_cox_causespecificmentalhealth_cflu_FULLADJ.ster 
+> saved
+
+         failure _d:  CSfail_mentalhealth
+   analysis time _t:  (CSexit_mentalhealth-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -793.24675
+Iteration 1:   log likelihood = -707.26452
+Iteration 2:   log likelihood = -679.26899
+Iteration 3:   log likelihood = -678.87725
+Refining estimates:
+Iteration 0:   log likelihood = -678.87725
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,385                  Number of obs    =      95,385
+No. of failures =          457
+Time at risk    =   16160242.5
+                                                LR chi2(1)       =      228.74
+Log likelihood  =   -678.87725                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   5.115243   .5280288    15.81   0.000       4.1783    6.262285
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificmentalhealth_c2019gp_MAT
+> CHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificmentalhealth_c2019gp_MATCHFACON
+> LY.ster saved
+
+         failure _d:  CSfail_mentalhealth
+   analysis time _t:  (CSexit_mentalhealth-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -498.04871
+Iteration 1:   log likelihood = -370.29536
+Iteration 2:   log likelihood = -366.97343
+Iteration 3:   log likelihood =  -366.9327
+Iteration 4:   log likelihood = -366.92787
+Iteration 5:   log likelihood = -366.92618
+Iteration 6:   log likelihood = -366.92556
+Iteration 7:   log likelihood = -366.92534
+Iteration 8:   log likelihood = -366.92525
+Iteration 9:   log likelihood = -366.92522
+Iteration 10:  log likelihood = -366.92521
+Iteration 11:  log likelihood = -366.92521
+Iteration 12:  log likelihood = -366.92521
+Iteration 13:  log likelihood =  -366.9252
+Iteration 14:  log likelihood =  -366.9252
+Iteration 15:  log likelihood =  -366.9252
+Iteration 16:  log likelihood =  -366.9252
+Iteration 17:  log likelihood =  -366.9252
+Iteration 18:  log likelihood =  -366.9252
+Iteration 19:  log likelihood =  -366.9252
+Iteration 20:  log likelihood =  -366.9252
+Iteration 21:  log likelihood =  -366.9252
+Iteration 22:  log likelihood =  -366.9252
+Iteration 23:  log likelihood =  -366.9252
+Iteration 24:  log likelihood =  -366.9252
+Iteration 25:  log likelihood =  -366.9252
+Iteration 26:  log likelihood =  -366.9252
+Iteration 27:  log likelihood =  -366.9252
+Iteration 28:  log likelihood =  -366.9252
+Iteration 29:  log likelihood =  -366.9252
+Iteration 30:  log likelihood =  -366.9252
+Refining estimates:
+Iteration 0:   log likelihood =  -366.9252
+Iteration 1:   log likelihood =  -366.9252
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,745                  Number of obs    =      71,745
+No. of failures =          347
+Time at risk    =     12108679
+                                                LR chi2(39)      =      262.25
+Log likelihood  =    -366.9252                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   4.934835   .7514863    10.48   0.000     3.661424    6.651127
+             |
+   ethnicity |
+      Mixed  |   2.584022   3.937039     0.62   0.533     .1304361     51.1911
+Asian or ..  |   .6495783    .241176    -1.16   0.245     .3137594    1.344827
+      Black  |   .7984552   .3665045    -0.49   0.624     .3247391    1.963209
+      Other  |   .8235516   .6435963    -0.25   0.804     .1780272    3.809739
+             |
+         imd |
+          2  |   .9838625   .2445766    -0.07   0.948     .6044157    1.601523
+          3  |   1.388372   .3245731     1.40   0.160     .8780356    2.195328
+          4  |   2.001389   .4812721     2.89   0.004     1.249234    3.206411
+5 most de..  |   1.602759   .3986066     1.90   0.058     .9844059     2.60953
+             |
+   obese4cat |
+Obese I ..)  |   .7967137   .1792896    -1.01   0.313     .5125674    1.238379
+Obese II..)  |   1.149061   .4209969     0.38   0.705     .5603728    2.356184
+Obese II..)  |    2.47998   1.724749     1.31   0.192     .6345469    9.692425
+             |
+smoke_nomiss |
+     Former  |   1.309389   .2177618     1.62   0.105     .9451641    1.813971
+    Current  |   2.298297   .7608237     2.51   0.012      1.20123    4.397301
+             |
+htdiag_or_~p |   .7483494   .1417401    -1.53   0.126     .5162782    1.084739
+chronic_re~e |   1.143714   .2367222     0.65   0.516      .762322    1.715917
+             |
+   asthmacat |
+Yes, no OCS  |   .9021721   .2331263    -0.40   0.690     .5436686    1.497079
+Yes with ..  |   .4292885   .2451693    -1.48   0.139     .1401596    1.314848
+             |
+chronic_ca~e |   1.408945   .2324845     2.08   0.038     1.019625    1.946917
+             |
+     diabcat |
+Controlle..  |   1.154712    .225927     0.74   0.462     .7869202    1.694404
+Uncontrol..  |   1.210068   .3724068     0.62   0.536      .661983    2.211938
+Diabetes,..  |   1.518193   .8514769     0.74   0.457     .5057448    4.557455
+             |
+cancer_exh~t |
+  Last year  |   .4915402   .3353005    -1.04   0.298     .1290976    1.871543
+2-5 years..  |   .8679682   .4079098    -0.30   0.763     .3455204    2.180389
+   5+ years  |    .858589   .2087989    -0.63   0.531     .5330685     1.38289
+             |
+cancer_hae~t |
+  Last year  |   5.808139   7.671224     1.33   0.183     .4363093    77.31783
+2-5 years..  |   .8805918   .7488961    -0.15   0.881     .1662928    4.663113
+   5+ years  |   .1616106   .1833959    -1.61   0.108     .0174794    1.494219
+             |
+reduced_ki~2 |
+Stage 3a/..  |     .84762    .140914    -0.99   0.320      .611916    1.174115
+Stage 4 e..  |   .6294446   .2540969    -1.15   0.251     .2853257    1.388591
+Stage 5 e..  |   1.228647   1.361588     0.19   0.853     .1399988    10.78276
+             |
+chronic_li~e |   2.755475   1.654231     1.69   0.091     .8495393    8.937366
+      stroke |   1.184004   .2656517     0.75   0.452     .7627311    1.837955
+    dementia |   6.305584   1.703171     6.82   0.000     3.713738     10.7063
+ other_neuro |   1.417124   .5715568     0.86   0.387     .6428358    3.124035
+organ_tran~t |   3.27e-14   4.62e-07    -0.00   1.000            0           .
+      spleen |   10.81401   52.87821     0.49   0.626     .0007444    157102.1
+ra_sle_pso~s |   1.617318   .4783313     1.63   0.104     .9058318    2.887642
+other_immu~n |   7.303834   9.021777     1.61   0.107     .6488395    82.21754
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificmentalhealth_c2019gp_FUL
+> LADJ.ster not found)
+file analysis/output/models/an_cox_causespecificmentalhealth_c2019gp_FULLADJ.st
+> er saved
+
+**************************************************
+nervoussystem
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_nervoussystem != 0 & CSfail_nervoussystem < .
+obs. time interval:  (origin, CSexit_nervoussystem]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         40  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,108  observations remaining, representing
+        621  failures in single-record/single-failure data
+ 17703913.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_nervoussystem
+   analysis time _t:  (CSexit_nervoussystem-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2838.4131
+Iteration 1:   log likelihood = -2820.3194
+Iteration 2:   log likelihood = -2820.0363
+Iteration 3:   log likelihood =  -2820.036
+Refining estimates:
+Iteration 0:   log likelihood =  -2820.036
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,600                  Number of obs    =      22,600
+No. of failures =          292
+Time at risk    =      3840117
+                                                LR chi2(11)      =       36.75
+Log likelihood  =    -2820.036                  Prob > chi2      =      0.0001
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.142641   .1516031     1.01   0.315     .8809964     1.48199
+         age |   1.016968   .0035887     4.77   0.000     1.009958    1.024026
+        male |   .9658778   .1137332    -0.29   0.768     .7668179    1.216612
+             |
+ region_real |
+East Midl..  |    1.03228   .1943525     0.17   0.866     .7137357    1.492992
+     London  |   .7359618    .192312    -1.17   0.241     .4409917    1.228231
+ North East  |     1.5379   .3397164     1.95   0.051     .9974721     2.37113
+ North West  |   1.012817   .2253933     0.06   0.954     .6547923      1.5666
+ South East  |   .9663421   .2816909    -0.12   0.907     .5457625    1.711032
+ South West  |   .9852632   .2245999    -0.07   0.948     .6302502    1.540251
+West Midl..  |    .660838   .2183559    -1.25   0.210     .3458109    1.262849
+Yorkshire..  |   .8165937   .1736903    -0.95   0.341     .5382136     1.23896
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificnervoussystem_cflu_MATCH
+> FACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificnervoussystem_cflu_MATCHFACONLY
+> .ster saved
+
+         failure _d:  CSfail_nervoussystem
+   analysis time _t:  (CSexit_nervoussystem-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2050.8723
+Iteration 1:   log likelihood = -1989.8128
+Iteration 2:   log likelihood = -1981.0073
+Iteration 3:   log likelihood = -1980.9449
+Iteration 4:   log likelihood = -1980.9447
+Iteration 5:   log likelihood = -1980.9447
+Refining estimates:
+Iteration 0:   log likelihood = -1980.9447
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,555                  Number of obs    =      17,555
+No. of failures =          217
+Time at risk    =    2960317.5
+                                                LR chi2(49)      =      139.86
+Log likelihood  =   -1980.9447                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |    1.21047   .1948462     1.19   0.235     .8829548    1.659471
+         age |   1.007355   .0054395     1.36   0.175     .9967497    1.018072
+        male |   .9342353   .1310623    -0.48   0.628     .7096475      1.2299
+             |
+ region_real |
+East Midl..  |   1.123107   .2477729     0.53   0.599     .7288437    1.730645
+     London  |   .8866135    .271833    -0.39   0.695     .4861369       1.617
+ North East  |   1.601163   .4213038     1.79   0.074     .9560139    2.681679
+ North West  |    1.02863   .2757819     0.11   0.916      .608201    1.739688
+ South East  |   1.047801   .3734823     0.13   0.896     .5210422    2.107096
+ South West  |   .8934547   .2608216    -0.39   0.700     .5041801    1.583286
+West Midl..  |   .8392505   .3162059    -0.47   0.642     .4010355    1.756307
+Yorkshire..  |   .9750502   .2397503    -0.10   0.918     .6021839    1.578791
+             |
+   ethnicity |
+      Mixed  |   .3903136   .3931537    -0.93   0.350     .0542024    2.810664
+Asian or ..  |   .6409374   .1905879    -1.50   0.135     .3578524    1.147961
+      Black  |   .9030933   .3636111    -0.25   0.800     .4102179    1.988157
+      Other  |   .9794891   .5093791    -0.04   0.968     .3534565    2.714334
+             |
+         imd |
+          2  |   1.043969   .2110505     0.21   0.831     .7024373    1.551558
+          3  |   .7299854   .1645668    -1.40   0.163     .4692676    1.135554
+          4  |   1.041674   .2186888     0.19   0.846     .6902887    1.571929
+5 most de..  |   .6965319   .1682104    -1.50   0.134     .4338887    1.118159
+             |
+   obese4cat |
+Obese I ..)  |   .6629514    .127619    -2.14   0.033     .4545946    .9668054
+Obese II..)  |   .7225277   .1884426    -1.25   0.213     .4333636    1.204638
+Obese II..)  |    .761588   .2563303    -0.81   0.418      .393757    1.473031
+             |
+smoke_nomiss |
+     Former  |   1.092099   .1702405     0.57   0.572     .8045877    1.482349
+    Current  |    .957099     .23923    -0.18   0.861     .5864031    1.562131
+             |
+htdiag_or_~p |   .8770979   .1371656    -0.84   0.402     .6455536    1.191692
+chronic_re~e |   1.003264   .1832332     0.02   0.986     .7013812     1.43508
+             |
+   asthmacat |
+Yes, no OCS  |   1.003894   .1918266     0.02   0.984     .6903007    1.459949
+Yes with ..  |   .8190682   .2711934    -0.60   0.547     .4280429    1.567302
+             |
+chronic_ca~e |   1.239128   .2083364     1.28   0.202     .8912557     1.72278
+             |
+     diabcat |
+Controlle..  |   .9678439   .1841786    -0.17   0.864     .6665359    1.405358
+Uncontrol..  |   .7536618   .1960812    -1.09   0.277     .4526038    1.254974
+Diabetes,..  |   2.084306   .8196543     1.87   0.062     .9643313    4.505022
+             |
+cancer_exh~t |
+  Last year  |   .5340459   .3805093    -0.88   0.379     .1321584    2.158054
+2-5 years..  |    1.20941   .4175056     0.55   0.582     .6147895    2.379142
+   5+ years  |   .8224168   .2252858    -0.71   0.475      .480752    1.406899
+             |
+cancer_hae~t |
+  Last year  |   2.158374   1.556061     1.07   0.286     .5253639    8.867336
+2-5 years..  |   2.253996   1.151572     1.59   0.112     .8280799    6.135275
+   5+ years  |   1.812002   .8311981     1.30   0.195     .7373899    4.452667
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.161492   .2182234     0.80   0.426     .8036937    1.678578
+Stage 4 e..  |   1.241116   .5339348     0.50   0.616     .5340978    2.884057
+Stage 5 e..  |   1.019668   .6130389     0.03   0.974     .3138374    3.312937
+             |
+chronic_li~e |   1.093574   .5627381     0.17   0.862     .3988701    2.998229
+      stroke |    1.39164   .2959238     1.55   0.120     .9173271    2.111202
+    dementia |   1.452599   .5412847     1.00   0.316     .6997791    3.015301
+ other_neuro |   5.391549   .9618873     9.44   0.000     3.800613     7.64845
+organ_tran~t |   1.039317    .875462     0.05   0.963     .1994086    5.416917
+      spleen |   .8319566   .8377006    -0.18   0.855     .1156171    5.986585
+ra_sle_pso~s |   .7964528   .2081343    -0.87   0.384     .4772198    1.329235
+other_immu~n |   4.140826   2.133133     2.76   0.006     1.508667    11.36529
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificnervoussystem_cflu_FULLA
+> DJ.ster not found)
+file analysis/output/models/an_cox_causespecificnervoussystem_cflu_FULLADJ.ster
+>  saved
+
+         failure _d:  CSfail_nervoussystem
+   analysis time _t:  (CSexit_nervoussystem-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -900.73634
+Iteration 1:   log likelihood = -837.83344
+Iteration 2:   log likelihood = -822.21594
+Iteration 3:   log likelihood = -822.21516
+Refining estimates:
+Iteration 0:   log likelihood = -822.21516
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,385                  Number of obs    =      95,385
+No. of failures =          513
+Time at risk    =     16144834
+                                                LR chi2(1)       =      157.04
+Log likelihood  =   -822.21516                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   3.649466   .3545613    13.32   0.000     3.016696    4.414965
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificnervoussystem_c2019gp_MA
+> TCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificnervoussystem_c2019gp_MATCHFACO
+> NLY.ster saved
+
+         failure _d:  CSfail_nervoussystem
+   analysis time _t:  (CSexit_nervoussystem-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -553.67314
+Iteration 1:   log likelihood = -423.27297
+Iteration 2:   log likelihood = -421.08127
+Iteration 3:   log likelihood = -421.04278
+Iteration 4:   log likelihood = -421.03007
+Iteration 5:   log likelihood = -421.02544
+Iteration 6:   log likelihood = -421.02374
+Iteration 7:   log likelihood = -421.02312
+Iteration 8:   log likelihood = -421.02289
+Iteration 9:   log likelihood =  -421.0228
+Iteration 10:  log likelihood = -421.02277
+Iteration 11:  log likelihood = -421.02276
+Iteration 12:  log likelihood = -421.02276
+Iteration 13:  log likelihood = -421.02276
+Iteration 14:  log likelihood = -421.02276
+Iteration 15:  log likelihood = -421.02276
+Iteration 16:  log likelihood = -421.02276
+Iteration 17:  log likelihood = -421.02276
+Iteration 18:  log likelihood = -421.02276
+Iteration 19:  log likelihood = -421.02276
+Iteration 20:  log likelihood = -421.02276
+Iteration 21:  log likelihood = -421.02276
+Iteration 22:  log likelihood = -421.02276
+Iteration 23:  log likelihood = -421.02276
+Iteration 24:  log likelihood = -421.02276
+Iteration 25:  log likelihood = -421.02276
+Iteration 26:  log likelihood = -421.02276
+Iteration 27:  log likelihood = -421.02276
+Iteration 28:  log likelihood = -421.02276
+Iteration 29:  log likelihood = -421.02276
+Iteration 30:  log likelihood = -421.02276
+Refining estimates:
+Iteration 0:   log likelihood = -421.02276
+Iteration 1:   log likelihood = -421.02276
+Iteration 2:   log likelihood = -421.02276
+Iteration 3:   log likelihood = -421.02276
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,743                  Number of obs    =      71,743
+No. of failures =          375
+Time at risk    =   12097938.5
+                                                LR chi2(39)      =      265.30
+Log likelihood  =   -421.02276                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   3.612157    .540728     8.58   0.000     2.693671    4.843827
+             |
+   ethnicity |
+      Mixed  |   2.212379   1.538387     1.14   0.253     .5662043    8.644621
+Asian or ..  |    .484629   .1573664    -2.23   0.026     .2564551    .9158146
+      Black  |   .5003182   .2341794    -1.48   0.139     .1999088    1.252162
+      Other  |   1.086498   .7257741     0.12   0.901     .2933805    4.023708
+             |
+         imd |
+          2  |   1.459247   .3099565     1.78   0.075     .9623347    2.212744
+          3  |   1.046899   .2405976     0.20   0.842     .6672406    1.642583
+          4  |   1.420859   .3186565     1.57   0.117     .9154861    2.205211
+5 most de..  |   1.410117   .3441736     1.41   0.159      .873974    2.275159
+             |
+   obese4cat |
+Obese I ..)  |   1.297346    .246756     1.37   0.171      .893628    1.883453
+Obese II..)  |   .9249805   .2620223    -0.28   0.783     .5308966    1.611592
+Obese II..)  |   .8493388   .3397932    -0.41   0.683     .3877417    1.860456
+             |
+smoke_nomiss |
+     Former  |   .8047048    .127566    -1.37   0.170     .5897931    1.097927
+    Current  |   1.250767   .3025248     0.93   0.355     .7785658     2.00936
+             |
+htdiag_or_~p |   1.030228   .1652022     0.19   0.853     .7523832    1.410678
+chronic_re~e |   1.506277   .3284344     1.88   0.060     .9824394    2.309427
+             |
+   asthmacat |
+Yes, no OCS  |   .9728747   .2028905    -0.13   0.895      .646459    1.464107
+Yes with ..  |   1.310892   .5193762     0.68   0.494     .6030041    2.849794
+             |
+chronic_ca~e |   1.184157   .2079481     0.96   0.336     .8393266    1.670658
+             |
+     diabcat |
+Controlle..  |   .9863666   .1921998    -0.07   0.944       .67325    1.445108
+Uncontrol..  |    .955616   .2789193    -0.16   0.876     .5393118    1.693273
+Diabetes,..  |   5.275106   3.060135     2.87   0.004     1.692161     16.4445
+             |
+cancer_exh~t |
+  Last year  |   1.183221   1.071894     0.19   0.853     .2004252    6.985211
+2-5 years..  |   1.807675   .6993968     1.53   0.126      .846812    3.858813
+   5+ years  |   .9036225   .2487978    -0.37   0.713     .5267718    1.550071
+             |
+cancer_hae~t |
+  Last year  |   7.965733   10.70996     1.54   0.123     .5711921    111.0885
+2-5 years..  |   3.527853   3.109496     1.43   0.153     .6269752    19.85046
+   5+ years  |   6.306682   5.664608     2.05   0.040     1.084574     36.6727
+             |
+reduced_ki~2 |
+Stage 3a/..  |    1.36957   .2576136     1.67   0.095     .9472721     1.98013
+Stage 4 e..  |   .7085071   .3619873    -0.67   0.500     .2602868    1.928574
+Stage 5 e..  |   1.417753   1.396902     0.35   0.723     .2055503    9.778748
+             |
+chronic_li~e |   .4113279    .368305    -0.99   0.321     .0711243    2.378802
+      stroke |   2.068449   .5619915     2.68   0.007     1.214439    3.523009
+    dementia |   2.162868   1.064154     1.57   0.117     .8245742    5.673228
+ other_neuro |   15.33664   5.155029     8.12   0.000      7.93634    29.63742
+organ_tran~t |   .2933373   .4134145    -0.87   0.384     .0185237    4.645227
+      spleen |   4.03e-15   9.36e-08    -0.00   1.000            0           .
+ra_sle_pso~s |   1.016197   .2736721     0.06   0.952     .5994328    1.722721
+other_immu~n |   1.036785   .9566791     0.04   0.969     .1699239    6.325912
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificnervoussystem_c2019gp_FU
+> LLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificnervoussystem_c2019gp_FULLADJ.s
+> ter saved
+
+**************************************************
+genitourinary
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_genitourinary != 0 & CSfail_genitourinary < .
+obs. time interval:  (origin, CSexit_genitourinary]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         81  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,067  observations remaining, representing
+      1,552  failures in single-record/single-failure data
+   17594848  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_genitourinary
+   analysis time _t:  (CSexit_genitourinary-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -6548.0324
+Iteration 1:   log likelihood =  -6498.695
+Iteration 2:   log likelihood = -6498.3894
+Iteration 3:   log likelihood = -6498.3894
+Refining estimates:
+Iteration 0:   log likelihood = -6498.3894
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,559                  Number of obs    =      22,559
+No. of failures =          672
+Time at risk    =      3787053
+                                                LR chi2(11)      =       99.29
+Log likelihood  =   -6498.3894                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.014596   .0877001     0.17   0.867     .8564786    1.201904
+         age |   1.021761   .0024236     9.08   0.000     1.017022    1.026522
+        male |   .9741414   .0756234    -0.34   0.736     .8366476    1.134231
+             |
+ region_real |
+East Midl..  |   1.227003   .1562335     1.61   0.108     .9560103    1.574811
+     London  |   1.101826   .1776444     0.60   0.548     .8032972    1.511298
+ North East  |   1.443075   .2282506     2.32   0.020     1.058412    1.967538
+ North West  |   1.066461   .1643503     0.42   0.676     .7884382     1.44252
+ South East  |   1.078564   .2115711     0.39   0.700     .7343012    1.584228
+ South West  |   .8838032   .1458317    -0.75   0.454     .6395924    1.221259
+West Midl..  |   1.237564   .2263145     1.17   0.244     .8647843    1.771038
+Yorkshire..  |   1.086099    .149795     0.60   0.549      .828842    1.423205
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificgenitourinary_cflu_MATCH
+> FACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificgenitourinary_cflu_MATCHFACONLY
+> .ster saved
+
+         failure _d:  CSfail_genitourinary
+   analysis time _t:  (CSexit_genitourinary-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -4831.2973
+Iteration 1:   log likelihood = -4681.8115
+Iteration 2:   log likelihood = -4640.4225
+Iteration 3:   log likelihood = -4639.0263
+Iteration 4:   log likelihood = -4639.0003
+Iteration 5:   log likelihood = -4639.0002
+Refining estimates:
+Iteration 0:   log likelihood = -4639.0002
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,528                  Number of obs    =      17,528
+No. of failures =          509
+Time at risk    =      2920594
+                                                LR chi2(49)      =      384.59
+Log likelihood  =   -4639.0002                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |    1.06421   .1101527     0.60   0.548     .8688055    1.303564
+         age |   1.010294   .0038276     2.70   0.007      1.00282    1.017824
+        male |   .8468478   .0784906    -1.79   0.073     .7061732    1.015546
+             |
+ region_real |
+East Midl..  |   1.190204   .1791122     1.16   0.247     .8861872    1.598519
+     London  |   1.070766   .2013017     0.36   0.716     .7407484    1.547814
+ North East  |   1.256629   .2332724     1.23   0.218     .8733645    1.808084
+ North West  |   1.111319   .1988472     0.59   0.555     .7825898    1.578132
+ South East  |   1.180607   .2861339     0.69   0.493     .7341875    1.898471
+ South West  |   .9969723   .1994566    -0.02   0.988     .6735808    1.475627
+West Midl..  |   1.002432   .2234008     0.01   0.991     .6476747    1.551503
+Yorkshire..  |   .9619333   .1602083    -0.23   0.816     .6940309    1.333249
+             |
+   ethnicity |
+      Mixed  |   1.203467   .4656937     0.48   0.632     .5637065    2.569303
+Asian or ..  |    .798239   .1322709    -1.36   0.174     .5768807    1.104536
+      Black  |   .8802451   .2057459    -0.55   0.585     .5567321    1.391749
+      Other  |   .1958933   .1397531    -2.29   0.022     .0483905    .7930106
+             |
+         imd |
+          2  |   1.521129    .238845     2.67   0.008     1.118181    2.069285
+          3  |   1.416957   .2266052     2.18   0.029     1.035689    1.938582
+          4  |   1.577941   .2501796     2.88   0.004      1.15647    2.153016
+5 most de..  |   1.566826   .2573678     2.73   0.006     1.135538     2.16192
+             |
+   obese4cat |
+Obese I ..)  |   1.068973   .1185823     0.60   0.548     .8600861    1.328591
+Obese II..)  |   .9909631   .1518429    -0.06   0.953     .7338882    1.338089
+Obese II..)  |   1.024379   .1982277     0.12   0.901      .701043    1.496845
+             |
+smoke_nomiss |
+     Former  |   1.085783   .1128014     0.79   0.428     .8857521    1.330987
+    Current  |   1.340371   .2100079     1.87   0.062     .9859604    1.822176
+             |
+htdiag_or_~p |   1.127847   .1277366     1.06   0.288     .9033288    1.408169
+chronic_re~e |   .8311921   .1001976    -1.53   0.125      .656284    1.052716
+             |
+   asthmacat |
+Yes, no OCS  |   .9570906   .1247229    -0.34   0.736     .7413599    1.235598
+Yes with ..  |   .9279161   .1849733    -0.38   0.707     .6278096     1.37148
+             |
+chronic_ca~e |   1.637721   .1644877     4.91   0.000     1.345079    1.994031
+             |
+     diabcat |
+Controlle..  |   1.253683   .1462089     1.94   0.053     .9975113    1.575643
+Uncontrol..  |   1.525817   .1940747     3.32   0.001     1.189145    1.957808
+Diabetes,..  |   2.005082   .5157122     2.70   0.007     1.211159    3.319429
+             |
+cancer_exh~t |
+  Last year  |   1.301117   .4001972     0.86   0.392     .7120398    2.377545
+2-5 years..  |    1.22527   .2704474     0.92   0.357     .7949698    1.888483
+   5+ years  |    1.00486   .1594601     0.03   0.976     .7362566    1.371455
+             |
+cancer_hae~t |
+  Last year  |   .4757176   .4772565    -0.74   0.459     .0665878    3.398632
+2-5 years..  |   2.238233   .8045409     2.24   0.025     1.106466    4.527649
+   5+ years  |   1.428963   .4851976     1.05   0.293     .7345133    2.779985
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.592664   .1902379     3.90   0.000     1.260234    2.012783
+Stage 4 e..  |   2.922515   .5696705     5.50   0.000     1.994511    4.282299
+Stage 5 e..  |   6.041304   1.107294     9.81   0.000     4.218094     8.65257
+             |
+chronic_li~e |   1.125937   .3460082     0.39   0.700     .6165012    2.056337
+      stroke |   1.299787   .1766518     1.93   0.054     .9958335    1.696514
+    dementia |   .8533936   .2539073    -0.53   0.594      .476315    1.528989
+ other_neuro |   2.062676   .3486395     4.28   0.000     1.481011    2.872788
+organ_tran~t |   1.455238   .3693641     1.48   0.139     .8848807    2.393225
+      spleen |   .8201905   .4799071    -0.34   0.735     .2605329    2.582063
+ra_sle_pso~s |    1.15723    .168207     1.00   0.315     .8703516    1.538666
+other_immu~n |   .4596578   .4614583    -0.77   0.439     .0642538    3.288292
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificgenitourinary_cflu_FULLA
+> DJ.ster not found)
+file analysis/output/models/an_cox_causespecificgenitourinary_cflu_FULLADJ.ster
+>  saved
+
+         failure _d:  CSfail_genitourinary
+   analysis time _t:  (CSexit_genitourinary-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2281.7877
+Iteration 1:   log likelihood =  -2157.882
+Iteration 2:   log likelihood = -2134.3307
+Iteration 3:   log likelihood = -2134.3224
+Refining estimates:
+Iteration 0:   log likelihood = -2134.3224
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       95,358                  Number of obs    =      95,358
+No. of failures =        1,305
+Time at risk    =   16059160.5
+                                                LR chi2(1)       =      294.93
+Log likelihood  =   -2134.3224                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   3.101025   .1917944    18.30   0.000     2.747006    3.500669
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificgenitourinary_c2019gp_MA
+> TCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificgenitourinary_c2019gp_MATCHFACO
+> NLY.ster saved
+
+         failure _d:  CSfail_genitourinary
+   analysis time _t:  (CSexit_genitourinary-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1435.6386
+Iteration 1:   log likelihood = -1227.2198
+Iteration 2:   log likelihood = -1222.7493
+Iteration 3:   log likelihood = -1222.7273
+Iteration 4:   log likelihood = -1222.7273
+Refining estimates:
+Iteration 0:   log likelihood = -1222.7273
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       71,729                  Number of obs    =      71,729
+No. of failures =          969
+Time at risk    =   12035911.5
+                                                LR chi2(39)      =      425.82
+Log likelihood  =   -1222.7273                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   2.415787   .2079733    10.25   0.000     2.040701    2.859815
+             |
+   ethnicity |
+      Mixed  |    1.38033   .6263341     0.71   0.477     .5672108    3.359088
+Asian or ..  |   .9797376   .1612949    -0.12   0.901     .7095383    1.352831
+      Black  |   1.016738   .2400342     0.07   0.944     .6401104    1.614964
+      Other  |   .2928262   .1569623    -2.29   0.022     .1024104    .8372895
+             |
+         imd |
+          2  |   1.206756   .1634576     1.39   0.165     .9253855    1.573681
+          3  |   1.082623   .1470599     0.58   0.559       .82957    1.412868
+          4  |   1.110672    .152299     0.77   0.444      .848919    1.453133
+5 most de..  |   1.196751    .165762     1.30   0.195     .9122293    1.570015
+             |
+   obese4cat |
+Obese I ..)  |   .9791842   .1067103    -0.19   0.847     .7908633    1.212348
+Obese II..)  |   1.073398   .1664626     0.46   0.648     .7920568    1.454672
+Obese II..)  |   .9592365   .2432903    -0.16   0.870     .5834937     1.57694
+             |
+smoke_nomiss |
+     Former  |     1.0978   .1016375     1.01   0.314     .9156227    1.316224
+    Current  |    1.31638   .1931897     1.87   0.061     .9873254    1.755101
+             |
+htdiag_or_~p |   1.079944   .1050951     0.79   0.429     .8924137    1.306881
+chronic_re~e |   1.171778   .1385271     1.34   0.180     .9294303    1.477318
+             |
+   asthmacat |
+Yes, no OCS  |   1.134961   .1392599     1.03   0.302      .892356    1.443522
+Yes with ..  |   1.153238   .2745592     0.60   0.549     .7232156    1.838952
+             |
+chronic_ca~e |   1.282901   .1236241     2.59   0.010     1.062108    1.549592
+             |
+     diabcat |
+Controlle..  |   1.360054   .1452361     2.88   0.004     1.103212    1.676693
+Uncontrol..  |   1.439736   .2122064     2.47   0.013     1.078505    1.921957
+Diabetes,..  |   1.611553   .4975241     1.55   0.122     .8799514    2.951416
+             |
+cancer_exh~t |
+  Last year  |   2.198798   .6458209     2.68   0.007     1.236444    3.910177
+2-5 years..  |   1.673856   .3332077     2.59   0.010     1.133112    2.472654
+   5+ years  |   1.373406   .1867971     2.33   0.020     1.052027    1.792961
+             |
+cancer_hae~t |
+  Last year  |   3.126748   3.018656     1.18   0.238     .4713217    20.74284
+2-5 years..  |   1.533025   .6952523     0.94   0.346     .6302534    3.728922
+   5+ years  |   .7331918   .3534511    -0.64   0.520     .2850213     1.88607
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.573926   .1617321     4.41   0.000     1.286819    1.925092
+Stage 4 e..  |    3.07126   .6523839     5.28   0.000     2.025387    4.657203
+Stage 5 e..  |   5.978093    1.83593     5.82   0.000     3.274541    10.91377
+             |
+chronic_li~e |   .9565825    .350911    -0.12   0.904     .4660893     1.96325
+      stroke |   1.496928   .2181653     2.77   0.006      1.12498     1.99185
+    dementia |   1.266411   .3408112     0.88   0.380      .747314    2.146083
+ other_neuro |   1.735202   .4029069     2.37   0.018      1.10079    2.735241
+organ_tran~t |   2.006566   1.248558     1.12   0.263     .5926593    6.793631
+      spleen |   2.030591   1.528892     0.94   0.347      .464224    8.882136
+ra_sle_pso~s |   1.292167   .1838712     1.80   0.072     .9776774     1.70782
+other_immu~n |   1.533108   1.183378     0.55   0.580     .3377116    6.959847
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificgenitourinary_c2019gp_FU
+> LLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificgenitourinary_c2019gp_FULLADJ.s
+> ter saved
+
+**************************************************
+endo_nutr_metabol
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol <
+>  .
+obs. time interval:  (origin, CSexit_endo_nutr_metabol]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         44  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,104  observations remaining, representing
+        477  failures in single-record/single-failure data
+ 17707569.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_endo_nutr_metabol
+   analysis time _t:  (CSexit_endo_nutr_metabol-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2411.7064
+Iteration 1:   log likelihood = -2392.0078
+Iteration 2:   log likelihood = -2391.8908
+Iteration 3:   log likelihood = -2391.8907
+Refining estimates:
+Iteration 0:   log likelihood = -2391.8907
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,596                  Number of obs    =      22,596
+No. of failures =          247
+Time at risk    =    3839884.5
+                                                LR chi2(11)      =       39.63
+Log likelihood  =   -2391.8907                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.077662   .1534302     0.53   0.599     .8152561    1.424527
+         age |   1.020073   .0039496     5.13   0.000     1.012362    1.027844
+        male |   .8148299   .1046378    -1.59   0.111     .6335172    1.048034
+             |
+ region_real |
+East Midl..  |   1.261213   .2595677     1.13   0.259     .8425664    1.887872
+     London  |   1.125962   .2922814     0.46   0.648     .6769641    1.872759
+ North East  |    1.51728   .3844083     1.65   0.100     .9234445    2.492991
+ North West  |   .8293826   .2254802    -0.69   0.491     .4867914    1.413081
+ South East  |   1.181621   .3649614     0.54   0.589     .6450178    2.164634
+ South West  |   .7966911   .2229653    -0.81   0.417     .4603298     1.37883
+West Midl..  |   1.023861   .3251195     0.07   0.941      .549475    1.907804
+Yorkshire..  |   1.065004   .2402202     0.28   0.780     .6844723    1.657092
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificendo_nutr_metabol_cflu_M
+> ATCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificendo_nutr_metabol_cflu_MATCHFAC
+> ONLY.ster saved
+
+         failure _d:  CSfail_endo_nutr_metabol
+   analysis time _t:  (CSexit_endo_nutr_metabol-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1642.9835
+Iteration 1:   log likelihood = -1641.5248
+Iteration 2:   log likelihood = -1549.5823
+Iteration 3:   log likelihood = -1539.8542
+Iteration 4:   log likelihood =  -1539.608
+Iteration 5:   log likelihood = -1539.5987
+Iteration 6:   log likelihood = -1539.5955
+Iteration 7:   log likelihood = -1539.5944
+Iteration 8:   log likelihood = -1539.5939
+Iteration 9:   log likelihood = -1539.5938
+Iteration 10:  log likelihood = -1539.5937
+Iteration 11:  log likelihood = -1539.5937
+Iteration 12:  log likelihood = -1539.5937
+Iteration 13:  log likelihood = -1539.5937
+Iteration 14:  log likelihood = -1539.5937
+Iteration 15:  log likelihood = -1539.5937
+Iteration 16:  log likelihood = -1539.5937
+Iteration 17:  log likelihood = -1539.5937
+Iteration 18:  log likelihood = -1539.5937
+Iteration 19:  log likelihood = -1539.5937
+Iteration 20:  log likelihood = -1539.5937
+Iteration 21:  log likelihood = -1539.5937
+Iteration 22:  log likelihood = -1539.5937
+Iteration 23:  log likelihood = -1539.5937
+Iteration 24:  log likelihood = -1539.5937
+Iteration 25:  log likelihood = -1539.5937
+Iteration 26:  log likelihood = -1539.5937
+Iteration 27:  log likelihood = -1539.5937
+Iteration 28:  log likelihood = -1539.5937
+Iteration 29:  log likelihood = -1539.5937
+Iteration 30:  log likelihood = -1539.5937
+Iteration 31:  log likelihood = -1539.5937
+Iteration 32:  log likelihood = -1539.5937
+Iteration 33:  log likelihood = -1539.5937
+Iteration 34:  log likelihood = -1539.5937
+Iteration 35:  log likelihood = -1539.5937
+Iteration 36:  log likelihood = -1539.5937
+Iteration 37:  log likelihood = -1539.5937
+Iteration 38:  log likelihood = -1539.5937
+Iteration 39:  log likelihood = -1539.5937
+Iteration 40:  log likelihood = -1539.5937
+Iteration 41:  log likelihood = -1539.5937
+Iteration 42:  log likelihood = -1539.5937
+Iteration 43:  log likelihood = -1539.5937
+Iteration 44:  log likelihood = -1539.5937
+Refining estimates:
+Iteration 0:   log likelihood = -1539.5937
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,553                  Number of obs    =      17,553
+No. of failures =          173
+Time at risk    =      2960871
+                                                LR chi2(48)      =      206.78
+Log likelihood  =   -1539.5937                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.197583   .2177028     0.99   0.321     .8386292    1.710179
+         age |   1.006861   .0064633     1.07   0.287     .9942723    1.019609
+        male |   .6919585   .1109892    -2.30   0.022      .505299    .9475707
+             |
+ region_real |
+East Midl..  |   1.720278   .4415415     2.11   0.035     1.040212    2.844955
+     London  |   1.139713   .3791927     0.39   0.694     .5937358    2.187751
+ North East  |   1.516081   .4846592     1.30   0.193     .8102357    2.836832
+ North West  |   .8208059   .2885876    -0.56   0.574     .4120653    1.634989
+ South East  |   1.432722   .5900325     0.87   0.383      .639168    3.211508
+ South West  |    .680213   .2837631    -0.92   0.356     .3002969    1.540774
+West Midl..  |   1.328034   .4846886     0.78   0.437     .6494548    2.715624
+Yorkshire..  |   1.123352   .3305272     0.40   0.693     .6310512    1.999712
+             |
+   ethnicity |
+      Mixed  |   .4236838    .427933    -0.85   0.395     .0585199     3.06747
+Asian or ..  |   .4834169   .1469592    -2.39   0.017     .2664132    .8771783
+      Black  |   .7005531   .2728805    -0.91   0.361     .3264974     1.50315
+      Other  |   .4747384   .3446884    -1.03   0.305     .1144014    1.970051
+             |
+         imd |
+          2  |   .9783097   .2713161    -0.08   0.937     .5680824    1.684773
+          3  |   1.325601   .3463794     1.08   0.281     .7943172    2.212237
+          4  |   1.289504   .3387728     0.97   0.333     .7705461    2.157976
+5 most de..  |   1.429903   .3837983     1.33   0.183     .8449611    2.419783
+             |
+   obese4cat |
+Obese I ..)  |    .749024    .153722    -1.41   0.159     .5009608    1.119922
+Obese II..)  |   .9149359   .2299172    -0.35   0.724        .5591    1.497241
+Obese II..)  |    .812289   .2674638    -0.63   0.528     .4260239    1.548771
+             |
+smoke_nomiss |
+     Former  |    1.04408   .1848847     0.24   0.808     .7379107    1.477283
+    Current  |   1.059154   .2930584     0.21   0.835     .6157997    1.821709
+             |
+htdiag_or_~p |   1.048339   .2066437     0.24   0.811     .7123883    1.542718
+chronic_re~e |   .9326727   .1893842    -0.34   0.731     .6264525    1.388578
+             |
+   asthmacat |
+Yes, no OCS  |   .9873372   .2201981    -0.06   0.954     .6377179     1.52863
+Yes with ..  |   1.082993   .3477827     0.25   0.804     .5771364     2.03223
+             |
+chronic_ca~e |   1.110818   .1960201     0.60   0.551     .7860243     1.56982
+             |
+     diabcat |
+Controlle..  |   1.663058   .3376907     2.51   0.012     1.117036    2.475981
+Uncontrol..  |   2.485224   .5130056     4.41   0.000     1.658283    3.724539
+Diabetes,..  |   2.274776   .9945126     1.88   0.060     .9656078    5.358913
+             |
+cancer_exh~t |
+  Last year  |   2.238997   .9461881     1.91   0.056     .9780031     5.12586
+2-5 years..  |   1.245865   .4873052     0.56   0.574     .5788071    2.681689
+   5+ years  |   1.209673   .3110516     0.74   0.459     .7307905    2.002366
+             |
+cancer_hae~t |
+  Last year  |   3.053373   2.211106     1.54   0.123     .7385515    12.62348
+2-5 years..  |   .8606451   .8666148    -0.15   0.882     .1195965     6.19341
+   5+ years  |   .4704745   .4735256    -0.75   0.454     .0654357    3.382656
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.536327   .3331784     1.98   0.048     1.004352    2.350071
+Stage 4 e..  |   3.320418   1.104807     3.61   0.000     1.729702    6.374032
+Stage 5 e..  |   10.99426   2.826464     9.33   0.000     6.642547    18.19691
+             |
+chronic_li~e |   3.105495   1.037387     3.39   0.001      1.61357    5.976869
+      stroke |   1.270371   .3092424     0.98   0.326     .7883608    2.047085
+    dementia |     .65678   .3882719    -0.71   0.477      .206163    2.092324
+ other_neuro |   1.219423   .4500783     0.54   0.591     .5915391    2.513769
+organ_tran~t |   .9501692   .3548708    -0.14   0.891     .4569753    1.975646
+      spleen |   .7243995   .7330225    -0.32   0.750     .0996883    5.263955
+ra_sle_pso~s |   1.096378   .2761667     0.37   0.715     .6691926    1.796261
+other_immu~n |   6.99e-20          .        .       .            .           .
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificendo_nutr_metabol_cflu_F
+> ULLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificendo_nutr_metabol_cflu_FULLADJ.
+> ster saved
+
+         failure _d:  CSfail_endo_nutr_metabol
+   analysis time _t:  (CSexit_endo_nutr_metabol-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -685.96107
+Iteration 1:   log likelihood = -622.94609
+Iteration 2:   log likelihood = -604.05214
+Iteration 3:   log likelihood = -603.99955
+Refining estimates:
+Iteration 0:   log likelihood = -603.99955
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,384                  Number of obs    =      95,384
+No. of failures =          390
+Time at risk    =   16146952.5
+                                                LR chi2(1)       =      163.92
+Log likelihood  =   -603.99955                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   4.326156   .4683648    13.53   0.000     3.499034    5.348799
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificendo_nutr_metabol_c2019g
+> p_MATCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificendo_nutr_metabol_c2019gp_MATCH
+> FACONLY.ster saved
+
+         failure _d:  CSfail_endo_nutr_metabol
+   analysis time _t:  (CSexit_endo_nutr_metabol-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -427.23201
+Iteration 1:   log likelihood = -312.87177
+Iteration 2:   log likelihood = -310.47285
+Iteration 3:   log likelihood = -310.43609
+Iteration 4:   log likelihood = -310.42653
+Iteration 5:   log likelihood = -310.42305
+Iteration 6:   log likelihood = -310.42178
+Iteration 7:   log likelihood = -310.42131
+Iteration 8:   log likelihood = -310.42114
+Iteration 9:   log likelihood = -310.42107
+Iteration 10:  log likelihood = -310.42105
+Iteration 11:  log likelihood = -310.42104
+Iteration 12:  log likelihood = -310.42104
+Iteration 13:  log likelihood = -310.42104
+Iteration 14:  log likelihood = -310.42104
+Iteration 15:  log likelihood = -310.42104
+Iteration 16:  log likelihood = -310.42104
+Iteration 17:  log likelihood = -310.42104
+Iteration 18:  log likelihood = -310.42104
+Iteration 19:  log likelihood = -310.42104
+Iteration 20:  log likelihood = -310.42104
+Iteration 21:  log likelihood = -310.42104
+Iteration 22:  log likelihood = -310.42104
+Iteration 23:  log likelihood = -310.42104
+Iteration 24:  log likelihood = -310.42104
+Iteration 25:  log likelihood = -310.42104
+Iteration 26:  log likelihood = -310.42104
+Iteration 27:  log likelihood = -310.42104
+Iteration 28:  log likelihood = -310.42104
+Iteration 29:  log likelihood = -310.42104
+Refining estimates:
+Iteration 0:   log likelihood = -310.42104
+Iteration 1:   log likelihood = -310.42104
+Iteration 2:   log likelihood = -310.42104
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,744                  Number of obs    =      71,744
+No. of failures =          287
+Time at risk    =     12099334
+                                                LR chi2(39)      =      233.62
+Log likelihood  =   -310.42104                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   2.554194   .4298843     5.57   0.000     1.836505    3.552348
+             |
+   ethnicity |
+      Mixed  |   1.864635   1.393288     0.83   0.404     .4310834    8.065411
+Asian or ..  |   1.141288   .3585593     0.42   0.674     .6165559    2.112603
+      Black  |    .969302   .4532078    -0.07   0.947     .3876774    2.423526
+      Other  |   1.503137   .9829595     0.62   0.533     .4172198    5.415421
+             |
+         imd |
+          2  |   1.084408   .2945856     0.30   0.765     .6367354    1.846828
+          3  |   1.118082   .3043651     0.41   0.682     .6557815    1.906288
+          4  |   .8382558   .2363857    -0.63   0.532     .4823255    1.456844
+5 most de..  |   .9242559   .2691668    -0.27   0.787     .5222768    1.635625
+             |
+   obese4cat |
+Obese I ..)  |   .8120822   .1895552    -0.89   0.373     .5139414    1.283176
+Obese II..)  |   .9121641   .2721063    -0.31   0.758     .5083377    1.636793
+Obese II..)  |   1.269221   .5338377     0.57   0.571     .5565699    2.894376
+             |
+smoke_nomiss |
+     Former  |   1.371147   .2610664     1.66   0.097     .9440942    1.991374
+    Current  |   1.701223   .5090556     1.78   0.076     .9463607    3.058198
+             |
+htdiag_or_~p |   1.158757   .2246942     0.76   0.447      .792385    1.694528
+chronic_re~e |   .8529975   .2130479    -0.64   0.524     .5228154    1.391705
+             |
+   asthmacat |
+Yes, no OCS  |   1.393133   .3348719     1.38   0.168      .869734    2.231509
+Yes with ..  |   1.343402   .6263198     0.63   0.527     .5387152    3.350059
+             |
+chronic_ca~e |   1.224548   .2462559     1.01   0.314     .8256567    1.816151
+             |
+     diabcat |
+Controlle..  |   1.935191   .4180492     3.06   0.002     1.267195     2.95532
+Uncontrol..  |    3.41257    1.01586     4.12   0.000      1.90412    6.116018
+Diabetes,..  |    3.02355    1.95933     1.71   0.088     .8490221    10.76751
+             |
+cancer_exh~t |
+  Last year  |   3.770951   1.928457     2.60   0.009     1.384038    10.27434
+2-5 years..  |   2.686004   1.055902     2.51   0.012      1.24305    5.803966
+   5+ years  |   1.150578   .3266546     0.49   0.621     .6595627    2.007134
+             |
+cancer_hae~t |
+  Last year  |   1.84e+15   1.80e+22     0.00   1.000            0           .
+2-5 years..  |   3.996299   4.043294     1.37   0.171     .5501063    29.03149
+   5+ years  |    1.64132   1.273278     0.64   0.523     .3588074    7.508015
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.687403   .3877891     2.28   0.023     1.075476    2.647506
+Stage 4 e..  |   3.249445   1.231394     3.11   0.002     1.546116    6.829303
+Stage 5 e..  |   11.36948   7.685596     3.60   0.000     3.022328    42.77006
+             |
+chronic_li~e |   2.078693   1.143318     1.33   0.183     .7073171    6.108948
+      stroke |   1.437709   .4214853     1.24   0.216     .8093362    2.553954
+    dementia |   .6722812   .4236919    -0.63   0.529      .195478    2.312086
+ other_neuro |    2.91674   1.261925     2.47   0.013     1.249183    6.810346
+organ_tran~t |    2.72158   3.359785     0.81   0.417     .2421111    30.59339
+      spleen |   .2300613   .4171381    -0.81   0.418     .0065838    8.039122
+ra_sle_pso~s |   1.157481   .3446252     0.49   0.623      .645772    2.074666
+other_immu~n |   1.128644    1.74238     0.08   0.938     .0547631    23.26087
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificendo_nutr_metabol_c2019g
+> p_FULLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificendo_nutr_metabol_c2019gp_FULLA
+> DJ.ster saved
+
+**************************************************
+external
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_external != 0 & CSfail_external < .
+obs. time interval:  (origin, CSexit_external]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         46  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,102  observations remaining, representing
+      1,057  failures in single-record/single-failure data
+   17651120  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_external
+   analysis time _t:  (CSexit_external-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -4698.7892
+Iteration 1:   log likelihood = -4656.5336
+Iteration 2:   log likelihood = -4656.1758
+Iteration 3:   log likelihood = -4656.1757
+Refining estimates:
+Iteration 0:   log likelihood = -4656.1757
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,594                  Number of obs    =      22,594
+No. of failures =          483
+Time at risk    =      3814619
+                                                LR chi2(11)      =       85.23
+Log likelihood  =   -4656.1757                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.133282   .1174545     1.21   0.227     .9249502    1.388536
+         age |   1.022062   .0028745     7.76   0.000     1.016444    1.027711
+        male |   1.083298   .0993977     0.87   0.383     .9049949     1.29673
+             |
+ region_real |
+East Midl..  |   1.338791   .1870186     2.09   0.037     1.018138    1.760431
+     London  |   1.055662   .1918588     0.30   0.766     .7393081    1.507386
+ North East  |   .8075501   .1753414    -0.98   0.325     .5276551    1.235916
+ North West  |   .7072477   .1397866    -1.75   0.080      .480101    1.041863
+ South East  |   1.038233   .2316176     0.17   0.866     .6705049    1.607637
+ South West  |   .9708969   .1752591    -0.16   0.870     .6815857    1.383011
+West Midl..  |   .7533568   .1865108    -1.14   0.253     .4637311     1.22387
+Yorkshire..  |   .9333646   .1503856    -0.43   0.669     .6806189    1.279967
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificexternal_cflu_MATCHFACON
+> LY.ster not found)
+file analysis/output/models/an_cox_causespecificexternal_cflu_MATCHFACONLY.ster
+>  saved
+
+         failure _d:  CSfail_external
+   analysis time _t:  (CSexit_external-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood =  -3526.148
+Iteration 1:   log likelihood = -3441.4985
+Iteration 2:   log likelihood = -3385.8157
+Iteration 3:   log likelihood = -3382.5842
+Iteration 4:   log likelihood = -3382.3444
+Iteration 5:   log likelihood = -3382.2646
+Iteration 6:   log likelihood = -3382.2353
+Iteration 7:   log likelihood = -3382.2245
+Iteration 8:   log likelihood = -3382.2205
+Iteration 9:   log likelihood = -3382.2191
+Iteration 10:  log likelihood = -3382.2185
+Iteration 11:  log likelihood = -3382.2183
+Iteration 12:  log likelihood = -3382.2183
+Iteration 13:  log likelihood = -3382.2182
+Iteration 14:  log likelihood = -3382.2182
+Iteration 15:  log likelihood = -3382.2182
+Iteration 16:  log likelihood = -3382.2182
+Iteration 17:  log likelihood = -3382.2182
+Iteration 18:  log likelihood = -3382.2182
+Iteration 19:  log likelihood = -3382.2182
+Iteration 20:  log likelihood = -3382.2182
+Iteration 21:  log likelihood = -3382.2182
+Iteration 22:  log likelihood = -3382.2182
+Iteration 23:  log likelihood = -3382.2182
+Iteration 24:  log likelihood = -3382.2182
+Iteration 25:  log likelihood = -3382.2182
+Iteration 26:  log likelihood = -3382.2182
+Iteration 27:  log likelihood = -3382.2182
+Iteration 28:  log likelihood = -3382.2182
+Iteration 29:  log likelihood = -3382.2182
+Iteration 30:  log likelihood = -3382.2182
+Iteration 31:  log likelihood = -3382.2182
+Iteration 32:  log likelihood = -3382.2182
+Iteration 33:  log likelihood = -3382.2182
+Iteration 34:  log likelihood = -3382.2182
+Refining estimates:
+Iteration 0:   log likelihood = -3382.2182
+Iteration 1:   log likelihood = -3382.2182
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,552                  Number of obs    =      17,552
+No. of failures =          373
+Time at risk    =    2940539.5
+                                                LR chi2(49)      =      287.86
+Log likelihood  =   -3382.2182                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   1.218291   .1506927     1.60   0.110     .9560146    1.552522
+         age |   1.014347   .0044802     3.23   0.001     1.005604    1.023166
+        male |   1.089888   .1188405     0.79   0.430     .8801721    1.349573
+             |
+ region_real |
+East Midl..  |   1.375741   .2243924     1.96   0.050     .9993095    1.893971
+     London  |   1.065481   .2293558     0.29   0.768     .6987403    1.624709
+ North East  |    .715847   .1755407    -1.36   0.173     .4426777    1.157585
+ North West  |   .6810738   .1570974    -1.67   0.096      .433366    1.070369
+ South East  |   1.345246   .3401068     1.17   0.241     .8195963    2.208023
+ South West  |   1.070465   .2325242     0.31   0.754     .6993206    1.638584
+West Midl..  |   .6742281   .1973449    -1.35   0.178     .3798938    1.196607
+Yorkshire..  |   .8537473   .1640651    -0.82   0.411     .5858056    1.244243
+             |
+   ethnicity |
+      Mixed  |   1.03e-15   1.56e-08    -0.00   1.000            0           .
+Asian or ..  |   .5437422    .119607    -2.77   0.006     .3533086    .8368196
+      Black  |   .7516032   .2181815    -0.98   0.325     .4254954    1.327646
+      Other  |   .7185047   .3051013    -0.78   0.436     .3125941      1.6515
+             |
+         imd |
+          2  |   1.583125   .2697306     2.70   0.007     1.133676    2.210761
+          3  |   1.229816   .2234879     1.14   0.255     .8613024    1.755999
+          4  |   1.386784   .2499321     1.81   0.070     .9740961    1.974313
+5 most de..  |   1.436849   .2715797     1.92   0.055     .9920307    2.081121
+             |
+   obese4cat |
+Obese I ..)  |   .8165055   .1121049    -1.48   0.140     .6238649    1.068631
+Obese II..)  |   .8343169   .1584001    -0.95   0.340     .5750762    1.210422
+Obese II..)  |    .819821   .2019671    -0.81   0.420     .5058493    1.328669
+             |
+smoke_nomiss |
+     Former  |   1.034877   .1265283     0.28   0.779     .8143615    1.315104
+    Current  |   1.242046   .2246122     1.20   0.231     .8713769    1.770392
+             |
+htdiag_or_~p |   1.066057   .1368624     0.50   0.618     .8288985    1.371068
+chronic_re~e |   1.065303   .1417765     0.48   0.635     .8207116    1.382789
+             |
+   asthmacat |
+Yes, no OCS  |   1.269958   .1802866     1.68   0.092     .9615025    1.677367
+Yes with ..  |   1.218594   .2651909     0.91   0.364     .7954633      1.8668
+             |
+chronic_ca~e |   1.522688    .180031     3.56   0.000     1.207734    1.919776
+             |
+     diabcat |
+Controlle..  |   .9991599   .1392067    -0.01   0.995     .7604005    1.312888
+Uncontrol..  |   1.118439   .1782202     0.70   0.482     .8184186    1.528442
+Diabetes,..  |   1.227803   .4278159     0.59   0.556     .6202054    2.430645
+             |
+cancer_exh~t |
+  Last year  |   1.928158   .5731729     2.21   0.027      1.07674    3.452825
+2-5 years..  |   1.343999    .348386     1.14   0.254     .8086374    2.233798
+   5+ years  |   1.456148    .236995     2.31   0.021     1.058445    2.003284
+             |
+cancer_hae~t |
+  Last year  |   1.581142   .9242516     0.78   0.433     .5028096    4.972079
+2-5 years..  |   1.340479   .6784374     0.58   0.563     .4971115    3.614652
+   5+ years  |   .7158977   .3622325    -0.66   0.509     .2655565    1.929945
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.219665   .1740584     1.39   0.164     .9220732    1.613301
+Stage 4 e..  |   1.854496   .4897752     2.34   0.019     1.105153    3.111928
+Stage 5 e..  |   8.027235   1.559569    10.72   0.000     5.485176    11.74739
+             |
+chronic_li~e |   1.718313   .5113009     1.82   0.069      .959001     3.07883
+      stroke |   1.428276   .2252793     2.26   0.024     1.048464    1.945676
+    dementia |    1.03427   .3385804     0.10   0.918     .5444811    1.964648
+ other_neuro |   1.243343   .2971637     0.91   0.362     .7783064    1.986238
+organ_tran~t |   .8779043   .2732799    -0.42   0.676     .4769573    1.615902
+      spleen |   1.702177   .8664852     1.04   0.296     .6276316    4.616415
+ra_sle_pso~s |   1.138065   .1942587     0.76   0.449     .8144676    1.590232
+other_immu~n |   1.798472   1.053747     1.00   0.316      .570393    5.670654
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificexternal_cflu_FULLADJ.st
+> er not found)
+file analysis/output/models/an_cox_causespecificexternal_cflu_FULLADJ.ster save
+> d
+
+         failure _d:  CSfail_external
+   analysis time _t:  (CSexit_external-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1547.7332
+Iteration 1:   log likelihood = -1444.1672
+Iteration 2:   log likelihood = -1420.3504
+Refining estimates:
+Iteration 0:   log likelihood = -1420.3504
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,383                  Number of obs    =      95,383
+No. of failures =          887
+Time at risk    =     16103539
+                                                LR chi2(1)       =      254.77
+Log likelihood  =   -1420.3504                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   3.514416    .260243    16.97   0.000     3.039635    4.063355
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificexternal_c2019gp_MATCHFA
+> CONLY.ster not found)
+file analysis/output/models/an_cox_causespecificexternal_c2019gp_MATCHFACONLY.s
+> ter saved
+
+         failure _d:  CSfail_external
+   analysis time _t:  (CSexit_external-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -984.74778
+Iteration 1:   log likelihood = -814.11684
+Iteration 2:   log likelihood = -810.59256
+Iteration 3:   log likelihood =  -810.3941
+Iteration 4:   log likelihood = -810.32647
+Iteration 5:   log likelihood = -810.30203
+Iteration 6:   log likelihood =  -810.2931
+Iteration 7:   log likelihood = -810.28982
+Iteration 8:   log likelihood = -810.28862
+Iteration 9:   log likelihood = -810.28818
+Iteration 10:  log likelihood = -810.28801
+Iteration 11:  log likelihood = -810.28795
+Iteration 12:  log likelihood = -810.28793
+Iteration 13:  log likelihood = -810.28792
+Iteration 14:  log likelihood = -810.28792
+Iteration 15:  log likelihood = -810.28792
+Iteration 16:  log likelihood = -810.28792
+Iteration 17:  log likelihood = -810.28792
+Iteration 18:  log likelihood = -810.28792
+Iteration 19:  log likelihood = -810.28792
+Iteration 20:  log likelihood = -810.28792
+Iteration 21:  log likelihood = -810.28792
+Iteration 22:  log likelihood = -810.28792
+Iteration 23:  log likelihood = -810.28792
+Iteration 24:  log likelihood = -810.28792
+Iteration 25:  log likelihood = -810.28792
+Iteration 26:  log likelihood = -810.28792
+Iteration 27:  log likelihood = -810.28792
+Iteration 28:  log likelihood = -810.28792
+Iteration 29:  log likelihood = -810.28792
+Iteration 30:  log likelihood = -810.28792
+Iteration 31:  log likelihood = -810.28792
+Iteration 32:  log likelihood = -810.28792
+Refining estimates:
+Iteration 0:   log likelihood = -810.28792
+Iteration 1:   log likelihood = -810.28792
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,745                  Number of obs    =      71,745
+No. of failures =          669
+Time at risk    =   12066640.5
+                                                LR chi2(39)      =      348.92
+Log likelihood  =   -810.28792                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   2.873917   .3050493     9.95   0.000     2.334126    3.538541
+             |
+   ethnicity |
+      Mixed  |   .2192387   .1690486    -1.97   0.049     .0483705    .9936974
+Asian or ..  |   .4964243   .1075527    -3.23   0.001     .3246656    .7590492
+      Black  |   .4006871   .1474142    -2.49   0.013     .1948252    .8240726
+      Other  |   .6486813   .3035241    -0.92   0.355     .2592663    1.622993
+             |
+         imd |
+          2  |   1.145923   .1852328     0.84   0.399     .8347627     1.57307
+          3  |   .8367391   .1399926    -1.07   0.287     .6028063    1.161455
+          4  |   1.169204   .1974357     0.93   0.355     .8397572    1.627898
+5 most de..  |   1.302506   .2204844     1.56   0.118     .9347405    1.814967
+             |
+   obese4cat |
+Obese I ..)  |   1.013388   .1349793     0.10   0.920      .780547    1.315687
+Obese II..)  |   .7088068    .155982    -1.56   0.118     .4604793    1.091053
+Obese II..)  |   1.111355   .3612169     0.32   0.745     .5877492    2.101424
+             |
+smoke_nomiss |
+     Former  |   1.153493   .1329809     1.24   0.215     .9202038    1.445926
+    Current  |   1.715406   .3161844     2.93   0.003      1.19529    2.461846
+             |
+htdiag_or_~p |    1.20182   .1468494     1.50   0.132     .9458704    1.527028
+chronic_re~e |   .9643696   .1441333    -0.24   0.808      .719489    1.292596
+             |
+   asthmacat |
+Yes, no OCS  |   1.491214   .2096267     2.84   0.004     1.132095    1.964252
+Yes with ..  |   1.772547   .4883137     2.08   0.038     1.033005    3.041534
+             |
+chronic_ca~e |   1.241094   .1434758     1.87   0.062     .9894684    1.556708
+             |
+     diabcat |
+Controlle..  |   1.288025   .1681335     1.94   0.053     .9972686    1.663553
+Uncontrol..  |   1.461271    .295102     1.88   0.060     .9836296     2.17085
+Diabetes,..  |   .8399814   .3660077    -0.40   0.689     .3575798    1.973178
+             |
+cancer_exh~t |
+  Last year  |   2.902439   1.126919     2.74   0.006     1.356033     6.21235
+2-5 years..  |   1.331262   .3439634     1.11   0.268     .8022975     2.20898
+   5+ years  |    1.45891   .2445984     2.25   0.024      1.05031    2.026467
+             |
+cancer_hae~t |
+  Last year  |   1.322178   .9298454     0.40   0.691      .333171     5.24702
+2-5 years..  |   2.237503   1.197502     1.50   0.132     .7837978    6.387386
+   5+ years  |   2.963671   1.470105     2.19   0.029     1.120981    7.835411
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.054802   .1343858     0.42   0.675     .8217218    1.353996
+Stage 4 e..  |     1.2698   .3483168     0.87   0.384     .7417264    2.173837
+Stage 5 e..  |   25.10057   14.71307     5.50   0.000     7.956817    79.18225
+             |
+chronic_li~e |   1.288454   .5510209     0.59   0.553     .5572419    2.979162
+      stroke |    1.08371   .1860092     0.47   0.640     .7741266      1.5171
+    dementia |   1.367527   .4342155     0.99   0.324     .7339445    2.548052
+ other_neuro |   1.532683   .3730814     1.75   0.079     .9511634     2.46973
+organ_tran~t |   2.11e+14   2.10e+21     0.00   1.000            0           .
+      spleen |   3.292736   2.557315     1.53   0.125     .7185686    15.08848
+ra_sle_pso~s |     .91115   .1718033    -0.49   0.622      .629637    1.318528
+other_immu~n |   2.344007   2.122079     0.94   0.347     .3975101    13.82196
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificexternal_c2019gp_FULLADJ
+> .ster not found)
+file analysis/output/models/an_cox_causespecificexternal_c2019gp_FULLADJ.ster s
+> aved
+
+**************************************************
+musculoskeletal
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_musculoskeletal != 0 & CSfail_musculoskeletal < .
+obs. time interval:  (origin, CSexit_musculoskeletal]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         24  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,124  observations remaining, representing
+        966  failures in single-record/single-failure data
+   17659282  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_musculoskeletal
+   analysis time _t:  (CSexit_musculoskeletal-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -2348.7319
+Iteration 1:   log likelihood = -2317.0731
+Iteration 2:   log likelihood = -2317.0013
+Iteration 3:   log likelihood = -2317.0013
+Refining estimates:
+Iteration 0:   log likelihood = -2317.0013
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,616                  Number of obs    =      22,616
+No. of failures =          244
+Time at risk    =    3839948.5
+                                                LR chi2(11)      =       63.46
+Log likelihood  =   -2317.0013                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .6307276   .0882053    -3.30   0.001      .479517     .829621
+         age |   1.011813   .0036948     3.22   0.001     1.004597     1.01908
+        male |   .4688493   .0647056    -5.49   0.000     .3577334     .614479
+             |
+ region_real |
+East Midl..  |    .948862   .1918205    -0.26   0.795     .6384479      1.4102
+     London  |    1.03026   .2568577     0.12   0.905     .6320197    1.679433
+ North East  |   .8437016   .2332141    -0.61   0.539     .4907967    1.450361
+ North West  |   .8055056   .2009649    -0.87   0.386     .4939727    1.313512
+ South East  |   .8280949   .2669715    -0.59   0.558     .4402092    1.557762
+ South West  |   .6914102   .1743834    -1.46   0.143     .4217458    1.133498
+West Midl..  |   1.257901   .3470367     0.83   0.406      .732508    2.160134
+Yorkshire..  |   .6262985   .1520353    -1.93   0.054     .3891799    1.007888
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificmusculoskeletal_cflu_MAT
+> CHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificmusculoskeletal_cflu_MATCHFACON
+> LY.ster saved
+
+         failure _d:  CSfail_musculoskeletal
+   analysis time _t:  (CSexit_musculoskeletal-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1774.6514
+Iteration 1:   log likelihood = -1714.5273
+Iteration 2:   log likelihood =  -1706.559
+Iteration 3:   log likelihood = -1706.3978
+Iteration 4:   log likelihood =  -1706.397
+Iteration 5:   log likelihood =  -1706.397
+Refining estimates:
+Iteration 0:   log likelihood =  -1706.397
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,568                  Number of obs    =      17,568
+No. of failures =          189
+Time at risk    =      2959320
+                                                LR chi2(49)      =      136.51
+Log likelihood  =    -1706.397                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .6593643    .107048    -2.57   0.010     .4796589    .9063967
+         age |   1.006646    .005915     1.13   0.260     .9951192    1.018306
+        male |   .4210455   .0691656    -5.27   0.000     .3051415    .5809742
+             |
+ region_real |
+East Midl..  |   .8617536   .1982665    -0.65   0.518     .5489646    1.352764
+     London  |   1.021484   .2895657     0.07   0.940     .5860527    1.780436
+ North East  |    .746241    .225933    -0.97   0.334     .4122571    1.350797
+ North West  |   .6510545   .1850447    -1.51   0.131     .3729806    1.136445
+ South East  |   .5662256   .2488747    -1.29   0.196     .2392536    1.340049
+ South West  |   .6032314   .1855929    -1.64   0.100      .330065    1.102474
+West Midl..  |   1.002663   .3300416     0.01   0.994     .5259799    1.911352
+Yorkshire..  |   .5735692    .157766    -2.02   0.043     .3345447     .983371
+             |
+   ethnicity |
+      Mixed  |   1.264116   .7490586     0.40   0.692      .395734    4.038042
+Asian or ..  |   .7475711   .2117216    -1.03   0.304     .4291226    1.302338
+      Black  |   .6481325   .3066765    -0.92   0.359     .2563901    1.638424
+      Other  |   .4916439   .3555628    -0.98   0.326     .1191383     2.02885
+             |
+         imd |
+          2  |   1.095292   .2684262     0.37   0.710     .6775224    1.770664
+          3  |   1.104312   .2675072     0.41   0.682     .6869068    1.775357
+          4  |   1.106597   .2698244     0.42   0.678      .686181    1.784597
+5 most de..  |   1.062863   .2721485     0.24   0.812     .6434657    1.755616
+             |
+   obese4cat |
+Obese I ..)  |    .897052   .1742388    -0.56   0.576      .613034    1.312655
+Obese II..)  |    1.10288   .2605536     0.41   0.679     .6941179    1.752359
+Obese II..)  |   1.136532   .3174459     0.46   0.647     .6574031     1.96486
+             |
+smoke_nomiss |
+     Former  |   1.085869   .1886406     0.47   0.635     .7725095    1.526338
+    Current  |   .8892996   .2295131    -0.45   0.649     .5362502    1.474785
+             |
+htdiag_or_~p |   1.169635   .2042049     0.90   0.369     .8306923    1.646874
+chronic_re~e |   1.517145   .2665574     2.37   0.018     1.075162    2.140822
+             |
+   asthmacat |
+Yes, no OCS  |   1.492355   .2614837     2.28   0.022     1.058592    2.103855
+Yes with ..  |   .9936406    .285184    -0.02   0.982     .5661437    1.743942
+             |
+chronic_ca~e |   1.580374   .2755746     2.62   0.009     1.122879    2.224264
+             |
+     diabcat |
+Controlle..  |   1.201845   .2373153     0.93   0.352      .816152    1.769808
+Uncontrol..  |   1.552024   .3416159     2.00   0.046     1.008186    2.389221
+Diabetes,..  |   .8172721   .5861049    -0.28   0.778     .2004146    3.332759
+             |
+cancer_exh~t |
+  Last year  |   .9298744   .5440124    -0.12   0.901      .295419    2.926915
+2-5 years..  |    1.67593   .5510764     1.57   0.116     .8797623    3.192614
+   5+ years  |   .4424719   .1723933    -2.09   0.036     .2061796    .9495673
+             |
+cancer_hae~t |
+  Last year  |   2.362256   1.705776     1.19   0.234       .57369    9.726946
+2-5 years..  |   1.305493   .9356074     0.37   0.710     .3204383    5.318693
+   5+ years  |   .8676989   .6207998    -0.20   0.843     .2134874    3.526677
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .7057568   .1522857    -1.62   0.106     .4623659    1.077269
+Stage 4 e..  |    .170482   .1721944    -1.75   0.080     .0235466    1.234326
+Stage 5 e..  |   1.172263    .634083     0.29   0.769     .4060747    3.384108
+             |
+chronic_li~e |   .8443375   .4946147    -0.29   0.773     .2678431    2.661655
+      stroke |    1.42442   .3571606     1.41   0.158     .8713786    2.328462
+    dementia |   .2689184   .2711856    -1.30   0.193       .03726    1.940879
+ other_neuro |   1.114686   .4068557     0.30   0.766     .5450891    2.279489
+organ_tran~t |   .9142229   .7665416    -0.11   0.915     .1767468    4.728818
+      spleen |   1.679278   1.205802     0.72   0.470     .4110728    6.860034
+ra_sle_pso~s |   2.553377   .4560076     5.25   0.000      1.79928    3.623523
+other_immu~n |   .9264909   .9355422    -0.08   0.940     .1280336    6.704377
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificmusculoskeletal_cflu_FUL
+> LADJ.ster not found)
+file analysis/output/models/an_cox_causespecificmusculoskeletal_cflu_FULLADJ.st
+> er saved
+
+         failure _d:  CSfail_musculoskeletal
+   analysis time _t:  (CSexit_musculoskeletal-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1461.7933
+Iteration 1:   log likelihood = -1461.7709
+Iteration 2:   log likelihood = -1461.7709
+Refining estimates:
+Iteration 0:   log likelihood = -1461.7709
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,399                  Number of obs    =      95,399
+No. of failures =          837
+Time at risk    =     16105135
+                                                LR chi2(1)       =        0.04
+Log likelihood  =   -1461.7709                  Prob > chi2      =      0.8323
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |     .97866   .0999421    -0.21   0.833     .8011354    1.195522
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificmusculoskeletal_c2019gp_
+> MATCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificmusculoskeletal_c2019gp_MATCHFA
+> CONLY.ster saved
+
+         failure _d:  CSfail_musculoskeletal
+   analysis time _t:  (CSexit_musculoskeletal-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -987.40501
+Iteration 1:   log likelihood = -942.67553
+Iteration 2:   log likelihood = -941.55741
+Iteration 3:   log likelihood = -941.54389
+Iteration 4:   log likelihood = -941.54387
+Refining estimates:
+Iteration 0:   log likelihood = -941.54387
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,755                  Number of obs    =      71,755
+No. of failures =          656
+Time at risk    =     12066160
+                                                LR chi2(39)      =       91.72
+Log likelihood  =   -941.54387                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .8891905   .1143342    -0.91   0.361     .6911071    1.144048
+             |
+   ethnicity |
+      Mixed  |   .8654915   .4590516    -0.27   0.785     .3060487     2.44757
+Asian or ..  |   .6865822   .1523108    -1.70   0.090     .4444908    1.060528
+      Black  |   .4216732     .15682    -2.32   0.020     .2034298     .874052
+      Other  |   1.031165   .4111327     0.08   0.939     .4720066    2.252725
+             |
+         imd |
+          2  |   .8705066   .1303022    -0.93   0.354     .6491716    1.167306
+          3  |   1.115537   .1573085     0.78   0.438     .8461571    1.470676
+          4  |   .8574719   .1297813    -1.02   0.310     .6373642    1.153592
+5 most de..  |   .9587613   .1479205    -0.27   0.785      .708573    1.297288
+             |
+   obese4cat |
+Obese I ..)  |   1.228469    .143452     1.76   0.078     .9771631    1.544407
+Obese II..)  |   1.459556    .256213     2.15   0.031     1.034664    2.058933
+Obese II..)  |   .8075806   .2298428    -0.75   0.453     .4623047    1.410729
+             |
+smoke_nomiss |
+     Former  |   1.156253   .1202927     1.40   0.163      .942968    1.417781
+    Current  |   1.069763   .1855046     0.39   0.697     .7615232    1.502769
+             |
+htdiag_or_~p |   1.005318   .1057731     0.05   0.960     .8179857    1.235554
+chronic_re~e |   1.213299    .170356     1.38   0.169     .9214098    1.597654
+             |
+   asthmacat |
+Yes, no OCS  |   .8954821   .1243264    -0.80   0.427     .6821475    1.175535
+Yes with ..  |   1.783096   .4514693     2.28   0.022     1.085565    2.928829
+             |
+chronic_ca~e |     .96955   .1202305    -0.25   0.803     .7603538    1.236303
+             |
+     diabcat |
+Controlle..  |   1.015489   .1377338     0.11   0.910     .7784383    1.324726
+Uncontrol..  |    1.19722   .2425671     0.89   0.374     .8048469    1.780881
+Diabetes,..  |   .7970161   .3732473    -0.48   0.628     .3183057    1.995675
+             |
+cancer_exh~t |
+  Last year  |   1.226674   .4949039     0.51   0.613     .5563013     2.70488
+2-5 years..  |   1.192215    .283582     0.74   0.460      .747974    1.900302
+   5+ years  |   .7872992   .1599107    -1.18   0.239     .5287492    1.172276
+             |
+cancer_hae~t |
+  Last year  |   3.395861   3.846685     1.08   0.280     .3687612    31.27192
+2-5 years..  |   1.037929   .6942802     0.06   0.956     .2797636     3.85074
+   5+ years  |   .7337672   .4269692    -0.53   0.595     .2345609    2.295414
+             |
+reduced_ki~2 |
+Stage 3a/..  |   .6704907   .0929337    -2.88   0.004     .5109889    .8797798
+Stage 4 e..  |    .954561   .3412427    -0.13   0.896     .4737078     1.92352
+Stage 5 e..  |   1.829469   .9037786     1.22   0.221      .694739    4.817573
+             |
+chronic_li~e |   .8032639   .3709171    -0.47   0.635     .3249416    1.985689
+      stroke |   .8209984   .2007069    -0.81   0.420     .5084541    1.325662
+    dementia |   .2115331   .1578848    -2.08   0.037     .0489842    .9134843
+ other_neuro |    .794447    .281212    -0.65   0.516     .3969752    1.589888
+organ_tran~t |   7.453521    7.51689     1.99   0.046     1.032578    53.80218
+      spleen |   1.550194   1.481654     0.46   0.646      .238133    10.09143
+ra_sle_pso~s |   2.100828   .2982365     5.23   0.000      1.59057    2.774778
+other_immu~n |   2.299767   1.910918     1.00   0.316     .4512374    11.72095
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificmusculoskeletal_c2019gp_
+> FULLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificmusculoskeletal_c2019gp_FULLADJ
+> .ster saved
+
+**************************************************
+otherinfections
+(75,514 observations deleted)
+(9,477 observations deleted)
+
+     failure event:  CSfail_otherinfections != 0 & CSfail_otherinfections < .
+obs. time interval:  (origin, CSexit_otherinfections]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    102,148  total observations
+         57  observations end on or before enter()
+------------------------------------------------------------------------------
+    102,091  observations remaining, representing
+        895  failures in single-record/single-failure data
+ 17674371.5  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       274
+
+         failure _d:  CSfail_otherinfections
+   analysis time _t:  (CSexit_otherinfections-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -5193.0792
+Iteration 1:   log likelihood = -5135.1659
+Iteration 2:   log likelihood = -5134.6373
+Iteration 3:   log likelihood = -5134.6372
+Refining estimates:
+Iteration 0:   log likelihood = -5134.6372
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       22,583                  Number of obs    =      22,583
+No. of failures =          535
+Time at risk    =    3812028.5
+                                                LR chi2(11)      =      116.88
+Log likelihood  =   -5134.6372                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .8064148   .0765182    -2.27   0.023     .6695618    .9712395
+         age |   1.024661   .0027574     9.05   0.000     1.019271     1.03008
+        male |   1.144925   .0998702     1.55   0.121     .9650012    1.358395
+             |
+ region_real |
+East Midl..  |   1.689926   .2372311     3.74   0.000     1.283442    2.225148
+     London  |   1.252433   .2288209     1.23   0.218     .8754652    1.791719
+ North East  |   1.157682   .2286115     0.74   0.458     .7861392    1.704822
+ North West  |   1.280233   .2188144     1.45   0.148     .9158069    1.789676
+ South East  |   1.068877   .2451088     0.29   0.771     .6819224    1.675407
+ South West  |   .7875227   .1541232    -1.22   0.222     .5366333    1.155709
+West Midl..  |   1.205568     .26489     0.85   0.395     .7837254    1.854469
+Yorkshire..  |   1.153083   .1841537     0.89   0.372     .8431776    1.576893
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificotherinfections_cflu_MAT
+> CHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificotherinfections_cflu_MATCHFACON
+> LY.ster saved
+
+         failure _d:  CSfail_otherinfections
+   analysis time _t:  (CSexit_otherinfections-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -3735.2698
+Iteration 1:   log likelihood = -3600.1602
+Iteration 2:   log likelihood = -3563.8928
+Iteration 3:   log likelihood = -3562.7196
+Iteration 4:   log likelihood = -3562.7085
+Iteration 5:   log likelihood = -3562.7085
+Refining estimates:
+Iteration 0:   log likelihood = -3562.7085
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       17,543                  Number of obs    =      17,543
+No. of failures =          395
+Time at risk    =      2939261
+                                                LR chi2(49)      =      345.12
+Log likelihood  =   -3562.7085                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   .8271023   .0948798    -1.65   0.098     .6605641    1.035627
+         age |   1.010989    .004417     2.50   0.012     1.002369    1.019683
+        male |   1.009598   .1067049     0.09   0.928     .8207004    1.241974
+             |
+ region_real |
+East Midl..  |   1.588095   .2660501     2.76   0.006     1.143606    2.205345
+     London  |   1.297423   .2827833     1.19   0.232     .8463616    1.988875
+ North East  |   1.003116   .2323036     0.01   0.989       .63713    1.579334
+ North West  |   1.132901   .2333451     0.61   0.545     .7566042    1.696348
+ South East  |   1.195701   .3319549     0.64   0.520     .6939195    2.060328
+ South West  |    .706619   .1751729    -1.40   0.161     .4346804    1.148684
+West Midl..  |   1.392265    .347132     1.33   0.184     .8540687     2.26961
+Yorkshire..  |    1.12708   .2143463     0.63   0.529     .7763809    1.636195
+             |
+   ethnicity |
+      Mixed  |   .2256429   .2265806    -1.48   0.138      .031527    1.614956
+Asian or ..  |   .5644787   .1237282    -2.61   0.009     .3673436    .8674064
+      Black  |   .6378086   .2052113    -1.40   0.162     .3394853    1.198284
+      Other  |   .9537033   .3753777    -0.12   0.904     .4409408    2.062748
+             |
+         imd |
+          2  |   1.093029    .178962     0.54   0.587     .7929836    1.506604
+          3  |   .9924717   .1657766    -0.05   0.964     .7153827    1.376886
+          4  |   1.046629   .1737845     0.27   0.784     .7558882    1.449199
+5 most de..  |   .9262983   .1646281    -0.43   0.667     .6538371    1.312297
+             |
+   obese4cat |
+Obese I ..)  |   .8462946   .1140178    -1.24   0.215     .6498942    1.102048
+Obese II..)  |   1.111432   .1888825     0.62   0.534     .7965726    1.550745
+Obese II..)  |   .9977109   .2308075    -0.01   0.992     .6340015     1.57007
+             |
+smoke_nomiss |
+     Former  |   1.349708   .1661575     2.44   0.015     1.060356     1.71802
+    Current  |   1.339952   .2461294     1.59   0.111     .9348374    1.920624
+             |
+htdiag_or_~p |   1.013358   .1256875     0.11   0.915      .794672    1.292225
+chronic_re~e |   1.241919   .1531233     1.76   0.079     .9753122    1.581403
+             |
+   asthmacat |
+Yes, no OCS  |   1.185962   .1638679     1.23   0.217     .9046026    1.554834
+Yes with ..  |   .7797287   .1925356    -1.01   0.314     .4805731    1.265108
+             |
+chronic_ca~e |   1.374524   .1581677     2.76   0.006     1.096993    1.722269
+             |
+     diabcat |
+Controlle..  |   1.321975   .1743703     2.12   0.034     1.020818    1.711977
+Uncontrol..  |   1.632157   .2392719     3.34   0.001     1.224551    2.175439
+Diabetes,..  |   1.491486    .518319     1.15   0.250     .7547635    2.947321
+             |
+cancer_exh~t |
+  Last year  |   2.113071   .5830488     2.71   0.007     1.230401    3.628957
+2-5 years..  |   1.466511   .3341732     1.68   0.093     .9382588    2.292178
+   5+ years  |   .9441363   .1740741    -0.31   0.755     .6578023    1.355108
+             |
+cancer_hae~t |
+  Last year  |    5.58498   1.937198     4.96   0.000     2.829926     11.0222
+2-5 years..  |   5.335619   1.481875     6.03   0.000      3.09584    9.195834
+   5+ years  |   2.276617   .6799576     2.75   0.006     1.267831    4.088072
+             |
+reduced_ki~2 |
+Stage 3a/..  |    1.52988   .2030982     3.20   0.001     1.179388    1.984532
+Stage 4 e..  |   1.445141   .4135216     1.29   0.198     .8247874    2.532085
+Stage 5 e..  |    5.67215   1.210946     8.13   0.000     3.732715    8.619272
+             |
+chronic_li~e |   1.802981    .499639     2.13   0.033     1.047388    3.103664
+      stroke |     1.2631   .1984378     1.49   0.137     .9283478     1.71856
+    dementia |   2.004569   .4894907     2.85   0.004     1.242134    3.234997
+ other_neuro |   2.258683   .4230165     4.35   0.000     1.564726     3.26041
+organ_tran~t |   1.647948   .4652358     1.77   0.077     .9476306    2.865815
+      spleen |   1.613476   .7383848     1.05   0.296     .6579938    3.956426
+ra_sle_pso~s |   1.000753   .1723244     0.00   0.997     .7140928    1.402489
+other_immu~n |   1.650421   .8434264     0.98   0.327     .6061762    4.493558
+------------------------------------------------------------------------------
+(note: file analysis/output/models/an_cox_causespecificotherinfections_cflu_FUL
+> LADJ.ster not found)
+file analysis/output/models/an_cox_causespecificotherinfections_cflu_FULLADJ.st
+> er saved
+
+         failure _d:  CSfail_otherinfections
+   analysis time _t:  (CSexit_otherinfections-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1173.2553
+Iteration 1:   log likelihood = -1025.9181
+Iteration 2:   log likelihood = -975.51034
+Iteration 3:   log likelihood = -974.11015
+Iteration 4:   log likelihood = -974.11015
+Refining estimates:
+Iteration 0:   log likelihood = -974.11015
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       95,381                  Number of obs    =      95,381
+No. of failures =          669
+Time at risk    =     16132459
+                                                LR chi2(1)       =      398.29
+Log likelihood  =   -974.11015                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |   5.621492   .4680683    20.74   0.000     4.775041     6.61799
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificotherinfections_c2019gp_
+> MATCHFACONLY.ster not found)
+file analysis/output/models/an_cox_causespecificotherinfections_c2019gp_MATCHFA
+> CONLY.ster saved
+
+         failure _d:  CSfail_otherinfections
+   analysis time _t:  (CSexit_otherinfections-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -752.57299
+Iteration 1:   log likelihood = -546.18372
+Iteration 2:   log likelihood = -538.71683
+Iteration 3:   log likelihood = -538.69451
+Iteration 4:   log likelihood = -538.69451
+Refining estimates:
+Iteration 0:   log likelihood = -538.69451
+
+Stratified Cox regr. -- no ties
+
+No. of subjects =       71,741                  Number of obs    =      71,741
+No. of failures =          506
+Time at risk    =     12087438
+                                                LR chi2(39)      =      427.76
+Log likelihood  =   -538.69451                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     exposed |    4.17452   .5135625    11.62   0.000     3.280115    5.312807
+             |
+   ethnicity |
+      Mixed  |   .2365907   .2086285    -1.63   0.102     .0420144    1.332285
+Asian or ..  |   1.041411   .2904575     0.15   0.884     .6028587     1.79899
+      Black  |   .8192648   .3918654    -0.42   0.677      .320836    2.092018
+      Other  |   .8163098   .4326321    -0.38   0.702     .2888889    2.306637
+             |
+         imd |
+          2  |   .9407304   .1849483    -0.31   0.756     .6399091    1.382968
+          3  |   .8573889   .1734274    -0.76   0.447     .5767692    1.274541
+          4  |   .9852429   .1976507    -0.07   0.941     .6649405    1.459835
+5 most de..  |   .6063957   .1307759    -2.32   0.020      .397361    .9253948
+             |
+   obese4cat |
+Obese I ..)  |   1.111281   .1816653     0.65   0.519     .8066303    1.530992
+Obese II..)  |   .9823129   .2589796    -0.07   0.946     .5859179    1.646884
+Obese II..)  |    2.07393   .7681499     1.97   0.049     1.003513    4.286129
+             |
+smoke_nomiss |
+     Former  |   1.346736   .1920174     2.09   0.037     1.018399    1.780929
+    Current  |   2.376323   .5376809     3.83   0.000     1.525133    3.702571
+             |
+htdiag_or_~p |   1.112369   .1666145     0.71   0.477     .8293793    1.491918
+chronic_re~e |   1.857185   .3141289     3.66   0.000     1.333156    2.587197
+             |
+   asthmacat |
+Yes, no OCS  |   1.363134    .241536     1.75   0.080     .9631913    1.929142
+Yes with ..  |   .9413034   .3268251    -0.17   0.862     .4766377    1.858964
+             |
+chronic_ca~e |   1.158717   .1651038     1.03   0.301     .8763773    1.532018
+             |
+     diabcat |
+Controlle..  |   1.504625    .243462     2.52   0.012     1.095711    2.066143
+Uncontrol..  |   2.198266   .4744317     3.65   0.000     1.440035    3.355732
+Diabetes,..  |   .8944675   .4950249    -0.20   0.840     .3023321    2.646335
+             |
+cancer_exh~t |
+  Last year  |   6.652201   2.883042     4.37   0.000     2.844837    15.55512
+2-5 years..  |   2.844177   .8055284     3.69   0.000     1.632598    4.954891
+   5+ years  |   1.246998   .2422055     1.14   0.256     .8521894    1.824716
+             |
+cancer_hae~t |
+  Last year  |   3.167358   2.820228     1.29   0.195     .5530751    18.13887
+2-5 years..  |   1.838593   1.009277     1.11   0.267     .6269423    5.391925
+   5+ years  |   3.033121   1.497247     2.25   0.025     1.152681    7.981241
+             |
+reduced_ki~2 |
+Stage 3a/..  |   1.128749   .1703503     0.80   0.422       .83972    1.517261
+Stage 4 e..  |    1.48016   .5431874     1.07   0.285     .7210006    3.038657
+Stage 5 e..  |   6.544607   4.294302     2.86   0.004     1.808673    23.68138
+             |
+chronic_li~e |   .9319018   .5167201    -0.13   0.899     .3143378    2.762763
+      stroke |   1.627986   .3541125     2.24   0.025     1.062921    2.493448
+    dementia |   2.321217   .7644431     2.56   0.011      1.21728    4.426299
+ other_neuro |   1.358274   .4293567     0.97   0.333     .7310025    2.523807
+organ_tran~t |   4.452979   5.857085     1.14   0.256     .3381035    58.64779
+      spleen |   8.720865   6.418647     2.94   0.003     2.060945    36.90224
+ra_sle_pso~s |   1.427181   .3155728     1.61   0.108     .9252614    2.201372
+other_immu~n |   .2230659   .3292388    -1.02   0.309     .0123619     4.02515
+------------------------------------------------------------------------------
+                                                           Stratified by setid
+(note: file analysis/output/models/an_cox_causespecificotherinfections_c2019gp_
+> FULLADJ.ster not found)
+file analysis/output/models/an_cox_causespecificotherinfections_c2019gp_FULLADJ
+> .ster saved
+
+. 
+. *graph combine `allgraphs'
+. *graph export an_cox_causespecific_KMGRAPHS.svg, as(svg) replace
+. 
+. log close
+      name:  <unnamed>
+       log:  /workspace/analysis/output/an_cox_causespecific.log
+  log type:  text
+ closed on:  31 Mar 2021, 23:45:29
+-------------------------------------------------------------------------------
