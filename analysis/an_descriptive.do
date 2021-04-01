@@ -39,8 +39,8 @@ if `group'==1 file write tablecontent ("`csoutcome'") _tab
 
 cou if group==`group' `condition'
 file write tablecontent (r(N))
-if "`csoutcome'"=="DENOM" local denominator = r(N)
-if "`csoutcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`denominator') (")")
+if "`csoutcome'"=="DENOM" local denominator`group' = r(N)
+if "`csoutcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`denominator`group'') (")")
 if `group'<4 file write tablecontent _tab
 else file write tablecontent _n
 }
