@@ -1,4 +1,6 @@
 
+cap log close
+log using analysis/output/an_cumulativeincidence, replace t
 use analysis/cr_append_process_data, clear
 
 drop if group==3
@@ -11,7 +13,7 @@ gen age_c = age-r(mean)
 *Composite outcome
 sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace)
 graph export analysis/output/an_cumulativeincidence_composite.svg, as(svg) replace
-
+sts list, at(0 100 183 200) by(group) fail
 *Composite outcome, adjusted for age/sex
 sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(composite_agesex, replace)
 graph export analysis/output/an_cumulativeincidence_composite_adjagesex.svg, as(svg) replace
@@ -21,9 +23,12 @@ preserve
 	include analysis/setfordeath.doi
 	sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace)
 	graph export analysis/output/an_cumulativeincidence_death.svg, as(svg) replace
+	sts list, at(0 100 183 200) by(group) fail
 	sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace)
 	graph export analysis/output/an_cumulativeincidence_death_adjagesex.svg, as(svg) replace
 restore
+
+log close
 
 *By reason for readmission/death
 *can't do for pre2019 flu
