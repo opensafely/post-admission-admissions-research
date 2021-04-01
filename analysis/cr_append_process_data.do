@@ -12,9 +12,40 @@ replace group = 3 if group==.
 append using ./analysis/cr_getmatches2019
 replace group = 4 if group==.
 
+replace setid=patient_id if group==1 
+
+
+**STSET FOR COMPOSITE OUTCOME OF SUS HOSP OR PRIMARY CARE DEATH
+summ readmission_date, f d
+replace censordate = r(max)-60 if group ==1
+replace censordate = r(max)-60-365 if group==3|group==4
+
+replace dereg_date="" if substr(dereg_date,1,4)=="9999"
+replace dereg_date = dereg_date + "-30" if dereg_date!="" 
+gen _dereg_date = date(dereg_date, "YMD") + 2
+format %d _dereg
+drop dereg
+rename _dereg dereg_date
+
+replace censordate = min(censordate, dereg_date)
+drop exitdate readmission
+gen exitdate = readmission_date if readmission_date<=censordate & group!=4
+replace exitdate = admitted_any_date if admitted_any_date<=censordate & group==4
+
+gen readmission = (exitdate<.)
+
+replace exitdate = died_date_1ocare if died_date_1ocare <. & died_date_1ocare<=exitdate & died_date_1ocare<=censordate
+format %d exitdate
+assert died_date_1ocare<. if readmission ==0 & exitdate<. 
+replace readmission = 3 if readmission ==0 & exitdate<.
+replace exitdate = censordate if exitdate==. 
+
+replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") 
+
+replace exitdate = exitdate+0.5 if exitdate==entrydate
 stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
 
-replace setid=patient_id if group==1 
+
 
 **CLASSIFY READMISSIONS
 gen icd10_3 = substr(readmission_reason,1,3) if (group==1|group==2|group==3) & (readmission==1|readmission==2)
@@ -201,10 +232,6 @@ foreach csoutcome of any circulatory cancer_ex_nmsc respiratory respiratorylrti 
 local thisreason = thisreason
 
 *get exit dates for cause specific
-summ readmission_date, f d
-replace censordate = r(max)-60 if group ==1
-replace censordate = r(max)-60-365 if group==3|group==4
-
 gen CSexit_`csoutcome' = admitted_`csoutcome'_date
 replace CSexit_`csoutcome' = died_date_ons if died_date_ons<=CSexit_`csoutcome'
 replace CSexit_`csoutcome' = censordate if censordate<CSexit_`csoutcome'
