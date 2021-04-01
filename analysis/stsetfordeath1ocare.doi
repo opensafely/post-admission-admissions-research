@@ -1,16 +1,14 @@
 
+*all use 1ocare
+
 *Code chunk for looking at death outcome
 
 summ died_date_ons, f d
 scalar deathcensor = r(max)-30
-gen deathexit = died_date_ons if died_date_ons<deathcensor & group!=2
-replace deathexit = died_date_1ocare if died_date_1ocare<deathcensor & group==2
+gen deathexit = died_date_1ocare if died_date_1ocare<deathcensor 
+gen deathindicator = died_date_1ocare<(dereg_date) 
 
-*gen deathindicator = died_date_ons<deathcensor if group!=2
-gen deathindicator = died_date_1ocare<(_dereg_date) 
-
-replace deathexit = deathcensor if deathexit==. & group!=2
-replace deathexit = min(deathcensor, _dereg_date) if deathexit==. & group==2
+replace deathexit = min(deathcensor, dereg_date) if deathexit==. 
 
 gen deathfup = deathexit-entrydate
 summ deathfup if group==1

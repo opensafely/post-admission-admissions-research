@@ -35,7 +35,7 @@ restore
 *Death
 *vs 2017_19-flu controls
 preserve
-	include analysis/setfordeath.doi
+	include analysis/stsetfordeath1ocare.doi
 	keep if group==1|group==2
 	stcox exposed age1 age2 age3 male i.region_real i.monthentry 
 	estimates save analysis/output/models/an_cox_DEATHvsflu_MINADJ, replace
@@ -50,7 +50,7 @@ restore
 
 *vs 2019 general pop controls
 preserve
-	include analysis/setfordeath.doi
+	include analysis/stsetfordeath1ocare.doi
 	keep if group==1|group==4
 	stcox exposed, strata(setid)
 	estimates save analysis/output/models/an_cox_DEATHvs2019gp_MINADJ, replace

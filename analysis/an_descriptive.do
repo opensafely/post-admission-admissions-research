@@ -26,7 +26,7 @@ file open tablecontent using ./analysis/output/an_descriptive_OUTCOMES.txt, writ
 gen byte cons=1
 
 foreach outcome of any DENOM composite death{
-if "`outcome'"=="death" include analysis/setfordeath.doi
+if "`outcome'"=="death" include analysis/stsetfordeath1ocare.doi
 
 foreach group of numlist 1 2 4 {
 	

@@ -20,7 +20,7 @@ graph export analysis/output/an_cumulativeincidence_composite_adjagesex.svg, as(
 
 *Death outcome
 preserve
-	include analysis/setfordeath.doi
+	include analysis/stsetfordeath1ocare.doi
 	sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 	graph export analysis/output/an_cumulativeincidence_death.svg, as(svg) replace
 	sts list, at(0 100 183 200) by(group) fail

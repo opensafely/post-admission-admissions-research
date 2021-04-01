@@ -1,6 +1,6 @@
 
 cap log close
-log using analysis/an_posthoc_mentalhealth, replace t
+log using analysis/output/an_posthoc_mentalhealth, replace t
 	
 use analysis/cr_append_process_data, clear
 drop if group==3|group==4

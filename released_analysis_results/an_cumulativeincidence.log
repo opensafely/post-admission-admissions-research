@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cumulativeincidence.log
   log type:  text
- opened on:   1 Apr 2021, 17:34:38
+ opened on:   1 Apr 2021, 21:52:22
 
 . use analysis/cr_append_process_data, clear
 
@@ -19,7 +19,8 @@
 . 
 . 
 . *Composite outcome
-. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace)
+. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace) plot
+> 1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  readmission
    analysis time _t:  (exitdate-origin)
@@ -41,25 +42,26 @@
 -------------------------------------------------------------------------------
 Hospitalised COVID-1 
        0         0        0              0.0000         .          .         .
-     100      9689     3785              0.2629    0.0037     0.2558    0.2703
-     183      5072      985              0.3476    0.0042     0.3395    0.3558
-     200      1993       61              0.3585    0.0043     0.3501    0.3671
+     100      9543     3714              0.2606    0.0037     0.2534    0.2680
+     183      4987      965              0.3453    0.0042     0.3372    0.3536
+     200      1962       61              0.3564    0.0044     0.3479    0.3650
 Hospitalised flu 201 
        0         0        0              0.0000         .          .         .
-     100     11598     4526              0.2802    0.0035     0.2733    0.2872
-     183      9855     1568              0.3782    0.0038     0.3707    0.3857
-     200      9471      230              0.3928    0.0039     0.3853    0.4004
+     100     11483     4514              0.2808    0.0035     0.2739    0.2878
+     183      9717     1558              0.3792    0.0038     0.3717    0.3867
+     200      9334      228              0.3938    0.0039     0.3863    0.4015
 General pop 2019 
        0         0        0              0.0000         .          .         .
-     100     60423     7102              0.0965    0.0011     0.0944    0.0986
-     183     48590     3637              0.1546    0.0014     0.1519    0.1574
-     200     34588      451              0.1649    0.0015     0.1621    0.1677
+     100     60191     7082              0.0964    0.0011     0.0943    0.0985
+     183     48274     3617              0.1545    0.0014     0.1518    0.1573
+     200     34305      445              0.1647    0.0015     0.1619    0.1676
 -------------------------------------------------------------------------------
 Note: Failure function is calculated over full data and evaluated at indicated
       times; it is not calculated from aggregates shown at left.
 
 . *Composite outcome, adjusted for age/sex
-. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(composite_agesex, replace)
+. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(co
+> mposite_agesex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  readmission
    analysis time _t:  (exitdate-origin)
@@ -73,8 +75,10 @@ Note: Failure function is calculated over full data and evaluated at indicated
 . *Death outcome
 . preserve
 
-.         include analysis/setfordeath.doi
+.         include analysis/stsetfordeath1ocare.doi
 
+. 
+. *all use 1ocare
 . 
 . *Code chunk for looking at death outcome
 . 
@@ -97,29 +101,31 @@ Note: Failure function is calculated over full data and evaluated at indicated
 
 . scalar deathcensor = r(max)-30
 
-. gen deathexit = died_date_ons if died_date_ons<deathcensor
-(102,553 missing values generated)
+. gen deathexit = died_date_1ocare if died_date_1ocare<deathcensor 
+(102,169 missing values generated)
 
-. gen deathindicator = died_date_ons<deathcensor
+. gen deathindicator = died_date_1ocare<(dereg_date) 
 
-. replace deathexit = deathcensor if deathexit==.
-(102,553 real changes made)
+. 
+. replace deathexit = min(deathcensor, dereg_date) if deathexit==. 
+(102,169 real changes made)
 
+. 
 . gen deathfup = deathexit-entrydate
 
 . summ deathfup if group==1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-    deathfup |     15,901    236.2804    82.26274          0        357
+    deathfup |     15,901    232.6126    85.41778        -24        357
 
 . local maxfupexposed = r(max)
 
 . replace deathindicator = 0 if deathexit>(entrydate + `maxfupexposed')
-(4,253 real changes made)
+(4,282 real changes made)
 
 . replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexposed')
-(92,548 real changes made)
+(90,418 real changes made)
 
 . stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate)
 
@@ -132,17 +138,18 @@ obs. time interval:  (origin, deathexit]
 
 ------------------------------------------------------------------------------
     111,625  total observations
-         63  observations end on or before enter()
+        135  observations end on or before enter()
 ------------------------------------------------------------------------------
-    111,562  observations remaining, representing
-      4,756  failures in single-record/single-failure data
-   37402551  total analysis time at risk and under observation
+    111,490  observations remaining, representing
+      5,295  failures in single-record/single-failure data
+   36923706  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =       357
 
 . 
-.         sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace)
+.         sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace) plot1opt(lc(black)) plot2opt(
+> lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  deathindicator
    analysis time _t:  (deathexit-origin)
@@ -164,24 +171,25 @@ obs. time interval:  (origin, deathexit]
 -------------------------------------------------------------------------------
 Hospitalised COVID-1 
        0         0        0              0.0000         .          .         .
-     100     14912      948              0.0598    0.0019     0.0562    0.0636
-     183     12166      344              0.0843    0.0023     0.0800    0.0888
-     200     11933       57              0.0886    0.0023     0.0842    0.0932
+     100     14707      873              0.0556    0.0018     0.0521    0.0593
+     183     11924      322              0.0790    0.0022     0.0748    0.0835
+     200     11679       65              0.0841    0.0023     0.0797    0.0887
 Hospitalised flu 201 
        0         0        0              0.0000         .          .         .
-     100     16014      190              0.0117    0.0008     0.0102    0.0135
-     183     15887      126              0.0195    0.0011     0.0175    0.0218
-     200     15865       24              0.0210    0.0011     0.0189    0.0233
+     100     15561      503              0.0312    0.0014     0.0286    0.0340
+     183     15207      279              0.0486    0.0017     0.0454    0.0520
+     200     15146       54              0.0520    0.0018     0.0487    0.0555
 General pop 2019 
        0         0        0              0.0000         .          .         .
-     100     78919      594              0.0075    0.0003     0.0069    0.0081
-     183     78397      522              0.0140    0.0004     0.0132    0.0149
-     200     78269      126              0.0156    0.0004     0.0148    0.0165
+     100     78611      558              0.0070    0.0003     0.0065    0.0076
+     183     77916      483              0.0131    0.0004     0.0124    0.0140
+     200     77683      116              0.0146    0.0004     0.0138    0.0155
 -------------------------------------------------------------------------------
 Note: Failure function is calculated over full data and evaluated at indicated
       times; it is not calculated from aggregates shown at left.
 
-.         sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace)
+.   sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace) plot1
+> opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  deathindicator
    analysis time _t:  (deathexit-origin)
@@ -198,5 +206,5 @@ Note: Failure function is calculated over full data and evaluated at indicated
       name:  <unnamed>
        log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cumulativeincidence.log
   log type:  text
- closed on:   1 Apr 2021, 17:34:50
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:   1 Apr 2021, 21:52:35
+------------------------------------------------------------------------------------------------------------------------------------------------
