@@ -52,13 +52,13 @@ restore
 preserve
 	include analysis/setfordeath.doi
 	keep if group==1|group==4
-	stcox exposed age1 age2 age3 male i.stp i.monthentry 
+	stcox exposed, strata(setid)
 	estimates save analysis/output/models/an_cox_DEATHvs2019gp_MINADJ, replace
-	stcox exposed age1 age2 age3 male i.stp i.monthentry i.ethnicity i.imd 
+	stcox exposed i.ethnicity i.imd, strata(setid)
 	estimates save analysis/output/models/an_cox_DEATHvs2019gp_DEMOGADJ, replace
-	stcox exposed age1 age2 age3 male i.stp i.monthentry  i.ethnicity i.imd i.obese4cat i.smoke_nomiss 
+	stcox exposed i.ethnicity i.imd i.obese4cat i.smoke_nomiss, strata(setid) 
 	estimates save analysis/output/models/an_cox_DEATHvs2019gp_DEMOGLSTYLADJ, replace
-	stcox exposed age1 age2 age3 male i.stp i.monthentry i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
+	stcox exposed i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression, strata(setid)
 	estimates save analysis/output/models/an_cox_DEATHvs2019gp_FULLADJ, replace
 restore
 
