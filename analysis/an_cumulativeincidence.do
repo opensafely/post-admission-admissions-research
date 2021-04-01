@@ -9,19 +9,19 @@ gen age_c = age-r(mean)
 
 
 *Composite outcome
-sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace)
+sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 graph export analysis/output/an_cumulativeincidence_composite.svg, as(svg) replace
 
 *Composite outcome, adjusted for age/sex
-sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(composite_agesex, replace)
+sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(composite_agesex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 graph export analysis/output/an_cumulativeincidence_composite_adjagesex.svg, as(svg) replace
 
 *Death outcome
 preserve
 	include analysis/setfordeath.doi
-	sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace)
+	sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 	graph export analysis/output/an_cumulativeincidence_death.svg, as(svg) replace
-	sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace)
+	sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 	graph export analysis/output/an_cumulativeincidence_death_adjagesex.svg, as(svg) replace
 restore
 
@@ -60,7 +60,7 @@ if "`csoutcome'"=="external"  local outcometext = "External causes (S-Y except U
 	
 twoway line cuminc_`csoutcome' t_`csoutcome' if group==1 & CSfail_`csoutcome'==1, c(stairstep) sort lc(black) ///
 		|| line cuminc_`csoutcome' t_`csoutcome'  if group==2 & CSfail_`csoutcome'==1, c(stairstep) sort  lc(black) lp(dash) ///
-		|| line cuminc_`csoutcome' t_`csoutcome' if group==4 & CSfail_`csoutcome'==1, c(stairstep) sort lc(gs7) lp(dash)  ///
+		|| line cuminc_`csoutcome' t_`csoutcome' if group==4 & CSfail_`csoutcome'==1, c(stairstep) sort lc(gs9) lp(dash_dot)  ///
 		|| if t_`csoutcome'<=200 ,  xtitle(Days from index date) legend(cols(2) holes(2) label(1 "Hospitalised COVID-19") label(2 "Hospitalised flu 2019") label(3 "General pop 2019")  size(small)) name(`csoutcome', replace) title("`outcometext'") yscale(range(0.1)) ylab(0.02 0.04 0.06 0.08 0.10)
 global allgraphs "$allgraphs `csoutcome'"
 
