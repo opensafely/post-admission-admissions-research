@@ -1,15 +1,18 @@
-DENOM	15901	6745	79502
+DENOM	15901	16222 (6745 in 2019*)	79502
 
+composite	4846 (30.5)	7178 (44.2)	11617 (14.6)
+death	1610 (10.1)	625 (3.9)	2559 (3.2)
+		
 
-otherinfections	331 (0.4)	242 (0.3)	360 (0.5)
-cancer_ex_nmsc	428 (0.5)	330 (0.4)	1019 (1.3)
-endo_nutr_metabol	179 (0.2)	93 (0.1)	230 (0.3)
-mentalhealth	210 (0.3)	63 (0.1)	265 (0.3)
-nervoussystem	202 (0.3)	111 (0.1)	329 (0.4)
-circulatory	815 (1.0)	469 (0.6)	1545 (1.9)
-respiratorylrti	1656 (2.1)	629 (0.8)	616 (0.8)
-respiratory	542 (0.7)	511 (0.6)	535 (0.7)
-digestive	575 (0.7)	396 (0.5)	1838 (2.3)
-musculoskeletal	119 (0.1)	130 (0.2)	722 (0.9)
-genitourinary	471 (0.6)	264 (0.3)	879 (1.1)
-external	333 (0.4)	178 (0.2)	574 (0.7)
+otherinfections	309 (1.9)	226 (3.4)	360 (0.5)
+cancer_ex_nmsc	421 (2.6)	325 (4.8)	1019 (1.3)
+endo_nutr_metabol	160 (1.0)	87 (1.3)	230 (0.3)
+mentalhealth	192 (1.2)	58 (0.9)	265 (0.3)
+nervoussystem	184 (1.2)	108 (1.6)	329 (0.4)
+circulatory	727 (4.6)	450 (6.7)	1545 (1.9)
+respiratorylrti	813 (5.1)	419 (6.2)	616 (0.8)
+respiratory	489 (3.1)	441 (6.5)	535 (0.7)
+digestive	538 (3.4)	377 (5.6)	1838 (2.3)
+musculoskeletal	115 (0.7)	129 (1.9)	722 (0.9)
+genitourinary	426 (2.7)	247 (3.7)	879 (1.1)
+external	313 (2.0)	170 (2.5)	574 (0.7)
