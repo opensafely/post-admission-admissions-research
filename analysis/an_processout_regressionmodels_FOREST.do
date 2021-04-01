@@ -40,14 +40,13 @@ use `estimates', clear
 
 *COX GRAPHS OF NON-COMPETING OUTCOMES
 preserve
-	keep if outcome=="COMPOSITE"|outcome=="DEATH"
-	*gen origorder=_n
-	*gsort outcome -ctrl orig
-	*drop origorder
+	gen origorder=_n
+	gsort outcome -ctrl orig
+	drop origorder
 	gen counter=1
 	replace counter = 2 if adjustment=="min"
-	replace counter = 3 if adjustment=="min" & outcome=="COMPOSITE"
-	replace counter = 4 if adjustment=="min" & outcome=="COMPOSITE" & ctrl=="2019gp"
+	replace counter = 3 if adjustment=="min" & & ctrl=="2019gp" 
+	replace counter = 4 if adjustment=="min" & outcome=="DEATH" & ctrl=="flu"
 	gen cumcounter = sum(counter)
 	summ cumcounter
 	gen graphorder = r(max)+1-cumcounter
@@ -65,9 +64,9 @@ preserve
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 	|| scatter graphorder modelpos, m(i) mlab(adjlong) mlabsize(vsmall) mlabcol(gs7)  ///
 	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(8) ylab(, nogrid) ytitle("") yscale(off range(23)) legend(off) ///
-	text(23 0.015 "vs flu controls", size(vsmall) placement(e)) text(22 0.017 "Outcome: hospitalisation or death (composite)", size(vsmall) placement(e)) text(17 0.017 "Outcome: mortality", size(vsmall) placement(e)) ///
-	text(11 0.015 "vs 2019 general population controls", size(vsmall) placement(e)) text(10 0.017 "Outcome: hospitalisation or death (composite)", size(vsmall) placement(e)) text(5 0.017 "Outcome: mortality", size(vsmall) placement(e)) ///
-	text(23 35 "HR and 95% CI", size(vsmall) placement(e)) 
+	text(25 0.015 "a) Composite outcome of hospitalisation or death", size(vsmall) placement(e)) text(24 0.017 "vs flu controls", size(vsmall) placement(e)) text(18 0.017 "vs 2019 general population controls", size(vsmall) placement(e)) ///
+	text(12 0.015 "b) All-cause mortality", size(vsmall) placement(e)) text(11 0.017 "vs flu controls", size(vsmall) placement(e)) text(5 0.017 "vs 2019 general population controls", size(vsmall) placement(e)) ///
+	text(24 35 "HR and 95% CI", size(vsmall) placement(e)) 
 	graph export analysis/output/an_processout_regressionmodels_FOREST_COX.svg, as(svg) replace
 restore
 /*
