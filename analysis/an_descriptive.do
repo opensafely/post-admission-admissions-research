@@ -29,12 +29,13 @@ drop if group==2 & entrydate<d(1/1/2019)
 gen byte cons=1
 
 
-foreach csoutcome of any DENOM circulatory cancer_ex_nmsc respiratory respiratorylrti digestive mentalhealth nervoussystem genitourinary endo_nutr_metabol external musculoskeletal  otherinfections {
+foreach csoutcome of any DENOM otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
 
 foreach group of numlist 1 2 4 {
 
 if "`csoutcome'"=="DENOM" local condition 
 else local condition " & CSfail_`csoutcome' == 1"
+if `group'==1 file write tablecontent ("`csoutcome'") _tab 
 
 cou if group==`group' `condition'
 file write tablecontent (r(N))
@@ -44,8 +45,7 @@ if `group'<4 file write tablecontent _tab
 else file write tablecontent _n
 }
 
-if "`csoutcome'"=="DENOM" file write tablecontent _n
-
+if "`csoutcome'"=="DENOM" file write tablecontent _n _n
 
 }
 
