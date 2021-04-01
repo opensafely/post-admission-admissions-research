@@ -50,8 +50,8 @@ if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-F99)" 
 tempfile temp`run'
 gen fail`failtype' = CSfail_mentalhealth
 replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`failtype'"
-streset, fail(fail`failtype')
-strate group, per(100000) output(`temp`run'')
+streset, fail(fail`failtype') scale(365.25)
+strate group, per(1000) output(`temp`run'')
 stcox ib2.group age male 
 lincom 1.group, hr
 local hr = r(estimate)
