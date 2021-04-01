@@ -63,7 +63,7 @@ preserve
 	scatter graphorder shr, msize(small) mcol(black) || rcap lci uci graphorder, hor lw(thin) lc(black) ///
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 	|| scatter graphorder modelpos, m(i) mlab(adjlong) mlabsize(vsmall) mlabcol(gs7)  ///
-	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(8) ylab(, nogrid) ytitle("") yscale(off range(23)) legend(off) ///
+	||, xscale(log range(0.015 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) xtitle(HR and 95% CI) ysize(8) ylab(, nogrid) ytitle("") yscale(off range(23)) legend(off) ///
 	text(25 0.015 "a) Composite outcome of hospitalisation or death", size(vsmall) placement(e)) text(24 0.017 "vs flu controls", size(vsmall) placement(e)) text(18 0.017 "vs 2019 general population controls", size(vsmall) placement(e)) ///
 	text(12 0.015 "b) All-cause mortality", size(vsmall) placement(e)) text(11 0.017 "vs flu controls", size(vsmall) placement(e)) text(5 0.017 "vs 2019 general population controls", size(vsmall) placement(e)) ///
 	text(24 35 "HR and 95% CI", size(vsmall) placement(e)) 
