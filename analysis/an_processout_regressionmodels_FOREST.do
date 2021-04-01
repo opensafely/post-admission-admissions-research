@@ -54,7 +54,7 @@ preserve
 	gen hrcipos = 30
 	gen modelpos = 0.02
 
-	gen adjlong = "Adj for matching factors only" if adjustment=="min"
+	gen adjlong = "Adj for age, sex, STP only" if adjustment=="min"
 	replace adjlong = " + ethnicity/IMD" if adjustment=="demog"
 	replace adjlong = " + ethnicity/IMD" if adjustment=="demog"
 	replace adjlong = " + obesity/smoking" if adjustment=="demoglstyl"
