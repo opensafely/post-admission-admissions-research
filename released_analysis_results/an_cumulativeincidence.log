@@ -1,0 +1,202 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cumulativeincidence.log
+  log type:  text
+ opened on:   1 Apr 2021, 17:34:38
+
+. use analysis/cr_append_process_data, clear
+
+. 
+. drop if group==3
+(75,514 observations deleted)
+
+. 
+. *Age centring for age-adj KMs
+. qui summ age if exposed==1
+
+. gen age_c = age-r(mean)
+
+. 
+. 
+. *Composite outcome
+. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace)
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+. graph export analysis/output/an_cumulativeincidence_composite.svg, as(svg) replace
+(file analysis/output/an_cumulativeincidence_composite.svg written in SVG format)
+
+. sts list, at(0 100 183 200) by(group) fail
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+              Beg.                      Failure       Std.
+    Time     Total     Fail             Function     Error     [95% Conf. Int.]
+-------------------------------------------------------------------------------
+Hospitalised COVID-1 
+       0         0        0              0.0000         .          .         .
+     100      9689     3785              0.2629    0.0037     0.2558    0.2703
+     183      5072      985              0.3476    0.0042     0.3395    0.3558
+     200      1993       61              0.3585    0.0043     0.3501    0.3671
+Hospitalised flu 201 
+       0         0        0              0.0000         .          .         .
+     100     11598     4526              0.2802    0.0035     0.2733    0.2872
+     183      9855     1568              0.3782    0.0038     0.3707    0.3857
+     200      9471      230              0.3928    0.0039     0.3853    0.4004
+General pop 2019 
+       0         0        0              0.0000         .          .         .
+     100     60423     7102              0.0965    0.0011     0.0944    0.0986
+     183     48590     3637              0.1546    0.0014     0.1519    0.1574
+     200     34588      451              0.1649    0.0015     0.1621    0.1677
+-------------------------------------------------------------------------------
+Note: Failure function is calculated over full data and evaluated at indicated
+      times; it is not calculated from aggregates shown at left.
+
+. *Composite outcome, adjusted for age/sex
+. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(composite_agesex, replace)
+
+         failure _d:  readmission
+   analysis time _t:  (exitdate-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+. graph export analysis/output/an_cumulativeincidence_composite_adjagesex.svg, as(svg) replace
+(file analysis/output/an_cumulativeincidence_composite_adjagesex.svg written in SVG format)
+
+. 
+. *Death outcome
+. preserve
+
+.         include analysis/setfordeath.doi
+
+. 
+. *Code chunk for looking at death outcome
+. 
+. summ died_date_ons, f d
+
+                        died_date_ons
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    27feb2019      01feb2019
+ 5%    04may2019      01feb2019
+10%    03jul2019      01feb2019       Obs               9,410
+25%    02dec2019      01feb2019       Sum of Wgt.       9,410
+
+50%    11may2020                      Mean          27apr2020
+                        Largest       Std. Dev.      199.5942
+75%    17oct2020      12mar2021
+90%    10jan2021      12mar2021       Variance       39837.86
+95%    02feb2021      12mar2021       Skewness      -.3466591
+99%    02mar2021      12mar2021       Kurtosis       2.134723
+
+. scalar deathcensor = r(max)-30
+
+. gen deathexit = died_date_ons if died_date_ons<deathcensor
+(102,553 missing values generated)
+
+. gen deathindicator = died_date_ons<deathcensor
+
+. replace deathexit = deathcensor if deathexit==.
+(102,553 real changes made)
+
+. gen deathfup = deathexit-entrydate
+
+. summ deathfup if group==1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+    deathfup |     15,901    236.2804    82.26274          0        357
+
+. local maxfupexposed = r(max)
+
+. replace deathindicator = 0 if deathexit>(entrydate + `maxfupexposed')
+(4,253 real changes made)
+
+. replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexposed')
+(92,548 real changes made)
+
+. stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate)
+
+     failure event:  deathindicator != 0 & deathindicator < .
+obs. time interval:  (origin, deathexit]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    111,625  total observations
+         63  observations end on or before enter()
+------------------------------------------------------------------------------
+    111,562  observations remaining, representing
+      4,756  failures in single-record/single-failure data
+   37402551  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       357
+
+. 
+.         sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace)
+
+         failure _d:  deathindicator
+   analysis time _t:  (deathexit-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+.         graph export analysis/output/an_cumulativeincidence_death.svg, as(svg) replace
+(file analysis/output/an_cumulativeincidence_death.svg written in SVG format)
+
+.         sts list, at(0 100 183 200) by(group) fail
+
+         failure _d:  deathindicator
+   analysis time _t:  (deathexit-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+              Beg.                      Failure       Std.
+    Time     Total     Fail             Function     Error     [95% Conf. Int.]
+-------------------------------------------------------------------------------
+Hospitalised COVID-1 
+       0         0        0              0.0000         .          .         .
+     100     14912      948              0.0598    0.0019     0.0562    0.0636
+     183     12166      344              0.0843    0.0023     0.0800    0.0888
+     200     11933       57              0.0886    0.0023     0.0842    0.0932
+Hospitalised flu 201 
+       0         0        0              0.0000         .          .         .
+     100     16014      190              0.0117    0.0008     0.0102    0.0135
+     183     15887      126              0.0195    0.0011     0.0175    0.0218
+     200     15865       24              0.0210    0.0011     0.0189    0.0233
+General pop 2019 
+       0         0        0              0.0000         .          .         .
+     100     78919      594              0.0075    0.0003     0.0069    0.0081
+     183     78397      522              0.0140    0.0004     0.0132    0.0149
+     200     78269      126              0.0156    0.0004     0.0148    0.0165
+-------------------------------------------------------------------------------
+Note: Failure function is calculated over full data and evaluated at indicated
+      times; it is not calculated from aggregates shown at left.
+
+.         sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace)
+
+         failure _d:  deathindicator
+   analysis time _t:  (deathexit-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+.         graph export analysis/output/an_cumulativeincidence_death_adjagesex.svg, as(svg) replace
+(file analysis/output/an_cumulativeincidence_death_adjagesex.svg written in SVG format)
+
+. restore
+
+. 
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cumulativeincidence.log
+  log type:  text
+ closed on:   1 Apr 2021, 17:34:50
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
