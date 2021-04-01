@@ -54,7 +54,8 @@ preserve
 	gen hrcipos = 30
 	gen modelpos = 0.02
 
-	gen adjlong = "Adj for age, sex, STP only" if adjustment=="min"
+	gen adjlong = "Adj for age, sex, STP, calendar month" if adjustment=="min" & ctrl=="flu"
+	replace adjlong = "Adj for matching factors " if adjustment=="min" & ctrl=="2019gp"
 	replace adjlong = " + ethnicity/IMD" if adjustment=="demog"
 	replace adjlong = " + ethnicity/IMD" if adjustment=="demog"
 	replace adjlong = " + obesity/smoking" if adjustment=="demoglstyl"
