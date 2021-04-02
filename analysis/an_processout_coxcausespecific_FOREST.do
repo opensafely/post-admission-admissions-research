@@ -35,7 +35,7 @@ gen hrandci = string(shr , "%5.2f") + " (" + string(lci , "%5.2f") + "-" + strin
 gen hrcipos = 30
 gen modelpos = 0.005
 
-gen adjlong = "Adj for age, sex, region" if adjustment=="matchfac" 
+gen adjlong = "Adj for age, sex, geography" if adjustment=="matchfac" 
 replace adjlong = "Fully adjusted" if adjustment=="full"
 l
 gen outcometext = "Other infections (A)" if outcome=="otherinfections" & adjustment=="matchfac" 
