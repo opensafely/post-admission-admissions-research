@@ -2651,7 +2651,7 @@
 	<line x1="2823.23" y1="696.49" x2="2827.07" y2="696.49" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="2827.07" y1="696.49" x2="2827.07" y2="696.36" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="2827.07" y1="696.36" x2="2833.01" y2="696.36" style="stroke:#909090;stroke-width:3.00"/>
-	<line x1="2858.63" y1="695.99" x2="2861.47" y2="695.99" style="stroke:#909090;stroke-width:3.00"/>
+	<line x1="2858.62" y1="695.99" x2="2861.47" y2="695.99" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="2886.84" y1="695.50" x2="2888.94" y2="695.50" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="2888.94" y1="695.50" x2="2888.94" y2="695.37" style="stroke:#909090;stroke-width:3.00"/>
 	<path d="" stroke-linejoin="round" style="fill:none;stroke:#909090;stroke-width:3.00"/>
@@ -2668,8 +2668,8 @@
 	<text x="2070.08" y="164.96" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" transform="rotate(-90 2070.08,164.96)" text-anchor="middle">.1</text>
 	<text x="2037.16" y="438.95" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" transform="rotate(-90 2037.16,438.95)" text-anchor="middle">Cumulative Incidence</text>
 	<line x1="2097.19" y1="732.00" x2="2908.00" y2="732.00" style="stroke:#000000;stroke-width:3.00"/>
-	<line x1="2116.13" y1="732.00" x2="2116.13" y2="744.01" style="stroke:#000000;stroke-width:3.00"/>
-	<text x="2116.13" y="770.97" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">0</text>
+	<line x1="2116.12" y1="732.00" x2="2116.12" y2="744.01" style="stroke:#000000;stroke-width:3.00"/>
+	<text x="2116.12" y="770.97" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">0</text>
 	<line x1="2309.42" y1="732.00" x2="2309.42" y2="744.01" style="stroke:#000000;stroke-width:3.00"/>
 	<text x="2309.42" y="770.97" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">50</text>
 	<line x1="2502.60" y1="732.00" x2="2502.60" y2="744.01" style="stroke:#000000;stroke-width:3.00"/>
@@ -3314,7 +3314,7 @@
 	<line x1="284.50" y1="1495.94" x2="284.50" y2="1495.81" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="284.50" y1="1495.81" x2="284.50" y2="1495.81" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="284.50" y1="1495.81" x2="284.50" y2="1495.81" style="stroke:#909090;stroke-width:3.00"/>
-	<line x1="284.50" y1="1495.81" x2="284.63" y2="1495.81" style="stroke:#909090;stroke-width:3.00"/>
+	<line x1="284.50" y1="1495.81" x2="284.62" y2="1495.81" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="309.62" y1="1494.82" x2="311.60" y2="1494.82" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="311.60" y1="1494.82" x2="311.60" y2="1494.82" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="311.60" y1="1494.82" x2="315.44" y2="1494.82" style="stroke:#909090;stroke-width:3.00"/>
@@ -3537,7 +3537,7 @@
 	<line x1="798.43" y1="1479.72" x2="798.43" y2="1479.72" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="798.43" y1="1479.72" x2="798.43" y2="1479.72" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="798.43" y1="1479.72" x2="801.40" y2="1479.72" style="stroke:#909090;stroke-width:3.00"/>
-	<line x1="826.28" y1="1478.61" x2="829.13" y2="1478.61" style="stroke:#909090;stroke-width:3.00"/>
+	<line x1="826.28" y1="1478.61" x2="829.12" y2="1478.61" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="854.00" y1="1477.50" x2="856.47" y2="1477.50" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="856.47" y1="1477.50" x2="856.47" y2="1477.25" style="stroke:#909090;stroke-width:3.00"/>
 	<line x1="856.47" y1="1477.25" x2="856.47" y2="1477.25" style="stroke:#909090;stroke-width:3.00"/>
@@ -7057,8 +7057,8 @@
 	<text x="2070.08" y="950.92" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" transform="rotate(-90 2070.08,950.92)" text-anchor="middle">.1</text>
 	<text x="2037.16" y="1224.92" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" transform="rotate(-90 2037.16,1224.92)" text-anchor="middle">Cumulative Incidence</text>
 	<line x1="2097.19" y1="1517.96" x2="2908.00" y2="1517.96" style="stroke:#000000;stroke-width:3.00"/>
-	<line x1="2116.13" y1="1517.96" x2="2116.13" y2="1529.97" style="stroke:#000000;stroke-width:3.00"/>
-	<text x="2116.13" y="1556.81" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">0</text>
+	<line x1="2116.12" y1="1517.96" x2="2116.12" y2="1529.97" style="stroke:#000000;stroke-width:3.00"/>
+	<text x="2116.12" y="1556.81" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">0</text>
 	<line x1="2309.42" y1="1517.96" x2="2309.42" y2="1529.97" style="stroke:#000000;stroke-width:3.00"/>
 	<text x="2309.42" y="1556.81" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">50</text>
 	<line x1="2502.60" y1="1517.96" x2="2502.60" y2="1529.97" style="stroke:#000000;stroke-width:3.00"/>
@@ -13002,8 +13002,8 @@
 	<text x="2070.08" y="1736.76" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" transform="rotate(-90 2070.08,1736.76)" text-anchor="middle">.1</text>
 	<text x="2037.16" y="2010.88" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" transform="rotate(-90 2037.16,2010.88)" text-anchor="middle">Cumulative Incidence</text>
 	<line x1="2097.19" y1="2303.93" x2="2908.00" y2="2303.93" style="stroke:#000000;stroke-width:3.00"/>
-	<line x1="2116.13" y1="2303.93" x2="2116.13" y2="2315.93" style="stroke:#000000;stroke-width:3.00"/>
-	<text x="2116.13" y="2342.77" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">0</text>
+	<line x1="2116.12" y1="2303.93" x2="2116.12" y2="2315.93" style="stroke:#000000;stroke-width:3.00"/>
+	<text x="2116.12" y="2342.77" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">0</text>
 	<line x1="2309.42" y1="2303.93" x2="2309.42" y2="2315.93" style="stroke:#000000;stroke-width:3.00"/>
 	<text x="2309.42" y="2342.77" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">50</text>
 	<line x1="2502.60" y1="2303.93" x2="2502.60" y2="2315.93" style="stroke:#000000;stroke-width:3.00"/>
@@ -13869,22 +13869,22 @@
 	<text x="3847.26" y="2342.77" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">200</text>
 	<text x="3460.92" y="2375.81" style="font-family:'Helvetica';font-size:29.95px;fill:#000000" text-anchor="middle">Days from index date</text>
 	<text x="3460.92" y="1699.98" style="font-family:'Helvetica';font-size:41.95px;fill:#1E2D53" text-anchor="middle">External causes (S-Y except U/X60-84)</text>
-	<rect x="669.61" y="2455.65" width="2620.65" height="326.46" style="fill:#FFFFFF"/>
-	<rect x="672.49" y="2458.53" width="2614.89" height="320.70" style="fill:none;stroke:#000000;stroke-width:5.76"/>
-	<line x1="712.80" y1="2548.83" x2="1087.14" y2="2548.83" style="stroke:#000000;stroke-width:8.64"/>
-	<line x1="712.80" y1="2688.92" x2="770.34" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
-	<line x1="799.18" y1="2688.92" x2="856.72" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
-	<line x1="885.55" y1="2688.92" x2="943.10" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
-	<line x1="971.93" y1="2688.92" x2="1029.60" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
-	<line x1="1058.31" y1="2688.92" x2="1087.14" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
-	<line x1="2145.58" y1="2688.92" x2="2203.12" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<line x1="2229.11" y1="2688.92" x2="2231.95" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<line x1="2257.94" y1="2688.92" x2="2315.49" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<line x1="2341.47" y1="2688.92" x2="2344.32" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<line x1="2370.31" y1="2688.92" x2="2427.85" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<line x1="2453.84" y1="2688.92" x2="2456.68" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<line x1="2482.67" y1="2688.92" x2="2519.92" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
-	<text x="1147.16" y="2576.85" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">Hospitalised COVID-19</text>
-	<text x="1147.16" y="2716.94" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">Hospitalised flu 2019</text>
-	<text x="2579.94" y="2716.94" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">General pop 2019</text>
+	<rect x="678.64" y="2455.65" width="2602.59" height="326.46" style="fill:#FFFFFF"/>
+	<rect x="681.52" y="2458.53" width="2596.83" height="320.70" style="fill:none;stroke:#000000;stroke-width:5.76"/>
+	<line x1="721.83" y1="2548.83" x2="1096.30" y2="2548.83" style="stroke:#000000;stroke-width:8.64"/>
+	<line x1="721.83" y1="2688.92" x2="779.38" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
+	<line x1="808.21" y1="2688.92" x2="865.75" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
+	<line x1="894.59" y1="2688.92" x2="952.13" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
+	<line x1="980.97" y1="2688.92" x2="1038.51" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
+	<line x1="1067.34" y1="2688.92" x2="1096.30" y2="2688.92" style="stroke:#000000;stroke-width:8.64"/>
+	<line x1="2146.94" y1="2688.92" x2="2204.48" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<line x1="2230.47" y1="2688.92" x2="2233.32" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<line x1="2259.30" y1="2688.92" x2="2316.85" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<line x1="2342.84" y1="2688.92" x2="2345.68" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<line x1="2371.67" y1="2688.92" x2="2429.21" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<line x1="2455.20" y1="2688.92" x2="2458.05" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<line x1="2483.91" y1="2688.92" x2="2521.28" y2="2688.92" style="stroke:#909090;stroke-width:8.64"/>
+	<text x="1156.32" y="2576.85" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">Hospitalised COVID-19</text>
+	<text x="1156.32" y="2716.94" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">Hospitalised flu 2019</text>
+	<text x="2581.30" y="2716.94" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">General pop 2019</text>
 </svg>

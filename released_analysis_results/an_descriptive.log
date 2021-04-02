@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_descriptive.log
+       log:  /workspace/analysis/output/an_descriptive.log
   log type:  text
- opened on:   1 Apr 2021, 21:51:54
+ opened on:   2 Apr 2021, 00:45:18
 
 . use analysis/cr_append_process_data, clear
 
@@ -18,8 +18,8 @@
 
   groupsize |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          3 |REDACTED           
-          6 |REDACTED   	>99      100.00
+          3 |  REDACTED        
+          6 |  REDACTED		>99
 ------------+-----------------------------------
       Total |     15,901      100.00
 
@@ -30,6 +30,7 @@
 . histogram entrydate if (group==1|group==2|group==4), by(group, cols(1)) 
 
 . graph export analysis/output/an_descriptive_EVENTSBYTIME.svg, as(svg) replace
+(note: file analysis/output/an_descriptive_EVENTSBYTIME.svg not found)
 (file analysis/output/an_descriptive_EVENTSBYTIME.svg written in SVG format)
 
 . 
@@ -170,7 +171,9 @@ External causes (S-Y  |       266        345      1,972        754 |     3,337
 . 
 . cap file close tablecontent
 
-. file open tablecontent using ./analysis/output/an_descriptive_OUTCOMES.txt, write text replace
+. file open tablecontent using ./analysis/output/an_descriptive_OUTCOMES.txt, w
+> rite text replace
+(note: file ./analysis/output/an_descriptive_OUTCOMES.txt not found)
 
 . 
 . gen byte cons=1
@@ -193,7 +196,8 @@ External causes (S-Y  |       266        345      1,972        754 |     3,337
  11.         cou if group==2 & entrydate>=d(1/1/2019)
  12.         file write tablecontent (" (") (r(N)) (" in 2019*)")
  13. }
- 14. if "`outcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`denominator`group'') (")")
+ 14. if "`outcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`de
+> nominator`group'') (")")
  15. if `group'<4 file write tablecontent _tab
  16. else file write tablecontent _n
  17. 
@@ -256,7 +260,8 @@ External causes (S-Y  |       266        345      1,972        754 |     3,337
 . replace deathindicator = 0 if deathexit>(entrydate + `maxfupexposed')
 (11,245 real changes made)
 
-. replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexposed')
+. replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexpos
+> ed')
 (144,668 real changes made)
 
 . stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate)
@@ -291,15 +296,17 @@ obs. time interval:  (origin, deathexit]
 . 
 . 
 . 
-. foreach csoutcome of any DENOM otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respira
-> tory digestive musculoskeletal genitourinary external {
+. foreach csoutcome of any DENOM otherinfections cancer_ex_nmsc endo_nutr_metab
+> ol mentalhealth nervoussystem circulatory respiratorylrti respiratory digesti
+> ve musculoskeletal genitourinary external {
   2. 
 . foreach group of numlist 1 2 4 {
   3. 
 . 
 . if "`csoutcome'"=="DENOM" local condition 
   4. else{
-  5.         stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entrydate) 
+  5.         stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydat
+> e) enter(entrydate) 
   6.         local condition " & _d == 1"
   7.         if `group'==1 file write tablecontent ("`csoutcome'") _tab 
   8. }
@@ -307,7 +314,8 @@ obs. time interval:  (origin, deathexit]
 . cou if group==`group' `condition'
  10. if "`csoutcome'"!="DENOM" file write tablecontent (r(N))
  11. if "`csoutcome'"=="DENOM" local denominator`group' = r(N)
- 12. if "`csoutcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`denominator`group'') (")")
+ 12. if "`csoutcome'"!="DENOM" file write tablecontent (" (") %3.1f (100*r(N)/`
+> denominator`group'') (")")
  13. if `group'<4 file write tablecontent _tab
  14. else file write tablecontent _n
  15. }
@@ -433,7 +441,8 @@ obs. time interval:  (origin, CSexit_cancer_ex_nmsc]
                                           last observed exit t =       274
   1,016
 
-     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol < .
+     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol <
+>  .
 obs. time interval:  (origin, CSexit_endo_nutr_metabol]
  enter on or after:  time entrydate
  exit on or before:  failure
@@ -452,7 +461,8 @@ obs. time interval:  (origin, CSexit_endo_nutr_metabol]
                                           last observed exit t =       274
   158
 
-     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol < .
+     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol <
+>  .
 obs. time interval:  (origin, CSexit_endo_nutr_metabol]
  enter on or after:  time entrydate
  exit on or before:  failure
@@ -471,7 +481,8 @@ obs. time interval:  (origin, CSexit_endo_nutr_metabol]
                                           last observed exit t =       274
   85
 
-     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol < .
+     failure event:  CSfail_endo_nutr_metabol != 0 & CSfail_endo_nutr_metabol <
+>  .
 obs. time interval:  (origin, CSexit_endo_nutr_metabol]
  enter on or after:  time entrydate
  exit on or before:  failure
@@ -1009,7 +1020,7 @@ obs. time interval:  (origin, CSexit_external]
 . 
 . log close
       name:  <unnamed>
-       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_descriptive.log
+       log:  /workspace/analysis/output/an_descriptive.log
   log type:  text
- closed on:   1 Apr 2021, 21:52:19
-------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:   2 Apr 2021, 00:45:47
+-------------------------------------------------------------------------------

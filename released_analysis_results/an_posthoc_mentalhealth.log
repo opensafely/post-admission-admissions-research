@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  e:\analyses\post-admission-admissions-research\analysis/an_posthoc_mentalhealth.log
+       log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- opened on:   1 Apr 2021, 22:01:30
+ opened on:   2 Apr 2021, 00:53:53
 
 .         
 . use analysis/cr_append_process_data, clear
@@ -15,7 +15,8 @@
 
 . 
 . 
-. stset CSexit_mentalhealth, fail(CSfail_mentalhealth) origin(entrydate) enter(entrydate) 
+. stset CSexit_mentalhealth, fail(CSfail_mentalhealth) origin(entrydate) enter(
+> entrydate) 
 
      failure event:  CSfail_mentalhealth != 0 & CSfail_mentalhealth < .
 obs. time interval:  (origin, CSexit_mentalhealth]
@@ -69,14 +70,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
 . replace mentalhealthgrouped = "Delirium (F05)" if icdnumeric==5
 (134 real changes made)
 
-. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders (F20-29)" if icdnumeric>=20 & icdnumeric<=29
+. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders
+>  (F20-29)" if icdnumeric>=20 & icdnumeric<=29
 variable mentalhealthgrouped was str18 now str55
 (7 real changes made)
 
-. replace mentalhealthgrouped = "Mood disorders (F30-39)" if icdnumeric>=30 & icdnumeric<=39
+. replace mentalhealthgrouped = "Mood disorders (F30-39)" if icdnumeric>=30 & i
+> cdnumeric<=39
 (11 real changes made)
 
-. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (F40-48)" if icdnumeric>=40 & icdnumeric<=49
+. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (
+> F40-48)" if icdnumeric>=40 & icdnumeric<=49
 (22 real changes made)
 
 . 
@@ -88,9 +92,11 @@ variable mentalhealthgrouped was str18 now str55
 > 
 > 
 > stcox exposed age male i.region_real if group==1|group==2
-> stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardi
-> ac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro or
-> gan_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==2 
+> stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_no
+> miss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i
+> .diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2
+>  chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra
+> _sle_psoriasis other_immunosuppression if group==1|group==2 
 > */
 . /*
 > gen fail2 = CSfail_mentalhealth
@@ -105,10 +111,12 @@ variable mentalhealthgrouped was str18 now str55
   2. preserve
   3. local failtype = substr("`run'",1,3)
   4. if "`run'"=="demexdem" drop if dementia==1
-  5. if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-F99)" if icdnumeric>=5 & icdnumeric<.
+  5. if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-
+> F99)" if icdnumeric>=5 & icdnumeric<.
   6. tempfile temp`run'
   7. gen fail`failtype' = CSfail_mentalhealth
-  8. replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`failtype'"
+  8. replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`fa
+> iltype'"
   9. streset, fail(fail`failtype') scale(365.25)
  10. strate group, per(1000) output(`temp`run'')
  11. stcox ib2.group age male 
@@ -153,8 +161,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22585
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22585 records included in the analysis)
 
   +----------------------------------------------------------------------+
   |                    group    D        Y      Rate     Lower     Upper |
@@ -162,8 +170,6 @@ Number of records  =       22585
   |    Hospitalised COVID-19   24   6.1744   3.88701   2.60534   5.79918 |
   | Hospitalised flu 2017_19    3   4.2544   0.70515   0.22743   2.18637 |
   +----------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  faildem
@@ -187,14 +193,14 @@ Time at risk    =  10428.82683
                                                 LR chi2(3)       =       61.77
 Log likelihood  =   -233.00185                  Prob > chi2      =      0.0000
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   5.862446   4.320108     2.40   0.016     1.382987    24.85076
-                   age |    1.12344    .023383     5.59   0.000     1.078532    1.170218
-                  male |   1.237463   .4821277     0.55   0.584     .5766284    2.655637
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   5.862446   4.320108     2.40   0.016     1.382987    24.85076
+         age |    1.12344    .023383     5.59   0.000     1.078532    1.170218
+        male |   1.237463   .4821277     0.55   0.584     .5766284    2.655637
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -206,7 +212,7 @@ Hospitalised COVID-19  |   5.862446   4.320108     2.40   0.016     1.382987    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_000003.tmp saved
+file /tmp/St00007.000002 saved
 (428 observations deleted)
 (193 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
@@ -235,8 +241,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22163
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22163 records included in the analysis)
 
   +----------------------------------------------------------------------+
   |                    group    D        Y      Rate     Lower     Upper |
@@ -244,8 +250,6 @@ Number of records  =       22163
   |    Hospitalised COVID-19   17   6.0557   2.80725   1.74516   4.51573 |
   | Hospitalised flu 2017_19    2   4.2087   0.47521   0.11885   1.90008 |
   +----------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  faildem
@@ -270,14 +274,14 @@ Time at risk    =  10264.44353
                                                 LR chi2(3)       =       51.05
 Log likelihood  =   -158.84409                  Prob > chi2      =      0.0000
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   8.924342    9.18818     2.13   0.034     1.186342    67.13401
-                   age |   1.137283   .0296212     4.94   0.000     1.080683    1.196847
-                  male |   1.040128   .4834362     0.08   0.933      .418274    2.586502
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   8.924342    9.18818     2.13   0.034     1.186342    67.13401
+         age |   1.137283   .0296212     4.94   0.000     1.080683    1.196847
+        male |   1.040128   .4834362     0.08   0.933      .418274    2.586502
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -289,7 +293,7 @@ Hospitalised COVID-19  |   8.924342    9.18818     2.13   0.034     1.186342    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_000006.tmp saved
+file /tmp/St00007.000005 saved
 (166 real changes made)
 -> stset CSexit_mentalhealth, failure(faildel) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -317,8 +321,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22585
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22585 records included in the analysis)
 
   +--------------------------------------------------------------------+
   |                    group    D        Y     Rate    Lower     Upper |
@@ -326,8 +330,6 @@ Number of records  =       22585
   |    Hospitalised COVID-19   58   6.1744   9.3936   7.2621   12.1507 |
   | Hospitalised flu 2017_19   24   4.2544   5.6412   3.7811    8.4163 |
   +--------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  faildel
@@ -351,14 +353,14 @@ Time at risk    =  10428.82683
                                                 LR chi2(3)       =      129.24
 Log likelihood  =   -737.11723                  Prob > chi2      =      0.0000
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   1.406705   .3587246     1.34   0.181     .8533709    2.318827
-                   age |   1.101724   .0118858     8.98   0.000     1.078673    1.125268
-                  male |   .9213443   .2062909    -0.37   0.714      .594068     1.42892
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.406705   .3587246     1.34   0.181     .8533709    2.318827
+         age |   1.101724   .0118858     8.98   0.000     1.078673    1.125268
+        male |   .9213443   .2062909    -0.37   0.714      .594068     1.42892
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -370,7 +372,7 @@ Hospitalised COVID-19  |   1.406705   .3587246     1.34   0.181     .8533709    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_000009.tmp saved
+file /tmp/St00007.000008 saved
 (256 real changes made)
 -> stset CSexit_mentalhealth, failure(failsch) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -398,8 +400,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22585
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22585 records included in the analysis)
 
   +------------------------------------------------------------------------+
   |                    group   D        Y       Rate      Lower      Upper |
@@ -407,8 +409,6 @@ Number of records  =       22585
   |    Hospitalised COVID-19   2   6.1744   0.323917   0.081011   1.295163 |
   | Hospitalised flu 2017_19   3   4.2544   0.705150   0.227426   2.186367 |
   +------------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  failsch
@@ -431,14 +431,14 @@ Time at risk    =  10428.82683
                                                 LR chi2(3)       =        1.42
 Log likelihood  =   -48.244943                  Prob > chi2      =      0.7018
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   .3831933   .3547283    -1.04   0.300     .0624377    2.351739
-                   age |   1.005439   .0250066     0.22   0.827     .9576024    1.055665
-                  male |   .6812177   .6252872    -0.42   0.676     .1127123    4.117187
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   .3831933   .3547283    -1.04   0.300     .0624377    2.351739
+         age |   1.005439   .0250066     0.22   0.827     .9576024    1.055665
+        male |   .6812177   .6252872    -0.42   0.676     .1127123    4.117187
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -450,7 +450,7 @@ Hospitalised COVID-19  |   .3831933   .3547283    -1.04   0.300     .0624377    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_00000c.tmp saved
+file /tmp/St00007.00000b saved
 (254 real changes made)
 -> stset CSexit_mentalhealth, failure(failmoo) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -478,8 +478,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22585
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22585 records included in the analysis)
 
   +------------------------------------------------------------------------+
   |                    group   D        Y       Rate      Lower      Upper |
@@ -487,8 +487,6 @@ Number of records  =       22585
   |    Hospitalised COVID-19   5   6.1744   0.809793   0.337059   1.945553 |
   | Hospitalised flu 2017_19   1   4.2544   0.235050   0.033110   1.668637 |
   +------------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  failmoo
@@ -511,14 +509,14 @@ Time at risk    =  10428.82683
                                                 LR chi2(3)       =        1.32
 Log likelihood  =   -58.501386                  Prob > chi2      =      0.7252
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   2.394038   2.635292     0.79   0.428     .2767907    20.70669
-                   age |   1.003882   .0242801     0.16   0.873     .9574043    1.052616
-                  male |   1.722196   1.497075     0.63   0.532     .3134352    9.462749
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   2.394038   2.635292     0.79   0.428     .2767907    20.70669
+         age |   1.003882   .0242801     0.16   0.873     .9574043    1.052616
+        male |   1.722196   1.497075     0.63   0.532     .3134352    9.462749
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -530,7 +528,7 @@ Hospitalised COVID-19  |   2.394038   2.635292     0.79   0.428     .2767907    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_00000f.tmp saved
+file /tmp/St00007.00000e saved
 (248 real changes made)
 -> stset CSexit_mentalhealth, failure(failneu) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -558,8 +556,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22585
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22585 records included in the analysis)
 
   +----------------------------------------------------------------------+
   |                    group    D        Y      Rate     Lower     Upper |
@@ -567,8 +565,6 @@ Number of records  =       22585
   |    Hospitalised COVID-19   11   6.1744   1.78155   0.98662   3.21695 |
   | Hospitalised flu 2017_19    2   4.2544   0.47010   0.11757   1.87967 |
   +----------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  failneu
@@ -592,14 +588,14 @@ Time at risk    =  10428.82683
                                                 LR chi2(3)       =       11.09
 Log likelihood  =   -122.37121                  Prob > chi2      =      0.0113
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   3.467145   2.678334     1.61   0.108     .7628295    15.75856
-                   age |   .9923993   .0150182    -0.50   0.614     .9633965    1.022275
-                  male |   .1517763   .1168414    -2.45   0.014     .0335681    .6862483
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   3.467145   2.678334     1.61   0.108     .7628295    15.75856
+         age |   .9923993   .0150182    -0.50   0.614     .9633965    1.022275
+        male |   .1517763   .1168414    -2.45   0.014     .0335681    .6862483
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -611,7 +607,7 @@ Hospitalised COVID-19  |   3.467145   2.678334     1.61   0.108     .7628295    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_00000i.tmp saved
+file /tmp/St00007.00000h saved
 (178 real changes made)
 (137 real changes made)
 -> stset CSexit_mentalhealth, failure(failall) enter(time entrydate)
@@ -640,8 +636,8 @@ obs. time interval:  (origin, CSexit_mentalhealth]
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated failure rates
-Number of records  =       22585
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(22585 records included in the analysis)
 
   +---------------------------------------------------------------------+
   |                    group    D        Y      Rate    Lower     Upper |
@@ -649,8 +645,6 @@ Number of records  =       22585
   |    Hospitalised COVID-19   76   6.1744   12.3089   9.8306   15.4119 |
   | Hospitalised flu 2017_19   31   4.2544    7.2866   5.1244   10.3610 |
   +---------------------------------------------------------------------+
-   Notes: Rate = D/Y = failures/person-time (per 1000).
-          Lower and Upper are bounds of 95% confidence intervals.
 
 
          failure _d:  failall
@@ -674,14 +668,14 @@ Time at risk    =  10428.82683
                                                 LR chi2(3)       =       95.91
 Log likelihood  =   -999.65289                  Prob > chi2      =      0.0000
 
-----------------------------------------------------------------------------------------
-                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------------+----------------------------------------------------------------
-                 group |
-Hospitalised COVID-19  |   1.401048   .3102483     1.52   0.128     .9077424    2.162435
-                   age |   1.064961   .0081606     8.21   0.000     1.049086    1.081076
-                  male |   .7716809   .1518714    -1.32   0.188     .5247062    1.134904
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.401048   .3102483     1.52   0.128     .9077424    2.162435
+         age |   1.064961   .0081606     8.21   0.000     1.049086    1.081076
+        male |   .7716809   .1518714    -1.32   0.188     .5247062    1.134904
+------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -693,7 +687,7 @@ Hospitalised COVID-19  |   1.401048   .3102483     1.52   0.128     .9077424    
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file E:\STATATMP\ST_86c8_00000l.tmp saved
+file /tmp/St00007.00000k saved
 
 . clear
 
@@ -711,24 +705,28 @@ file E:\STATATMP\ST_86c8_00000l.tmp saved
 . gen mentalhealthgrouped = "Dementia (F00-F03)" if failtype=="dem"
 (12 missing values generated)
 
-. replace mentalhealthgrouped = "(among those with no baseline dementia)" if failtype=="demexdem"
+. replace mentalhealthgrouped = "(among those with no baseline dementia)" if fa
+> iltype=="demexdem"
 variable mentalhealthgrouped was str18 now str39
 (2 real changes made)
 
 . replace mentalhealthgrouped = "Delirium (F05)" if failtype=="del"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders (F20-29)" if failtype=="sch"
+. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders
+>  (F20-29)" if failtype=="sch"
 variable mentalhealthgrouped was str39 now str55
 (2 real changes made)
 
 . replace mentalhealthgrouped = "Mood disorders (F30-39)" if failtype=="moo"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (F40-48)" if failtype=="neu"
+. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (
+> F40-48)" if failtype=="neu"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "All except dementia (F05-F99)" if failtype=="all"
+. replace mentalhealthgrouped = "All except dementia (F05-F99)" if failtype=="a
+> ll"
 (2 real changes made)
 
 . 
@@ -738,7 +736,8 @@ variable mentalhealthgrouped was str39 now str55
 . replace order = sum(order)
 (13 real changes made)
 
-. gen rateci = string(_Rate, "%4.2f") + " (" + string(_Lower, "%4.2f") + "-" + string(_Upper, "%4.2f") + ")"
+. gen rateci = string(_Rate, "%4.2f") + " (" + string(_Lower, "%4.2f") + "-" + 
+> string(_Upper, "%4.2f") + ")"
 
 . gen _dstr = string(_D) if _D>5
 (7 missing values generated)
@@ -749,7 +748,8 @@ variable _dstr was str2 now str3
 
 . gen events_ratecov = "[" + _dstr + "] " + rateci
 
-. gen hrci = string(hr, "%4.2f") + " (" + string(lci, "%4.2f") + "-" + string(uci, "%4.2f") + ")"
+. gen hrci = string(hr, "%4.2f") + " (" + string(lci, "%4.2f") + "-" + string(u
+> ci, "%4.2f") + ")"
 
 . replace hrci = hrci[_n-1] if group==2
 (7 real changes made)
@@ -775,11 +775,12 @@ xij variables:
 
 . 
 . outsheet using analysis/output/an_posthoc_mentalhealth.txt, replace c 
+(note: file analysis/output/an_posthoc_mentalhealth.txt not found)
 
 . 
 . log close
       name:  <unnamed>
-       log:  e:\analyses\post-admission-admissions-research\analysis/an_posthoc_mentalhealth.log
+       log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- closed on:   1 Apr 2021, 22:01:40
-------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:   2 Apr 2021, 00:54:05
+-------------------------------------------------------------------------------
