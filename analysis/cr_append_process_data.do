@@ -196,7 +196,7 @@ replace died_reason = 4 if substr(d_icd10_3,1,1)=="F" ///
   & (real(substr(d_icd10_3,2,2))>=60 & real(substr(d_icd10_3,2,2))<=84))
 replace died_reason = 5 if substr(d_icd10_3,1,1)=="G"
 replace died_reason = 6 if substr(d_icd10_3,1,1)=="I"
-replace died_reason = 7 if (substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=09 & real(substr(d_icd10_3,2,2))<=22)|(d_icd10_3=="U071"|d_icd10_3=="U072")
+replace died_reason = 7 if (substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=09 & real(substr(d_icd10_3,2,2))<=22)|(substr(died_cause_ons,1,4)=="U071"|substr(died_cause_ons,1,4)=="U072")
 replace died_reason = 8 if substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=23
 replace died_reason = 9 if substr(d_icd10_3,1,1)=="K"
 replace died_reason = 10 if substr(d_icd10_3,1,1)=="M"
