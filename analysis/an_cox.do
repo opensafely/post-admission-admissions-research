@@ -48,7 +48,33 @@ preserve
 
 	keep if entryd>=d(1/1/2019)
 
-	tab died_reason group if _d==1, col
+	*denom covid
+	safecount if group==1 & _d==1
+	local denomcov = r(N)
+	*covid deaths in the covid group
+	safecount if died_cause_ons=="U071"|died_cause_ons=="U072" & group==1 & _d==1
+	if r(N) == . di "% < " 100*5/`denomcov'
+	else di "% = " 100*r(N)/`denomcov'
+	*pneumonia deaths in covid group
+	safecount if substr(died_cause_ons, 1, 1) == "J" &  real(substr(died_cause_ons, 2, 2))>=12 &  real(substr(died_cause_ons, 2, 2))<=18 & group==1 & _d==1
+		if r(N) == . di "% < " 100*5/`denomcov'
+	else di "% = " 100*r(N)/`denomcov'
+	
+	*denomflu
+	safecount if group==2 & _d==1
+	local denomflu = r(N)
+	*influenza deaths in inflenza group
+	safecount if substr(died_cause_ons, 1, 1) == "J" &  real(substr(died_cause_ons, 2, 2))>=09 &  real(substr(died_cause_ons, 2, 2))<=11 & group==2 & _d==1
+	if r(N) == . di "% < " 100*5/`denomflu'
+	else di "% = " 100*r(N)/`denomflu'
+	*pneumonia deaths in inflenza group
+	safecount if substr(died_cause_ons, 1, 1) == "J" &  real(substr(died_cause_ons, 2, 2))>=12 &  real(substr(died_cause_ons, 2, 2))<=18 & group==2 & _d==1
+	if r(N) == . di "% < " 100*5/`denomflu'
+	else di "% = " 100*r(N)/`denomflu'
+	
+	
+	
+	
 	
 restore
 
