@@ -46,6 +46,13 @@ preserve
 	stcox exposed age1 age2 age3 male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
 	estimates save analysis/output/models/an_cox_DEATHvsflu_FULLADJ, replace
 
+	gen exposedperiod = exposed
+	assert year(entrydate)== 2020 if exposed==1 /*otherwise next line doesn't work*/
+	replace exposedperiod = 2 if exposed==1 & monthentry>5
+	label define exposedperiodlab 1 "pre-may 2020" 2 "june 2020 onwards"
+	label values exposedperiod exposedperiodlab
+	stcox i.exposedperiod age1 age2 age3 male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
+	
 	keep if entryd>=d(1/1/2019)
 
 	*denom covid

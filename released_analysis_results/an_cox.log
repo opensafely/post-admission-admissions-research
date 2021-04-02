@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cox.log
   log type:  text
- opened on:   2 Apr 2021, 11:38:41
+ opened on:   2 Apr 2021, 12:20:17
 
 . 
 . use analysis/cr_append_process_data, clear
@@ -986,6 +986,126 @@ Stage 5 egfr <15 or dialysis  |   2.162954   .2834673     5.89   0.000     1.672
 file analysis/output/models/an_cox_DEATHvsflu_FULLADJ.ster saved
 
 . 
+.         gen exposedperiod = exposed
+
+.         assert year(entrydate)== 2020 if exposed==1 /*otherwise next line doesn't work*/
+
+.         replace exposedperiod = 2 if exposed==1 & monthentry>5
+(4,946 real changes made)
+
+.         label define exposedperiodlab 1 "pre-may 2020" 2 "june 2020 onwards"
+
+.         label values exposedperiod exposedperiodlab
+
+.         stcox i.exposedperiod age1 age2 age3 male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_diseas
+> e i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease str
+> oke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
+
+         failure _d:  deathindicator
+   analysis time _t:  (deathexit-origin)
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -21734.491
+Iteration 1:   log likelihood = -21192.979
+Iteration 2:   log likelihood = -20418.412
+Iteration 3:   log likelihood = -20372.527
+Iteration 4:   log likelihood = -20370.992
+Iteration 5:   log likelihood = -20370.988
+Refining estimates:
+Iteration 0:   log likelihood = -20370.988
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       24,358                  Number of obs    =      24,358
+No. of failures =        2,188
+Time at risk    =      6961084
+                                                LR chi2(52)      =     2727.01
+Log likelihood  =   -20370.988                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                exposedperiod |
+                pre-may 2020  |   1.599622   .1245614     6.03   0.000     1.373203    1.863373
+           june 2020 onwards  |    2.29596   .2033809     9.38   0.000     1.930026    2.731276
+                              |
+                         age1 |    1.07303   .0124584     6.07   0.000     1.048888    1.097728
+                         age2 |   .9767695   .0145505    -1.58   0.115     .9486634    1.005708
+                         age3 |   1.149771   .0827858     1.94   0.053     .9984427    1.324035
+                         male |    1.09328   .0489181     1.99   0.046     1.001486    1.193488
+                              |
+                  region_real |
+               East Midlands  |   1.064685   .0775593     0.86   0.390     .9230251    1.228086
+                      London  |   .7446952   .0837456    -2.62   0.009     .5973869     .928328
+                  North East  |   1.136164   .0970453     1.49   0.135     .9610275    1.343218
+                  North West  |   1.066461    .087184     0.79   0.431     .9085707     1.25179
+                  South East  |   .9356076    .112068    -0.56   0.578     .7398369    1.183182
+                  South West  |   .9648618   .0847571    -0.41   0.684     .8122549    1.146141
+               West Midlands  |    .686383   .0846993    -3.05   0.002     .5389255     .874187
+    Yorkshire and The Humber  |   .9986924   .0756471    -0.02   0.986     .8609076    1.158529
+                              |
+                    ethnicity |
+                       Mixed  |   1.336185    .338766     1.14   0.253     .8129416    2.196209
+      Asian or Asian British  |   .5835678    .066092    -4.76   0.000     .4673997    .7286085
+                       Black  |   .6755236   .1296625    -2.04   0.041     .4637221    .9840638
+                       Other  |   .7201975   .1835163    -1.29   0.198     .4370727    1.186723
+                              |
+                          imd |
+                           2  |   1.025665    .068511     0.38   0.704     .8998046    1.169131
+                           3  |   .9718011    .067487    -0.41   0.680      .848136    1.113498
+                           4  |   1.149298   .0787946     2.03   0.042      1.00479    1.314589
+             5 most deprived  |   1.045319    .075518     0.61   0.540     .9073076    1.204323
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .7724875   .0462545    -4.31   0.000     .6869478    .8686786
+          Obese II (35-39.9)  |    .705544   .0656816    -3.75   0.000      .587872      .84677
+             Obese III (40+)  |   .7632628   .1001352    -2.06   0.039     .5902037    .9870661
+                              |
+                 smoke_nomiss |
+                      Former  |    1.04727   .0545767     0.89   0.375     .9455828    1.159892
+                     Current  |   1.460427   .1142716     4.84   0.000     1.252787    1.702482
+                              |
+             htdiag_or_highbp |    .947436   .0488731    -1.05   0.295     .8563296    1.048235
+  chronic_respiratory_disease |   1.467465   .0723426     7.78   0.000     1.332311     1.61633
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .8676352   .0578801    -2.13   0.033     .7612956    .9888286
+                Yes with OCS  |   .6479937   .0740197    -3.80   0.000     .5180108    .8105928
+                              |
+      chronic_cardiac_disease |   1.193515   .0556251     3.80   0.000     1.089323    1.307673
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.023533   .0564587     0.42   0.673     .9186475    1.140393
+       Uncontrolled diabetes  |   1.065735    .076193     0.89   0.373     .9263904     1.22604
+  Diabetes, no hba1c measure  |   1.546916   .2358215     2.86   0.004     1.147372    2.085591
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   4.321874   .3600247    17.57   0.000     3.670832    5.088382
+               2-5 years ago  |   1.779802   .1603212     6.40   0.000     1.491754    2.123471
+                    5+ years  |   1.246473   .0834262     3.29   0.001     1.093232    1.421195
+                              |
+              cancer_haem_cat |
+                   Last year  |   3.021136    .626757     5.33   0.000     2.011788    4.536891
+               2-5 years ago  |   2.261961   .3443376     5.36   0.000     1.678445    3.048339
+                    5+ years  |   1.239624   .1996558     1.33   0.182     .9040531    1.699753
+                              |
+ reduced_kidney_function_cat2 |
+Stage 3a/3b egfr 30-60        |   1.125744   .0578326     2.31   0.021     1.017913    1.244996
+         Stage 4 egfr 15-<30  |   1.331777   .1371198     2.78   0.005     1.088408    1.629563
+Stage 5 egfr <15 or dialysis  |   2.147664   .2819388     5.82   0.000      1.66044    2.777855
+                              |
+        chronic_liver_disease |   1.970903   .2511455     5.32   0.000     1.535322    2.530061
+                       stroke |   1.265892   .0793679     3.76   0.000     1.119511    1.431412
+                     dementia |   1.404499   .1382657     3.45   0.001     1.158044    1.703405
+                  other_neuro |   1.493903   .1401292     4.28   0.000     1.243023    1.795419
+             organ_transplant |   1.063108    .263938     0.25   0.805     .6535056    1.729439
+                       spleen |   .9503447    .302793    -0.16   0.873     .5089517     1.77454
+             ra_sle_psoriasis |   1.172697   .0813484     2.30   0.022     1.023621    1.343484
+      other_immunosuppression |   1.171063   .3733041     0.50   0.620     .6269599    2.187364
+-----------------------------------------------------------------------------------------------
+
+.         
 .         keep if entryd>=d(1/1/2019)
 (9,477 observations deleted)
 
@@ -1363,5 +1483,5 @@ file analysis/output/models/an_cox_DEATHvs2019gp_FULLADJ.ster saved
       name:  <unnamed>
        log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cox.log
   log type:  text
- closed on:   2 Apr 2021, 11:39:22
+ closed on:   2 Apr 2021, 12:21:01
 ------------------------------------------------------------------------------------------------------------------------------------------------
