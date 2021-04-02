@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cumulativeincidence.log
+       log:  /workspace/analysis/output/an_cumulativeincidence.log
   log type:  text
- opened on:   1 Apr 2021, 21:52:22
+ opened on:   2 Apr 2021, 00:45:50
 
 . use analysis/cr_append_process_data, clear
 
@@ -19,16 +19,20 @@
 . 
 . 
 . *Composite outcome
-. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace) plot
-> 1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
+. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) tit
+> le("") xtitle(Days from index date) name(composite, replace) plot1opt(lc(blac
+> k)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  readmission
    analysis time _t:  (exitdate-origin)
              origin:  time entrydate
   enter on or after:  time entrydate
 
-. graph export analysis/output/an_cumulativeincidence_composite.svg, as(svg) replace
-(file analysis/output/an_cumulativeincidence_composite.svg written in SVG format)
+. graph export analysis/output/an_cumulativeincidence_composite.svg, as(svg) re
+> place
+(note: file analysis/output/an_cumulativeincidence_composite.svg not found)
+(file analysis/output/an_cumulativeincidence_composite.svg written in SVG forma
+> t)
 
 . sts list, at(0 100 183 200) by(group) fail
 
@@ -60,16 +64,22 @@ Note: Failure function is calculated over full data and evaluated at indicated
       times; it is not calculated from aggregates shown at left.
 
 . *Composite outcome, adjusted for age/sex
-. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) adjustfor(age_c male) name(co
-> mposite_agesex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
+. sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) tit
+> le("") xtitle(Days from index date) adjustfor(age_c male) name(composite_ages
+> ex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9
+> ) lp(dash_dot))
 
          failure _d:  readmission
    analysis time _t:  (exitdate-origin)
              origin:  time entrydate
   enter on or after:  time entrydate
 
-. graph export analysis/output/an_cumulativeincidence_composite_adjagesex.svg, as(svg) replace
-(file analysis/output/an_cumulativeincidence_composite_adjagesex.svg written in SVG format)
+. graph export analysis/output/an_cumulativeincidence_composite_adjagesex.svg, 
+> as(svg) replace
+(note: file analysis/output/an_cumulativeincidence_composite_adjagesex.svg not 
+> found)
+(file analysis/output/an_cumulativeincidence_composite_adjagesex.svg written in
+>  SVG format)
 
 . 
 . *Death outcome
@@ -124,7 +134,8 @@ Note: Failure function is calculated over full data and evaluated at indicated
 . replace deathindicator = 0 if deathexit>(entrydate + `maxfupexposed')
 (4,282 real changes made)
 
-. replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexposed')
+. replace deathexit = entrydate + r(max) if deathexit>(entrydate + `maxfupexpos
+> ed')
 (90,418 real changes made)
 
 . stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate)
@@ -148,15 +159,18 @@ obs. time interval:  (origin, deathexit]
                                           last observed exit t =       357
 
 . 
-.         sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace) plot1opt(lc(black)) plot2opt(
-> lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
+.         sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days fr
+> om index date) name(death, replace) plot1opt(lc(black)) plot2opt(lc(black) lp
+> (dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  deathindicator
    analysis time _t:  (deathexit-origin)
              origin:  time entrydate
   enter on or after:  time entrydate
 
-.         graph export analysis/output/an_cumulativeincidence_death.svg, as(svg) replace
+.         graph export analysis/output/an_cumulativeincidence_death.svg, as(svg
+> ) replace
+(note: file analysis/output/an_cumulativeincidence_death.svg not found)
 (file analysis/output/an_cumulativeincidence_death.svg written in SVG format)
 
 .         sts list, at(0 100 183 200) by(group) fail
@@ -188,23 +202,28 @@ General pop 2019
 Note: Failure function is calculated over full data and evaluated at indicated
       times; it is not calculated from aggregates shown at left.
 
-.   sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace) plot1
-> opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
+.   sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title(""
+> )  xtitle(Days from index date) name(death_agesex, replace) plot1opt(lc(black
+> )) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 
          failure _d:  deathindicator
    analysis time _t:  (deathexit-origin)
              origin:  time entrydate
   enter on or after:  time entrydate
 
-.         graph export analysis/output/an_cumulativeincidence_death_adjagesex.svg, as(svg) replace
-(file analysis/output/an_cumulativeincidence_death_adjagesex.svg written in SVG format)
+.         graph export analysis/output/an_cumulativeincidence_death_adjagesex.s
+> vg, as(svg) replace
+(note: file analysis/output/an_cumulativeincidence_death_adjagesex.svg not foun
+> d)
+(file analysis/output/an_cumulativeincidence_death_adjagesex.svg written in SVG
+>  format)
 
 . restore
 
 . 
 . log close
       name:  <unnamed>
-       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_cumulativeincidence.log
+       log:  /workspace/analysis/output/an_cumulativeincidence.log
   log type:  text
- closed on:   1 Apr 2021, 21:52:35
-------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:   2 Apr 2021, 00:46:01
+-------------------------------------------------------------------------------

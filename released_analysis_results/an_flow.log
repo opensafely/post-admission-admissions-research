@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/analysis/output/an_flow.log
   log type:  text
- opened on:  31 Mar 2021, 23:35:32
+ opened on:   2 Apr 2021, 00:45:12
 
 . 
 . clear
@@ -140,7 +140,7 @@ COUNTS START HERE
 
 . 
 . drop if age>105
-(REDACTED deleted)
+(1 observation deleted)
 
 . 
 . assert inlist(sex, "M", "F", "I", "U")
@@ -149,7 +149,7 @@ COUNTS START HERE
 DROPPING GENDER NOT M/F:
 
 . drop if inlist(sex, "I", "U")
-(REDACTED deleted)
+(1 observation deleted)
 
 . 
 . drop if imd==.
@@ -210,5 +210,5 @@ DROPPING GENDER NOT M/F:
       name:  <unnamed>
        log:  /workspace/analysis/output/an_flow.log
   log type:  text
- closed on:  31 Mar 2021, 23:35:38
+ closed on:   2 Apr 2021, 00:45:18
 -------------------------------------------------------------------------------
