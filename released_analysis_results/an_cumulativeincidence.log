@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/analysis/output/an_cumulativeincidence.log
   log type:  text
- opened on:   2 Apr 2021, 00:45:50
+ opened on:   2 Apr 2021, 01:47:25
 
 . use analysis/cr_append_process_data, clear
 
@@ -225,5 +225,5 @@ Note: Failure function is calculated over full data and evaluated at indicated
       name:  <unnamed>
        log:  /workspace/analysis/output/an_cumulativeincidence.log
   log type:  text
- closed on:   2 Apr 2021, 00:46:01
+ closed on:   2 Apr 2021, 01:47:36
 -------------------------------------------------------------------------------
