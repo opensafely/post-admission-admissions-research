@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/analysis/output/an_descriptive.log
   log type:  text
- opened on:   2 Apr 2021, 00:45:18
+ opened on:   2 Apr 2021, 01:47:01
 
 . use analysis/cr_append_process_data, clear
 
@@ -18,8 +18,8 @@
 
   groupsize |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          3 |  REDACTED        
-          6 |  REDACTED		>99
+          3 |REDACTED
+          6 |REDACTED		>99.99      100.00
 ------------+-----------------------------------
       Total |     15,901      100.00
 
@@ -684,12 +684,12 @@ obs. time interval:  (origin, CSexit_respiratorylrti]
       3,210  observations end on or before enter()
 ------------------------------------------------------------------------------
     174,452  observations remaining, representing
-      8,740  failures in single-record/single-failure data
+      9,004  failures in single-record/single-failure data
    25938275  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =       274
-  800
+  1,064
 
      failure event:  CSfail_respiratorylrti != 0 & CSfail_respiratorylrti < .
 obs. time interval:  (origin, CSexit_respiratorylrti]
@@ -703,7 +703,7 @@ obs. time interval:  (origin, CSexit_respiratorylrti]
       3,210  observations end on or before enter()
 ------------------------------------------------------------------------------
     174,452  observations remaining, representing
-      8,740  failures in single-record/single-failure data
+      9,004  failures in single-record/single-failure data
    25938275  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
@@ -722,7 +722,7 @@ obs. time interval:  (origin, CSexit_respiratorylrti]
       3,210  observations end on or before enter()
 ------------------------------------------------------------------------------
     174,452  observations remaining, representing
-      8,740  failures in single-record/single-failure data
+      9,004  failures in single-record/single-failure data
    25938275  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
@@ -1022,5 +1022,5 @@ obs. time interval:  (origin, CSexit_external]
       name:  <unnamed>
        log:  /workspace/analysis/output/an_descriptive.log
   log type:  text
- closed on:   2 Apr 2021, 00:45:47
+ closed on:   2 Apr 2021, 01:47:23
 -------------------------------------------------------------------------------

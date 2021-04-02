@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- opened on:   2 Apr 2021, 00:53:53
+ opened on:   2 Apr 2021, 01:55:45
 
 .         
 . use analysis/cr_append_process_data, clear
@@ -782,5 +782,5 @@ xij variables:
       name:  <unnamed>
        log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- closed on:   2 Apr 2021, 00:54:05
+ closed on:   2 Apr 2021, 01:55:55
 -------------------------------------------------------------------------------
