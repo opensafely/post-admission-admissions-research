@@ -22,7 +22,7 @@ opensafely/chemotherapy-or-radiotherapy-updated/2020-04-15
 opensafely/chronic-cardiac-disease/2020-04-08
 opensafely/chronic-liver-disease/2020-06-02
 opensafely/chronic-respiratory-disease/2020-04-10
-opensafely/dementia/2020-04-22
+opensafely/dementia-complete/48c76cf8
 opensafely/chronic-kidney-disease/2020-04-14
 opensafely/gi-bleed-or-ulcer/2020-04-08
 opensafely/haematological-cancer/2020-04-15

@@ -96,7 +96,30 @@ demographic_variables = dict(
         "incidence": 0.05
     },
     
-)
+    ),
+    
+    ## care home status 
+    care_home_type=patients.care_home_status_as_of(
+        "patient_index_date",
+        categorised_as={
+            "PC": """
+              IsPotentialCareHome
+              AND LocationDoesNotRequireNursing='Y'
+              AND LocationRequiresNursing='N'
+            """,
+            "PN": """
+              IsPotentialCareHome
+              AND LocationDoesNotRequireNursing='N'
+              AND LocationRequiresNursing='Y'
+            """,
+            "PS": "IsPotentialCareHome",
+            "U": "DEFAULT",
+        },
+        return_expectations={
+            "rate": "universal",
+            "category": {"ratios": {"PC": 0.30, "PN": 0.10, "PS": 0.10, "U":0.5},},
+        },
+    ),
 
 )
 
@@ -740,6 +763,18 @@ postadm_adm = dict(
             "incidence": 0.95,
         },
     ),
+    
+    admitted2_dishchargedestination = patients.admitted_to_hospital(
+        returning="discharge_destination",
+        with_these_diagnoses=covid_codes,
+        on_or_after="discharged1_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"19": 0.8, "88": 0.1, "79": 0.1}},
+            "incidence": 1,
+        },
+        ),
+
 
     admitted3_date=patients.admitted_to_hospital(
         returning="date_admitted",
@@ -783,6 +818,17 @@ postadm_adm = dict(
         },
     ),
 
+    admitted3_dishchargedestination = patients.admitted_to_hospital(
+        returning="discharge_destination",
+        with_these_diagnoses=covid_codes,
+        on_or_after="discharged2_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"19": 0.8, "88": 0.1, "79": 0.1}},
+            "incidence": 1,
+        },
+        ),
+    
     admitted4_date=patients.admitted_to_hospital(
         returning="date_admitted",
         on_or_after="discharged3_date",
@@ -825,6 +871,16 @@ postadm_adm = dict(
         },
     ),
 
+    admitted4_dishchargedestination = patients.admitted_to_hospital(
+        returning="discharge_destination",
+        with_these_diagnoses=covid_codes,
+        on_or_after="discharged3_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"19": 0.8, "88": 0.1, "79": 0.1}},
+            "incidence": 1,
+        },
+        ),
 
     admitted5_date=patients.admitted_to_hospital(
         returning="date_admitted",
@@ -867,7 +923,17 @@ postadm_adm = dict(
             "incidence": 0.95,
         },
     ),
- 
+
+    admitted5_dishchargedestination = patients.admitted_to_hospital(
+        returning="discharge_destination",
+        with_these_diagnoses=covid_codes,
+        on_or_after="discharged4_date",
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"19": 0.8, "88": 0.1, "79": 0.1}},
+            "incidence": 1,
+        },
+        ),
                 
 )
 

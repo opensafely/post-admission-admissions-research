@@ -130,7 +130,7 @@ pneumonia_codes = codelist_from_csv(
 # Neuro
 
 dementia_codes = codelist_from_csv(
-    "codelists/opensafely-dementia.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-dementia-complete.csv", system="ctv3", column="code"
 )
 
 

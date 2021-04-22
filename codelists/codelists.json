@@ -144,11 +144,11 @@
       "downloaded_at": "2021-02-09 12:13:47.460152Z",
       "sha": "77946d9b844f348daf5c8c9e81346b9776d13998"
     },
-    "opensafely-dementia.csv": {
-      "id": "opensafely/dementia/2020-04-22",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/dementia/2020-04-22/",
-      "downloaded_at": "2021-02-09 12:13:47.557153Z",
-      "sha": "9d40ff3a5c2428af4651c765f2c418de3a3ad4b4"
+    "opensafely-dementia-complete.csv": {
+      "id": "opensafely/dementia-complete/48c76cf8",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/dementia-complete/48c76cf8/",
+      "downloaded_at": "2021-04-22 10:51:28.703977Z",
+      "sha": "b73c9363f19a9ee9f4407e34e95e11d3eeb615f4"
     },
     "opensafely-chronic-kidney-disease.csv": {
       "id": "opensafely/chronic-kidney-disease/2020-04-14",

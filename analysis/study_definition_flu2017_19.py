@@ -89,6 +89,18 @@ study = StudyDefinition(
         },
         ),    
     
+    admitted1_dishchargedestination = patients.admitted_to_hospital(
+        returning="discharge_destination",
+        with_these_diagnoses=covid_codes,
+        on_or_after=start_date,
+        find_first_match_in_period=True,
+        return_expectations={
+            "category": {"ratios": {"19": 0.8, "88": 0.1, "79": 0.1}},
+            "incidence": 1,
+        },
+        ),
+    
+
 # import demographic and clinical variables,
 # calculated as at first admission date (=patient_index_date)
     
