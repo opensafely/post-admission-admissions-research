@@ -596,6 +596,11 @@ replace exitdate = exitdate+0.5 if exitdate==entrydate
 *  Save data  *
 ***************
 
+*correction
+cap rename admitted1_dishcargedestination admitted1_dischargedestination
+for num 2/5: cap rename admittedX_dishchargedestination admittedX_dischargedestination
+
+
 sort patient_id
 
 save ./analysis/cr_create_analysis_dataset_`cpf', replace

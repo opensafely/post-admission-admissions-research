@@ -89,7 +89,7 @@ study = StudyDefinition(
         },
         ),
     
-    admitted1_dishcargedestination = patients.admitted_to_hospital(
+    admitted1_dishchargedestination = patients.admitted_to_hospital(
         returning="discharge_destination",
         with_these_diagnoses=covid_codes,
         on_or_after=start_date,

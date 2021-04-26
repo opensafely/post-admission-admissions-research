@@ -764,7 +764,7 @@ postadm_adm = dict(
         },
     ),
     
-    admitted2_dishchargedestination = patients.admitted_to_hospital(
+    admitted2_dischargedestination = patients.admitted_to_hospital(
         returning="discharge_destination",
         with_these_diagnoses=covid_codes,
         on_or_after="discharged1_date",
@@ -818,7 +818,7 @@ postadm_adm = dict(
         },
     ),
 
-    admitted3_dishchargedestination = patients.admitted_to_hospital(
+    admitted3_dischargedestination = patients.admitted_to_hospital(
         returning="discharge_destination",
         with_these_diagnoses=covid_codes,
         on_or_after="discharged2_date",
@@ -871,7 +871,7 @@ postadm_adm = dict(
         },
     ),
 
-    admitted4_dishchargedestination = patients.admitted_to_hospital(
+    admitted4_dischargedestination = patients.admitted_to_hospital(
         returning="discharge_destination",
         with_these_diagnoses=covid_codes,
         on_or_after="discharged3_date",
@@ -924,7 +924,7 @@ postadm_adm = dict(
         },
     ),
 
-    admitted5_dishchargedestination = patients.admitted_to_hospital(
+    admitted5_dischargedestination = patients.admitted_to_hospital(
         returning="discharge_destination",
         with_these_diagnoses=covid_codes,
         on_or_after="discharged4_date",
