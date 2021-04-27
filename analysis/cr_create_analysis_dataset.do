@@ -36,6 +36,8 @@ else local diedsource "ons"
 
 *correction
 cap rename admitted1_dishcargedestination admitted1_dischargedestination
+cap rename admitted1_dishchargedestination admitted1_dischargedestination
+
 for num 2/5: cap rename admittedX_dishchargedestination admittedX_dischargedestination
 
 
@@ -538,10 +540,9 @@ format %d finaldischargedate
 drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
 *drop if we get to the 5th readmission with all short gaps
 drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
-*drop if the final discharge destination is to hospital transfer, or to hospice, or death
+*drop if the final discharge destination is to hospital transfer, or to hospice
 drop if finaldischargedest==30|(finaldischargedest>=48 & finaldischargedest<=53)|finaldischargedest==84|finaldischargedest==87 /*hospital transfers*/
 drop if finaldischargedest==88 /*hospice*/
-drop if finaldischargedest==79 /*death*/
 gen dischargedtocarehome = finaldischargedest if (finaldischargedest==54|finaldischargedest==85|finaldischargedest==65)
 recode dischargedtocarehome 54=1 85=1 65=2
 label define dischargedtocarehomelab 1 carehome 2 la_care
@@ -560,8 +561,9 @@ gen byte anycriticalcare = totaldayscriticalcare>0 & totaldayscriticalcare<.
 *drop if died date on/before discharge date
 cou if died_date_`diedsource'==finaldischargedate
 cou if died_date_`diedsource'<finaldischargedate
+cou if died_date_`diedsource'<=finaldischargedate|finaldischargedest==79 
 cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate
-drop if died_date_`diedsource'<entrydate
+drop if died_date_`diedsource'<entrydate|finaldischargedest==79 
 cou
 
 *drop if later than 60d before latest sus data
