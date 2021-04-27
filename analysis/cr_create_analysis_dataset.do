@@ -34,6 +34,11 @@ else if "`cpf'"=="FLU" import delimited ./output/input_flu2017_19.csv
 if "`cpf'"=="FLU" local diedsource "1ocare"
 else local diedsource "ons"
 
+*correction
+cap rename admitted1_dishcargedestination admitted1_dischargedestination
+for num 2/5: cap rename admittedX_dishchargedestination admittedX_dischargedestination
+
+
 di "STARTING COUNT FROM IMPORT:"
 cou
 
@@ -517,14 +522,30 @@ drop if admitted1_date==discharged1_date
 
 *tie together admissions that are within 1 week of previous discharge
 gen finaldischargedate = discharged1_date
+gen finaldischargedest = admitted1_dischargedestination
+
 replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1_date+7)
+replace finaldischargedest = admitted2_dischargedestination if admitted2_date<=(discharged1_date+7)
+
 replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+replace finaldischargedest = admitted3_dischargedestination if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+
 replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
+replace finaldischargedest = admitted4_dischargedestination if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
+
 format %d finaldischargedate
 *drop if there is a single day admission in the chain of admissions, as cannot then get f-up:
 drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
 *drop if we get to the 5th readmission with all short gaps
 drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
+*drop if the final discharge destination is to hospital transfer, or to hospice, or death
+drop if finaldischargedest==30|(finaldischargedest>=48 & finaldischargedest<=53)|finaldischargedest==84|finaldischargedest==87 /*hospital transfers*/
+drop if finaldischargedest==88 /*hospice*/
+drop if finaldischargedest==79 /*death*/
+gen dischargedtocarehome = finaldischargedest if (finaldischargedest==54|finaldischargedest==85|finaldischargedest==65)
+recode dischargedtocarehome 54=1 85=1 65=2
+label define dischargedtocarehomelab 1 carehome 2 la_care
+label values dischargedtocarehome dischargedtocarehomelab
 
 gen entrydate = finaldischargedate+8
 format %d entrydate
@@ -595,10 +616,6 @@ replace exitdate = exitdate+0.5 if exitdate==entrydate
 ***************
 *  Save data  *
 ***************
-
-*correction
-cap rename admitted1_dishcargedestination admitted1_dischargedestination
-for num 2/5: cap rename admittedX_dishchargedestination admittedX_dischargedestination
 
 
 sort patient_id
