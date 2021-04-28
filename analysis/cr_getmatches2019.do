@@ -24,7 +24,7 @@ drop lastprior*
 *drop from pool if died on/before 1st of month 
 drop if died_date_ons<=d(1/2/2019) 
 
-forvalues i = 3/11 {
+forvalues i = 3/12 {
 	
 	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
@@ -53,7 +53,7 @@ merge 1:1 patient_id using ./analysis/cr_create_analysis_dataset_COVID, keepusin
 gen monthfirstineligible = month(admitted1_date)  if (admitted1_reason=="U071"|admitted1_reason=="U072") 
 replace monthfirstineligible = 1 if monthfirst==13
 
-forvalues i = 2/11 {
+forvalues i = 2/12 {
 	replace inpool`i'=0 if monthfirstineligible<=`i' 
 }
 
@@ -129,7 +129,7 @@ preserve
 drop if patient_id<.
 save `alldata', replace
 restore
-forvalues i=2/11{
+forvalues i=2/12{
   	if `i'<10 local ifull "0`i'"
 	else local ifull "`i'"
     preserve
