@@ -57,8 +57,9 @@ replace readm_reason_broad = 2 if substr(icd10_3,1,1)=="C"
 replace readm_reason_broad = 3 if substr(icd10_3,1,1)=="E"
 replace readm_reason_broad = 4 if substr(icd10_3,1,1)=="F" ///
   |(substr(icd10_3,1,1)=="X" ///
-  & (real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84))
-replace readm_reason_broad = 5 if substr(icd10_3,1,1)=="G"
+  & (real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84)) ///
+  |icd10_3=="G30" 
+replace readm_reason_broad = 5 if substr(icd10_3,1,1)=="G" & icd10_3!="G30" 
 replace readm_reason_broad = 6 if substr(icd10_3,1,1)=="I"
 replace readm_reason_broad = 7 if (substr(icd10_3,1,1)=="J" & real(substr(icd10_3,2,2))>=09 & real(substr(icd10_3,2,2))<=22)|(icd10_3=="U071"|icd10_3=="U072")
 replace readm_reason_broad = 8 if substr(icd10_3,1,1)=="J" & real(substr(icd10_3,2,2))>=23
@@ -80,8 +81,8 @@ label define readm_reason_broadlab ///
 1 "Other infections (A)" ///
 2 "Cancers (C)" ///
 3 "Endocrine, nutritional and metabolic (E)" ///
-4 "Mental and behavioural (F, X60-84)" ///
-5 "Nervous system (G)" ///
+4 "Mental health and cognitive (F, G30, X60-84)" ///
+5 "Nervous system (G ex G30)" ///
 6 "Circulatory (I)" ///
 7 "COVID/Influenza/Pneumonia/LRTI (J09-22, U07.1/2)" ///
 71 "COVID-19 (U07.1/2)" ///
