@@ -7,8 +7,8 @@ use ./analysis/cr_create_analysis_dataset_COVID, clear
 gen group = 1
 append using ./analysis/cr_create_analysis_dataset_FLU
 replace group = 2 if group==.
-append using ./analysis/cr_create_analysis_dataset_PNEUM
-replace group = 3 if group==.
+*append using ./analysis/cr_create_analysis_dataset_PNEUM
+*replace group = 3 if group==.
 append using ./analysis/cr_getmatches2019
 replace group = 4 if group==.
 
@@ -185,6 +185,7 @@ stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
 *****PREP FOR CAUSE SPECIFIC ANALYSIS
 *include covid with flu/pneum/lrti
 replace admitted_respiratorylrti_date = min(admitted_respiratorylrti_date, admitted_covid_date)
+replace admitted_respiratorylrti_reason = admitted_covid_reason if admitted_respiratorylrti_date==admitted_covid_date
 
 *classify cause of death
 gen d_icd10_3 = substr(died_cause_ons,1,3) 
@@ -238,6 +239,8 @@ replace CSexit_`csoutcome' = died_date_ons if died_date_ons<=CSexit_`csoutcome'
 replace CSexit_`csoutcome' = censordate if censordate<CSexit_`csoutcome'
 format %d CSexit_`csoutcome'
 gen CSfail_`csoutcome' = (CSexit_`csoutcome'==admitted_`csoutcome'_date)|(CSexit_`csoutcome'==died_date_ons & died_reason==thisreason)
+gen CSfaildiedonly_`csoutcome' = (CSexit_`csoutcome'==died_date_ons & died_reason==thisreason)
+
 replace CSexit_`csoutcome' = CSexit_`csoutcome'+0.5 if CSexit_`csoutcome'==entrydate
 }
 

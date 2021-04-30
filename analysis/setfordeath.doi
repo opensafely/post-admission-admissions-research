@@ -1,6 +1,10 @@
 
 *Code chunk for looking at death outcome
 
+cap drop deathexit
+cap drop deathindicator
+cap drop deathfup
+
 summ died_date_ons, f d
 scalar deathcensor = r(max)-30
 gen deathexit = died_date_ons if died_date_ons<deathcensor & group!=2
