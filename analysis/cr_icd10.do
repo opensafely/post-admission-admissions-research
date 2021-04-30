@@ -42,18 +42,17 @@ keep if substr(icd10,1,1)=="K"
 replace icd10 = icd10 + "X" if length(icd10)==3
 outsheet using "C:\Dropbox\WORK\MAIN\ADHOC\COVID19\tpp\hospital readmissions\cr_icd10_digestive.csv", c nonames replace
 outsheet using "C:\Github\post-admission-admissions-research\codelists/local-codelists\cr_icd10_digestive.csv", c replace
-
 restore
 
 preserve
-keep if substr(icd10,1,1)=="F"|(substr(icd10,1,1)=="X" & (real(substr(icd10,2,2))>=60 & real(substr(icd10,2,2))<=84))
+keep if substr(icd10,1,1)=="F"|(substr(icd10,1,1)=="X" & (real(substr(icd10,2,2))>=60 & real(substr(icd10,2,2))<=84))|substr(icd10,1,3)=="G30"
 replace icd10 = icd10 + "X" if length(icd10)==3
 outsheet using "C:\Dropbox\WORK\MAIN\ADHOC\COVID19\tpp\hospital readmissions\cr_icd10_mentalhealth.csv", c nonames replace
 outsheet using "C:\Github\post-admission-admissions-research\codelists/local-codelists\cr_icd10_mentalhealth.csv", c replace
 restore
 
 preserve
-keep if substr(icd10,1,1)=="G"
+keep if substr(icd10,1,1)=="G" & substr(icd10,1,3)!="G30"
 replace icd10 = icd10 + "X" if length(icd10)==3
 outsheet using "C:\Dropbox\WORK\MAIN\ADHOC\COVID19\tpp\hospital readmissions\cr_icd10_nervoussystem.csv", c nonames replace
 outsheet using "C:\Github\post-admission-admissions-research\codelists/local-codelists\cr_icd10_nervoussystem.csv", c replace
