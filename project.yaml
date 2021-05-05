@@ -5,6 +5,12 @@ expectations:
 
 actions:
 
+  generate_suseth:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_suseth
+    outputs:
+      highly_sensitive:
+        cohort: output/input_suseth.csv
+
   generate_study_pop_covdischarged:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_covdischarged
     outputs:
