@@ -78,6 +78,19 @@ file write tablecontent _n
 
 tabulatevariable, variable(imd) start(1) end(5) 
 file write tablecontent _n 
+
+tabulatevariable, variable(carehomebin) start(1) end(1)
+file write tablecontent _n 
+
+qui summ dayshosp if group==1, d
+file write tablecontent ("dayshosp") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
+qui summ dayshosp if group==2, d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  
+file write tablecontent _n 
+
+
+tabulatevariable, variable(anycriticalcare) start(1) end(1)
+file write tablecontent _n 
 file write tablecontent _n 
 
 **COMORBIDITIES
