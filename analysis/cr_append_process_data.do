@@ -14,6 +14,17 @@ replace group = 4 if group==.
 
 replace setid=patient_id if group==1 
 
+*SIMPLER CARE HOME CLASSIFIER
+gen carehomebin = care_home_type=="PC"|care_home_type=="PN"|care_home_type=="PS"
+
+*LENGTH OF HOSPITALISATION
+gen dayshosp = finaldischargedate - admitted1_date
+gen hosp_lte_1week = dayshosp<=7 if dayshosp<.
+
+*BMI with missingness
+gen obese4cat_withmissing = obese4cat
+replace obese4cat_withmissing = . if bmicat==.
+label values obese4cat_withmissing obese4cat 
 
 **STSET FOR COMPOSITE OUTCOME OF SUS HOSP OR PRIMARY CARE DEATH
 summ readmission_date, f d
