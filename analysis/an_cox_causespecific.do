@@ -16,17 +16,31 @@ stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entry
 
 *sts graph , by(group) fail name(`csoutcome', replace)
 
+***VS FLU
 stcox exposed age male i.region_real if group==1|group==2
 estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu_MATCHFACONLY, replace
 
-stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==2 
-estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu_FULLADJ, replace
+stcox exposed age male i.region_real htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==2 
+estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu_COMORBS, replace
 
+stcox exposed age male i.region_real i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==2 
+estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu_COMORBS_LSTYLE, replace
+
+stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==2 
+estimates save analysis/output/models/an_cox_causespecific`csoutcome'_cflu_COMORBS_LSTYLE_ETHIMD, replace
+
+***VS GENERAL POP
 stcox exposed if group==1|group==4, strata(setid)
 estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c2019gp_MATCHFACONLY, replace
 
-stcox exposed i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==4, strata(setid)
-estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c2019gp_FULLADJ, replace
+stcox exposed htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==4, strata(setid)
+estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c2019gp_COMORBS, replace
+
+stcox exposed i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==4, strata(setid)
+estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c2019gp_COMORBS_LSTYLE, replace
+
+stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==4, strata(setid)
+estimates save analysis/output/models/an_cox_causespecific`csoutcome'_c2019gp_COMORBS_LSTYLE_ETHIMD, replace
 
 local allgraphs "`allgraphs' `csoutcome'"
 
