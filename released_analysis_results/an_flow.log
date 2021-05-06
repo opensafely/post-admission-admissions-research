@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/analysis/output/an_flow.log
   log type:  text
- opened on:   2 Apr 2021, 01:46:55
+ opened on:   6 May 2021, 15:55:15
 
 . 
 . clear
@@ -11,14 +11,14 @@
 importing csv
 
 . import delimited ./output/input_covdischarged.csv
-(96 vars, 69,823 obs)
+(102 vars, 117,032 obs)
 
 . 
 . di "STARTING COUNT FROM IMPORT:"
 STARTING COUNT FROM IMPORT:
 
 . cou
-  69,823
+  117,032
 
 . 
 . qui{
@@ -29,7 +29,7 @@ STARTING COUNT FROM IMPORT:
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-died_date_~s |     24,450    22141.18    110.5264      21977      22353
+died_date_~s |     38,643    22202.41    120.2172      21977      22379
 
 . global deathcensor = r(max)-7
 
@@ -45,7 +45,7 @@ COUNTS START HERE
 ******************************
 
 . cou
-  69,823
+  117,032
 
 . 
 . *tie together admissions that are within 1 week of previous discharge
@@ -53,16 +53,16 @@ COUNTS START HERE
 
 . replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1
 > _date+7)
-(6,579 real changes made)
+(12,236 real changes made)
 
 . replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1
 > _date+7) & admitted3_date<=(discharged2_date+7)
-(889 real changes made)
+(1,625 real changes made)
 
 . replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1
 > _date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged
 > 3_date+7)
-(175 real changes made)
+(281 real changes made)
 
 . format %d finaldischargedate
 
@@ -70,13 +70,13 @@ COUNTS START HERE
 > t then get f-up:
 . drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_
 > date
-(5,293 observations deleted)
+(8,724 observations deleted)
 
 . *drop if we get to the 5th readmission with all short gaps
 . drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_d
 > ate+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_
 > date+7)
-(46 observations deleted)
+(62 observations deleted)
 
 . 
 . gen entrydate = finaldischargedate+8
@@ -85,37 +85,37 @@ COUNTS START HERE
 
 . 
 . cou
-  64,484
+  108,246
 
 . 
 . local diedsource "ons"
 
 . *drop if died date on/before discharge date
 . cou if died_date_`diedsource'<entrydate /*total*/
-  18,366
+  30,070
 
 . 
 . cou if died_date_`diedsource'==finaldischargedate
-  15,448
+  25,029
 
 . cou if died_date_`diedsource'<finaldischargedate
-  1,787
+  3,139
 
 . cou if died_date_`diedsource'<=finaldischargedate /*died during hosp*/
-  17,235
+  28,168
 
 . cou
-  64,484
+  108,246
 
 . cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<ent
 > rydate /*died within 7d of discharge*/
-  1,131
+  1,902
 
 . drop if died_date_`diedsource'<entrydate
-(18,366 observations deleted)
+(30,070 observations deleted)
 
 . cou
-  46,118
+  78,176
 
 . 
 . /*  IMD  */
@@ -125,10 +125,10 @@ COUNTS START HERE
 . egen imd = cut(imd_o), group(5) icodes
 
 . replace imd = imd + 1
-(46,118 real changes made)
+(78,176 real changes made)
 
 . replace imd = . if imd_o==-1
-(328 real changes made, 328 to missing)
+(593 real changes made, 593 to missing)
 
 . drop imd_o
 
@@ -136,11 +136,11 @@ COUNTS START HERE
 . 
 . 
 . cou if age>105|(sex!="M"&sex!="F")| imd==.
-  330
+  597
 
 . 
 . drop if age>105
-(1 observation deleted)
+(<=5 observation deleted)
 
 . 
 . assert inlist(sex, "M", "F", "I", "U")
@@ -149,15 +149,15 @@ COUNTS START HERE
 DROPPING GENDER NOT M/F:
 
 . drop if inlist(sex, "I", "U")
-(1 observation deleted)
+(<=5 observations deleted)
 
 . 
 . drop if imd==.
-(328 observations deleted)
+(593 observations deleted)
 
 . 
 . cou
-  45,788
+  77,579
 
 . 
 . /*
@@ -174,35 +174,26 @@ DROPPING GENDER NOT M/F:
 
                       discharged1_date
 -------------------------------------------------------------
-      Percentiles      Smallest
- 1%    24mar2020      08feb2020
- 5%    02apr2020      11feb2020
-10%    09apr2020      14feb2020       Obs              45,788
-25%    29apr2020      14feb2020       Sum of Wgt.      45,788
 
-50%    24sep2020                      Mean          16aug2020
-                        Largest       Std. Dev.      103.3306
-75%    23nov2020      31dec2020
-90%    17dec2020      31dec2020       Variance       10677.21
-95%    24dec2020      31dec2020       Skewness      -.0963595
-99%    31dec2020      31dec2020       Kurtosis       1.251394
+REDACTED
+latest is 28 feb
 
 . scalar censordate = r(max) - 60
 
 . drop if entrydate>=censordate
-(20,122 observations deleted)
+(35,108 observations deleted)
 
 . 
 . cou
-  25,666
+  42,471
 
 . 
 . *Only keep if COVID/FLU was the primary reason for hospitalisation
 . keep if admitted1_reason=="U071"|admitted1_reason=="U072"
-(9,765 observations deleted)
+(17,373 observations deleted)
 
 . cou 
-  15,901
+  25,098
 
 . 
 . 
@@ -210,5 +201,5 @@ DROPPING GENDER NOT M/F:
       name:  <unnamed>
        log:  /workspace/analysis/output/an_flow.log
   log type:  text
- closed on:   2 Apr 2021, 01:47:01
+ closed on:   6 May 2021, 15:55:26
 -------------------------------------------------------------------------------

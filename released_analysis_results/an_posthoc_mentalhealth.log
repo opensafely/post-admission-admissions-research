@@ -2,16 +2,16 @@
       name:  <unnamed>
        log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- opened on:   2 Apr 2021, 01:55:45
+ opened on:   6 May 2021, 16:18:33
 
 .         
 . use analysis/cr_append_process_data, clear
 
 . drop if group==3|group==4
-(155,016 observations deleted)
+(123,362 observations deleted)
 
 . drop if group==2 & entrydate<d(1/1/2019)
-(9,477 observations deleted)
+(9,369 observations deleted)
 
 . 
 . 
@@ -26,24 +26,24 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-        239  failures in single-record/single-failure data
-  3,809,129  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+        316  failures in single-record/single-failure data
+  5,215,984  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =       266
+                                          last observed exit t =       324
 
 . gen fup = _t-_t0 
-(61 missing values generated)
+(69 missing values generated)
 
 . summ fup if group==1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         fup |     15,867    142.1318    69.19538         .5        256
+         fup |     24,631    134.7874    101.4028         .5        315
 
 . scalar fupcovid = r(mean)*r(N)
 
@@ -52,36 +52,49 @@ obs. time interval:  (origin, CSexit_mentalhealth]
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         fup |      6,718    231.3075    56.74238         .5        266
+         fup |      6,662    284.6046    67.34763         .5        324
 
 . scalar fupflu = r(mean)*r(N)
 
 . 
-. gen mentalhealthicd3 = substr(admitted_mentalhealth_reason, 1, 3)
-(22,433 missing values generated)
+. cou if CSfail_mentalhealth==1 & _d==1
+  316
 
-. gen icdnumeric = real(substr(mentalhealthicd3,2,2))
-(22,433 missing values generated)
+. cou if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth ==1 & _d==1
+  137
 
 . 
-. gen mentalhealthgrouped = "Dementia (F00-F03)" if icdnumer>=0 & icdnumer<=3
-(22,611 missing values generated)
+. gen mentalhealthicd3 = substr(admitted_mentalhealth_reason, 1, 3) if CSfail_m
+> entalhealth==1 & CSfaildiedonly_mentalhealth!=1 & _d==1
+(31,183 missing values generated)
+
+. replace mentalhealthicd3 = substr(died_cause_ons, 1, 3) if CSfail_mentalhealt
+> h==1 & CSfaildiedonly_mentalhealth==1 & _d==1
+(137 real changes made)
+
+. gen icdnumeric = real(substr(mentalhealthicd3,2,2))
+(31,046 missing values generated)
+
+. 
+. gen mentalhealthgrouped = "Dementia (F00-F03, G30)" if icdnumer>=0 & icdnumer
+> <=3
+(31,201 missing values generated)
 
 . replace mentalhealthgrouped = "Delirium (F05)" if icdnumeric==5
-(134 real changes made)
+(105 real changes made)
 
 . replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders
 >  (F20-29)" if icdnumeric>=20 & icdnumeric<=29
-variable mentalhealthgrouped was str18 now str55
-(7 real changes made)
+variable mentalhealthgrouped was str23 now str55
+(6 real changes made)
 
 . replace mentalhealthgrouped = "Mood disorders (F30-39)" if icdnumeric>=30 & i
 > cdnumeric<=39
-(11 real changes made)
+(23 real changes made)
 
 . replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (
 > F40-48)" if icdnumeric>=40 & icdnumeric<=49
-(22 real changes made)
+(16 real changes made)
 
 . 
 . encode mentalhealthgrouped, gen(mentalhealthgrouped_n)
@@ -107,34 +120,64 @@ variable mentalhealthgrouped was str18 now str55
 > stcox ib2.group age male dementia
 > stcox ib2.group age male if dementia==0
 > */
-. foreach run of any dem demexdem del sch moo neu all{
+. foreach run of any dem demwdem demexdem demnocare demcare del sch moo neu all
+> {
   2. preserve
   3. local failtype = substr("`run'",1,3)
-  4. if "`run'"=="demexdem" drop if dementia==1
-  5. if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-
+  4. if "`run'"=="demwdem" keep if dementia==1
+  5. if "`run'"=="demexdem" drop if dementia==1
+  6. if "`run'"=="demnocare" drop if carehomebin==1
+  7. if "`run'"=="demcare" keep if carehomebin==1
+  8. if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-
 > F99)" if icdnumeric>=5 & icdnumeric<.
-  6. tempfile temp`run'
-  7. gen fail`failtype' = CSfail_mentalhealth
-  8. replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`fa
+  9. tempfile temp`run'
+ 10. gen fail`failtype' = CSfail_mentalhealth
+ 11. replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`fa
 > iltype'"
-  9. streset, fail(fail`failtype') scale(365.25)
- 10. strate group, per(1000) output(`temp`run'')
- 11. stcox ib2.group age male 
- 12. lincom 1.group, hr
- 13. local hr = r(estimate)
- 14. local lci = r(lb)
- 15. local uci = r(ub)
- 16. restore
- 17. preserve
- 18. use `temp`run'', clear
- 19. gen str8 failtype = "`run'"
- 20. gen hr = `hr' if _n==1
- 21. gen lci = `lci' if _n==1
- 22. gen uci = `uci' if _n==1
- 23. save, replace
- 24. restore
- 25. }
-(231 real changes made)
+ 12. streset, fail(fail`failtype') scale(365.25)
+ 13. cou if _d==1 &CSfaildiedonly_mentalhealth==1
+ 14. di "N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = " r(N)
+ 15. strate group, per(1000) output(`temp`run'')
+ 16. tab _d group
+ 17. 
+. stcox ib2.group age male i.region_real
+ 18. lincom 1.group, hr
+ 19. local hr = r(estimate)
+ 20. local lci = r(lb)
+ 21. local uci = r(ub)
+ 22. 
+. if "`run'"=="dem"{
+ 23. stcox ib2.group##i.dementia age male i.region_real
+ 24. test 1.group#1.dementia
+ 25. local pint_dem = string(r(p), "%4.2f")
+ 26. lincom 1.group, hr
+ 27. local hrciexdem = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.
+> 2f") + "-" + string(r(ub), "%4.2f") + ")"
+ 28. lincom 1.group + 1.group#1.dementia, hr
+ 29. local hrciwdem = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2
+> f") + "-" + string(r(ub), "%4.2f") + ")"
+ 30. stcox ib2.group##i.carehomebin age male i.region_real
+ 31. test 1.group#1.carehomebin
+ 32. local pint_care = string(r(p), "%4.2f")
+ 33. lincom 1.group, hr
+ 34. local hrcinocare = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4
+> .2f") + "-" + string(r(ub), "%4.2f") + ")"
+ 35. lincom 1.group + 1.group#1.carehomebin, hr
+ 36. local hrcicare = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2
+> f") + "-" + string(r(ub), "%4.2f") + ")"
+ 37. }
+ 38. 
+. restore
+ 39. preserve
+ 40. use `temp`run'', clear
+ 41. gen str10 failtype = "`run'"
+ 42. gen hr = `hr' if _n==1
+ 43. gen lci = `lci' if _n==1
+ 44. gen uci = `uci' if _n==1
+ 45. save, replace
+ 46. restore
+ 47. }
+(184 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -146,15 +189,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-         27  failures in single-record/single-failure data
- 10,428.827  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+        161  failures in single-record/single-failure data
+ 14,280.585  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  129
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 129
 
          failure _d:  faildem
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -162,44 +207,64 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22585 records included in the analysis)
+(31293 records included in the analysis)
 
-  +----------------------------------------------------------------------+
-  |                    group    D        Y      Rate     Lower     Upper |
-  |----------------------------------------------------------------------|
-  |    Hospitalised COVID-19   24   6.1744   3.88701   2.60534   5.79918 |
-  | Hospitalised flu 2017_19    3   4.2544   0.70515   0.22743   2.18637 |
-  +----------------------------------------------------------------------+
+  +-----------------------------------------------------------------------+
+  |                    group     D        Y      Rate     Lower     Upper |
+  |-----------------------------------------------------------------------|
+  |    Hospitalised COVID-19   134   9.0895   14.7423   12.4460   17.4621 |
+  | Hospitalised flu 2017_19    27   5.1911    5.2012    3.5669    7.5844 |
+  +-----------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    24,497      6,635 |    31,132 
+         1 |       134         27 |       161 
+-----------+----------------------+----------
+     Total |    24,631      6,662 |    31,293 
 
          failure _d:  faildem
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -263.88672
-Iteration 1:   log likelihood = -237.28114
-Iteration 2:   log likelihood = -233.22862
-Iteration 3:   log likelihood = -233.00278
-Iteration 4:   log likelihood = -233.00185
+Iteration 0:   log likelihood = -1600.0931
+Iteration 1:   log likelihood =   -1446.65
+Iteration 2:   log likelihood = -1426.7936
+Iteration 3:   log likelihood = -1425.8309
+Iteration 4:   log likelihood = -1425.8278
 Refining estimates:
-Iteration 0:   log likelihood = -233.00185
+Iteration 0:   log likelihood = -1425.8278
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =       22,585                  Number of obs    =      22,585
-No. of failures =           27
-Time at risk    =  10428.82683
-                                                LR chi2(3)       =       61.77
-Log likelihood  =   -233.00185                  Prob > chi2      =      0.0000
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =          161
+Time at risk    =  14276.87474
+                                                LR chi2(11)      =      348.53
+Log likelihood  =   -1425.8278                  Prob > chi2      =      0.0000
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   5.862446   4.320108     2.40   0.016     1.382987    24.85076
-         age |    1.12344    .023383     5.59   0.000     1.078532    1.170218
-        male |   1.237463   .4821277     0.55   0.584     .5766284    2.655637
+Hospitali..  |   2.318659   .5344364     3.65   0.000     1.475843    3.642784
+         age |   1.122711   .0095226    13.65   0.000     1.104202    1.141531
+        male |   .9239409   .1484271    -0.49   0.622     .6743764    1.265861
+             |
+ region_real |
+East Midl..  |   .8751369      .2191    -0.53   0.594     .5357578    1.429498
+     London  |   .6452835    .242858    -1.16   0.244     .3085983    1.349297
+ North East  |   1.487711   .4225522     1.40   0.162     .8526154    2.595876
+ North West  |   .7477157   .2330212    -0.93   0.351     .4059424    1.377236
+ South East  |   .7282645   .3033722    -0.76   0.447     .3218883    1.647681
+ South West  |     .33194   .1605682    -2.28   0.023     .1286207    .8566599
+West Midl..  |   .8887214   .3345829    -0.31   0.754     .4249209     1.85876
+Yorkshire..  |   .9615541   .2390294    -0.16   0.875      .590713    1.565204
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -207,14 +272,154 @@ Hospitali..  |   5.862446   4.320108     2.40   0.016     1.382987    24.85076
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   5.862446   4.320108     2.40   0.016     1.382987    24.85076
+         (1) |   2.318659   .5344364     3.65   0.000     1.475843    3.642784
+------------------------------------------------------------------------------
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1600.0931
+Iteration 1:   log likelihood = -1434.5991
+Iteration 2:   log likelihood = -1323.2532
+Iteration 3:   log likelihood = -1307.3869
+Iteration 4:   log likelihood = -1306.7616
+Iteration 5:   log likelihood = -1306.7596
+Iteration 6:   log likelihood = -1306.7596
+Refining estimates:
+Iteration 0:   log likelihood = -1306.7596
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =          161
+Time at risk    =  14276.87474
+                                                LR chi2(13)      =      586.67
+Log likelihood  =   -1306.7596                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.232761    .423231     0.61   0.542     .6289912    2.416089
+  1.dementia |   8.147154   3.173401     5.39   0.000     3.797118    17.48066
+             |
+       group#|
+    dementia |
+Hospitali.. #|
+          1  |   2.002982   .8726351     1.59   0.111     .8527775    4.704552
+             |
+         age |   1.085924   .0102246     8.75   0.000     1.066068     1.10615
+        male |   1.134259   .1838981     0.78   0.437     .8254793     1.55854
+             |
+ region_real |
+East Midl..  |   .9033235   .2262083    -0.41   0.685     .5529518    1.475704
+     London  |    .642535    .241713    -1.18   0.240     .3073875    1.343097
+ North East  |   1.482968   .4211763     1.39   0.165     .8499294    2.587502
+ North West  |   .7741962   .2414191    -0.82   0.412     .4201644    1.426537
+ South East  |   .7783236   .3242783    -0.60   0.547     .3439682    1.761173
+ South West  |   .3849995   .1864807    -1.97   0.049     .1489934    .9948402
+West Midl..  |   .9710457   .3655736    -0.08   0.938     .4642847     2.03093
+Yorkshire..  |   1.032863   .2568565     0.13   0.897     .6343993    1.681601
+------------------------------------------------------------------------------
+
+ ( 1)  1.group#1.dementia = 0
+
+           chi2(  1) =    2.54
+         Prob > chi2 =    0.1108
+
+ ( 1)  1.group = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.232761    .423231     0.61   0.542     .6289912    2.416089
+------------------------------------------------------------------------------
+
+ ( 1)  1.group + 1.group#1.dementia = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   2.469197   .7381828     3.02   0.002     1.374306    4.436374
+------------------------------------------------------------------------------
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -1600.0931
+Iteration 1:   log likelihood = -1526.6972
+Iteration 2:   log likelihood = -1434.8208
+Iteration 3:   log likelihood = -1411.1206
+Iteration 4:   log likelihood = -1391.4077
+Iteration 5:   log likelihood = -1391.3511
+Iteration 6:   log likelihood = -1391.3511
+Refining estimates:
+Iteration 0:   log likelihood = -1391.3511
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =          161
+Time at risk    =  14276.87474
+                                                LR chi2(13)      =      417.48
+Log likelihood  =   -1391.3511                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.795255   .4657101     2.26   0.024     1.079728    2.984955
+1.carehome~n |   3.468548   1.732249     2.49   0.013     1.303299    9.231057
+             |
+       group#|
+ carehomebin |
+Hospitali.. #|
+          1  |   1.406496   .7402077     0.65   0.517     .5013833    3.945545
+             |
+         age |   1.105817   .0095086    11.70   0.000     1.087337    1.124612
+        male |   1.032044   .1671178     0.19   0.846     .7513872     1.41753
+             |
+ region_real |
+East Midl..  |   .8722128   .2185937    -0.55   0.585     .5336968    1.425445
+     London  |   .8250967   .3125908    -0.51   0.612     .3926667    1.733746
+ North East  |   1.565321   .4446891     1.58   0.115     .8969889    2.731616
+ North West  |   .7317338   .2280006    -1.00   0.316     .3973083    1.347655
+ South East  |   .7806299   .3254839    -0.59   0.553     .3447755    1.767478
+ South West  |   .3585712   .1735752    -2.12   0.034      .138845    .9260204
+West Midl..  |    .888929   .3346334    -0.31   0.754     .4250461     1.85908
+Yorkshire..  |   .9744036   .2422784    -0.10   0.917     .5985409    1.586295
+------------------------------------------------------------------------------
+
+ ( 1)  1.group#1.carehomebin = 0
+
+           chi2(  1) =    0.42
+         Prob > chi2 =    0.5169
+
+ ( 1)  1.group = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.795255   .4657101     2.26   0.024     1.079728    2.984955
+------------------------------------------------------------------------------
+
+ ( 1)  1.group + 1.group#1.carehomebin = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   2.525018    1.20055     1.95   0.051     .9943763    6.411775
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
 file /tmp/St00007.000002 saved
-(428 observations deleted)
-(193 real changes made)
+(29,183 observations deleted)
+(50 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -226,15 +431,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,218  total observations
-         55  observations end on or before enter()
+      2,179  total observations
+         19  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,163  observations remaining, representing
-         19  failures in single-record/single-failure data
- 10,264.444  total analysis time at risk and under observation
+      2,160  observations remaining, representing
+        116  failures in single-record/single-failure data
+    841.284  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  99
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 99
 
          failure _d:  faildem
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -242,45 +449,64 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22163 records included in the analysis)
+(2160 records included in the analysis)
 
-  +----------------------------------------------------------------------+
-  |                    group    D        Y      Rate     Lower     Upper |
-  |----------------------------------------------------------------------|
-  |    Hospitalised COVID-19   17   6.0557   2.80725   1.74516   4.51573 |
-  | Hospitalised flu 2017_19    2   4.2087   0.47521   0.11885   1.90008 |
-  +----------------------------------------------------------------------+
+  +-----------------------------------------------------------------------+
+  |                    group     D        Y      Rate     Lower     Upper |
+  |-----------------------------------------------------------------------|
+  |    Hospitalised COVID-19   102   0.6069   168.074   138.427   204.072 |
+  | Hospitalised flu 2017_19    14   0.2344    59.725    35.372   100.843 |
+  +-----------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |     1,718        326 |     2,044 
+         1 |       102         14 |       116 
+-----------+----------------------+----------
+     Total |     1,820        340 |     2,160 
 
          failure _d:  faildem
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -184.36951
-Iteration 1:   log likelihood = -162.66987
-Iteration 2:   log likelihood = -159.09803
-Iteration 3:   log likelihood =   -158.846
-Iteration 4:   log likelihood = -158.84409
-Iteration 5:   log likelihood = -158.84409
+Iteration 0:   log likelihood = -836.10306
+Iteration 1:   log likelihood = -817.45177
+Iteration 2:   log likelihood = -816.62051
+Iteration 3:   log likelihood = -816.61133
+Iteration 4:   log likelihood = -816.61133
 Refining estimates:
-Iteration 0:   log likelihood = -158.84409
+Iteration 0:   log likelihood = -816.61133
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =       22,163                  Number of obs    =      22,163
-No. of failures =           19
-Time at risk    =  10264.44353
-                                                LR chi2(3)       =       51.05
-Log likelihood  =   -158.84409                  Prob > chi2      =      0.0000
+No. of subjects =        2,160                  Number of obs    =       2,160
+No. of failures =          116
+Time at risk    =   841.284052
+                                                LR chi2(11)      =       38.98
+Log likelihood  =   -816.61133                  Prob > chi2      =      0.0001
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   8.924342    9.18818     2.13   0.034     1.186342    67.13401
-         age |   1.137283   .0296212     4.94   0.000     1.080683    1.196847
-        male |   1.040128   .4834362     0.08   0.933      .418274    2.586502
+Hospitali..  |   2.230868   .6701127     2.67   0.008     1.238192    4.019384
+         age |   1.045973   .0131865     3.57   0.000     1.020444     1.07214
+        male |   1.191608   .2275725     0.92   0.359     .8195427    1.732588
+             |
+ region_real |
+East Midl..  |   .8811766    .249814    -0.45   0.655       .50553    1.535957
+     London  |   .4733541   .2312039    -1.53   0.126     .1817303    1.232949
+ North East  |   1.447007    .461206     1.16   0.246     .7747582    2.702558
+ North West  |    .727989   .2623715    -0.88   0.378     .3592087    1.475376
+ South East  |   .2939199   .2158022    -1.67   0.095     .0697042    1.239364
+ South West  |   .3462826   .2126147    -1.73   0.084     .1039441    1.153617
+West Midl..  |   .5603046   .3011691    -1.08   0.281     .1953868    1.606768
+Yorkshire..  |   1.034739   .2906463     0.12   0.903     .5966757    1.794418
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -288,13 +514,351 @@ Hospitali..  |   8.924342    9.18818     2.13   0.034     1.186342    67.13401
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   8.924342    9.18818     2.13   0.034     1.186342    67.13401
+         (1) |   2.230868   .6701127     2.67   0.008     1.238192    4.019384
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
 file /tmp/St00007.000005 saved
-(166 real changes made)
+(2,179 observations deleted)
+(134 real changes made)
+-> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
+                              origin(time entrydate) scale(365.25)
+
+     failure event:  faildem != 0 & faildem < .
+obs. time interval:  (origin, CSexit_mentalhealth]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)/365.25
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+     29,183  total observations
+         50  observations end on or before enter()
+------------------------------------------------------------------------------
+     29,133  observations remaining, representing
+         45  failures in single-record/single-failure data
+   13,439.3  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  .8870637
+  30
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 30
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(29133 records included in the analysis)
+
+  +-------------------------------------------------------------------+
+  |                    group    D        Y     Rate    Lower    Upper |
+  |-------------------------------------------------------------------|
+  |    Hospitalised COVID-19   32   8.4826   3.7724   2.6678   5.3345 |
+  | Hospitalised flu 2017_19   13   4.9567   2.6227   1.5229   4.5168 |
+  +-------------------------------------------------------------------+
+
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    22,779      6,309 |    29,088 
+         1 |        32         13 |        45 
+-----------+----------------------+----------
+     Total |    22,811      6,322 |    29,133 
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -438.44332
+Iteration 1:   log likelihood = -388.45842
+Iteration 2:   log likelihood = -381.62003
+Iteration 3:   log likelihood = -381.29327
+Iteration 4:   log likelihood = -381.29213
+Iteration 5:   log likelihood = -381.29213
+Refining estimates:
+Iteration 0:   log likelihood = -381.29213
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       29,125                  Number of obs    =      29,125
+No. of failures =           45
+Time at risk    =  13435.59069
+                                                LR chi2(11)      =      114.30
+Log likelihood  =   -381.29213                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.462501   .5456011     1.02   0.308     .7039575    3.038405
+         age |   1.137566    .018665     7.86   0.000     1.101565    1.174743
+        male |   .8150469   .2480943    -0.67   0.502     .4488313    1.480069
+             |
+ region_real |
+East Midl..  |   .9254466   .4950047    -0.14   0.885     .3243837    2.640242
+     London  |   1.346026   .8447006     0.47   0.636     .3934418    4.604964
+ North East  |   1.339608   .8416805     0.47   0.642      .390989    4.589768
+ North West  |   .9527467   .5974655    -0.08   0.938     .2787345    3.256598
+ South East  |   2.233266   1.311765     1.37   0.171     .7062623    7.061793
+ South West  |   .4791825   .3881094    -0.91   0.364     .0979666    2.343817
+West Midl..  |   2.470925   1.451202     1.54   0.124     .7815185    7.812317
+Yorkshire..  |   1.001826   .5362671     0.00   0.997     .3508753    2.860433
+------------------------------------------------------------------------------
+
+ ( 1)  1.group = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.462501   .5456011     1.02   0.308     .7039575    3.038405
+------------------------------------------------------------------------------
+(1 missing value generated)
+(1 missing value generated)
+(1 missing value generated)
+file /tmp/St00007.000008 saved
+(1,329 observations deleted)
+(171 real changes made)
+-> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
+                              origin(time entrydate) scale(365.25)
+
+     failure event:  faildem != 0 & faildem < .
+obs. time interval:  (origin, CSexit_mentalhealth]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)/365.25
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+     30,033  total observations
+         65  observations end on or before enter()
+------------------------------------------------------------------------------
+     29,968  observations remaining, representing
+        100  failures in single-record/single-failure data
+ 13,751.652  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  .8870637
+  76
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 76
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(29968 records included in the analysis)
+
+  +--------------------------------------------------------------------+
+  |                    group    D        Y     Rate    Lower     Upper |
+  |--------------------------------------------------------------------|
+  |    Hospitalised COVID-19   78   8.6513   9.0160   7.2216   11.2563 |
+  | Hospitalised flu 2017_19   22   5.1004   4.3134   2.8402    6.5508 |
+  +--------------------------------------------------------------------+
+
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    23,358      6,510 |    29,868 
+         1 |        78         22 |       100 
+-----------+----------------------+----------
+     Total |    23,436      6,532 |    29,968 
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -988.13619
+Iteration 1:   log likelihood =   -889.627
+Iteration 2:   log likelihood = -877.10239
+Iteration 3:   log likelihood = -876.47475
+Iteration 4:   log likelihood = -876.47263
+Refining estimates:
+Iteration 0:   log likelihood = -876.47263
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       29,961                  Number of obs    =      29,961
+No. of failures =          100
+Time at risk    =   13748.6653
+                                                LR chi2(11)      =      223.33
+Log likelihood  =   -876.47263                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.927736   .5190523     2.44   0.015     1.137254    3.267666
+         age |   1.128788   .0122632    11.15   0.000     1.105006    1.153081
+        male |    .905792   .1838484    -0.49   0.626     .6084996    1.348331
+             |
+ region_real |
+East Midl..  |   1.198219   .3872379     0.56   0.576     .6359845     2.25749
+     London  |   .8742782   .3928294    -0.30   0.765     .3624007    2.109164
+ North East  |   1.502041   .5825123     1.05   0.294     .7023833    3.212104
+ North West  |   .6822043    .306644    -0.85   0.395     .2826883    1.646346
+ South East  |   1.337712   .6016716     0.65   0.518     .5540026    3.230079
+ South West  |    .566723   .2915384    -1.10   0.270     .2067705    1.553292
+West Midl..  |   1.181887   .5621648     0.35   0.725     .4652663    3.002273
+Yorkshire..  |   1.038309   .3517466     0.11   0.912     .5345229    2.016913
+------------------------------------------------------------------------------
+
+ ( 1)  1.group = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.927736   .5190523     2.44   0.015     1.137254    3.267666
+------------------------------------------------------------------------------
+(1 missing value generated)
+(1 missing value generated)
+(1 missing value generated)
+file /tmp/St00007.00000b saved
+(30,033 observations deleted)
+(13 real changes made)
+-> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
+                              origin(time entrydate) scale(365.25)
+
+     failure event:  faildem != 0 & faildem < .
+obs. time interval:  (origin, CSexit_mentalhealth]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)/365.25
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+      1,329  total observations
+          4  observations end on or before enter()
+------------------------------------------------------------------------------
+      1,325  observations remaining, representing
+         61  failures in single-record/single-failure data
+    528.932  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  .8870637
+  53
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 53
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
+(1325 records included in the analysis)
+
+  +---------------------------------------------------------------------+
+  |                    group    D        Y      Rate    Lower     Upper |
+  |---------------------------------------------------------------------|
+  |    Hospitalised COVID-19   56   0.4382   127.781   98.338   166.040 |
+  | Hospitalised flu 2017_19    <=5   0.0907    55.137   22.950   132.468 |
+  +---------------------------------------------------------------------+
+
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |     1,139        125 |    
+         1 |        56        <=5 |    
+-----------+----------------------+----------
+     Total |         
+
+         failure _d:  faildem
+   analysis time _t:  (CSexit_mentalhealth-origin)/365.25
+             origin:  time entrydate
+  enter on or after:  time entrydate
+
+Iteration 0:   log likelihood = -410.88377
+Iteration 1:   log likelihood = -397.48347
+Iteration 2:   log likelihood = -395.48881
+Iteration 3:   log likelihood = -394.98849
+Iteration 4:   log likelihood = -394.80712
+Iteration 5:   log likelihood = -394.74069
+Iteration 6:   log likelihood =  -394.7163
+Iteration 7:   log likelihood = -394.70733
+Iteration 8:   log likelihood = -394.70403
+Iteration 9:   log likelihood = -394.70282
+Iteration 10:  log likelihood = -394.70237
+Iteration 11:  log likelihood = -394.70221
+Iteration 12:  log likelihood = -394.70215
+Iteration 13:  log likelihood = -394.70212
+Iteration 14:  log likelihood = -394.70211
+Iteration 15:  log likelihood = -394.70211
+Iteration 16:  log likelihood = -394.70211
+Iteration 17:  log likelihood = -394.70211
+Iteration 18:  log likelihood = -394.70211
+Iteration 19:  log likelihood = -394.70211
+Iteration 20:  log likelihood = -394.70211
+Iteration 21:  log likelihood = -394.70211
+Iteration 22:  log likelihood = -394.70211
+Iteration 23:  log likelihood = -394.70211
+Iteration 24:  log likelihood = -394.70211
+Iteration 25:  log likelihood = -394.70211
+Iteration 26:  log likelihood = -394.70211
+Iteration 27:  log likelihood = -394.70211
+Iteration 28:  log likelihood = -394.70211
+Iteration 29:  log likelihood = -394.70211
+Iteration 30:  log likelihood = -394.70211
+Iteration 31:  log likelihood = -394.70211
+Iteration 32:  log likelihood = -394.70211
+Iteration 33:  log likelihood = -394.70211
+Iteration 34:  log likelihood = -394.70211
+Refining estimates:
+Iteration 0:   log likelihood = -394.70211
+Iteration 1:   log likelihood = -394.70211
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =        1,324                  Number of obs    =       1,324
+No. of failures =           61
+Time at risk    =  528.2094456
+                                                LR chi2(11)      =       32.36
+Log likelihood  =   -394.70211                  Prob > chi2      =      0.0007
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       group |
+Hospitali..  |   1.803821   .8509202     1.25   0.211     .7155734    4.547079
+         age |   1.049789   .0157687     3.23   0.001     1.019333    1.081154
+        male |   1.187465   .3147644     0.65   0.517     .7063023    1.996416
+             |
+ region_real |
+East Midl..  |   .5657932   .2377231    -1.36   0.175     .2483235    1.289133
+     London  |   .9894816   .7445338    -0.01   0.989      .226424    4.324072
+ North East  |   1.680903   .7035505     1.24   0.215     .7400613    3.817837
+ North West  |   .8458616    .367341    -0.39   0.700     .3611098    1.981341
+ South East  |   4.35e-16   1.17e-08    -0.00   1.000            0           .
+ South West  |   4.84e-16   1.03e-08    -0.00   1.000            0           .
+West Midl..  |   .6834526   .4309917    -0.60   0.546     .1985787    2.352254
+Yorkshire..  |   .9564947   .3513546    -0.12   0.904     .4655924    1.964985
+------------------------------------------------------------------------------
+
+ ( 1)  1.group = 0
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.803821   .8509202     1.25   0.211     .7155734    4.547079
+------------------------------------------------------------------------------
+(1 missing value generated)
+(1 missing value generated)
+(1 missing value generated)
+file /tmp/St00007.00000e saved
+(240 real changes made)
 -> stset CSexit_mentalhealth, failure(faildel) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -306,15 +870,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-         82  failures in single-record/single-failure data
- 10,428.827  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+        105  failures in single-record/single-failure data
+ 14,280.585  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  <=5
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = <=5
 
          failure _d:  faildel
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -322,44 +888,64 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22585 records included in the analysis)
+(31293 records included in the analysis)
 
   +--------------------------------------------------------------------+
   |                    group    D        Y     Rate    Lower     Upper |
   |--------------------------------------------------------------------|
-  |    Hospitalised COVID-19   58   6.1744   9.3936   7.2621   12.1507 |
-  | Hospitalised flu 2017_19   24   4.2544   5.6412   3.7811    8.4163 |
+  |    Hospitalised COVID-19   77   9.0895   8.4713   6.7756   10.5914 |
+  | Hospitalised flu 2017_19   28   5.1911   5.3939   3.7243    7.8120 |
   +--------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    24,554      6,634 |    31,188 
+         1 |        77         28 |       105 
+-----------+----------------------+----------
+     Total |    24,631      6,662 |    31,293 
 
          failure _d:  faildel
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -801.73746
-Iteration 1:   log likelihood = -743.54122
-Iteration 2:   log likelihood = -737.32833
-Iteration 3:   log likelihood = -737.11755
-Iteration 4:   log likelihood = -737.11723
+Iteration 0:   log likelihood =  -1047.197
+Iteration 1:   log likelihood = -973.50374
+Iteration 2:   log likelihood = -967.13772
+Iteration 3:   log likelihood = -966.98037
+Iteration 4:   log likelihood = -966.98024
 Refining estimates:
-Iteration 0:   log likelihood = -737.11723
+Iteration 0:   log likelihood = -966.98024
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =       22,585                  Number of obs    =      22,585
-No. of failures =           82
-Time at risk    =  10428.82683
-                                                LR chi2(3)       =      129.24
-Log likelihood  =   -737.11723                  Prob > chi2      =      0.0000
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =          105
+Time at risk    =  14276.87474
+                                                LR chi2(11)      =      160.43
+Log likelihood  =   -966.98024                  Prob > chi2      =      0.0000
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   1.406705   .3587246     1.34   0.181     .8533709    2.318827
-         age |   1.101724   .0118858     8.98   0.000     1.078673    1.125268
-        male |   .9213443   .2062909    -0.37   0.714      .594068     1.42892
+Hospitali..  |    1.09966   .2523522     0.41   0.679     .7013305    1.724224
+         age |   1.094926   .0099976     9.93   0.000     1.075505    1.114697
+        male |   1.046207   .2062447     0.23   0.819     .7109114    1.539642
+             |
+ region_real |
+East Midl..  |   1.641255   .5481242     1.48   0.138     .8529104    3.158267
+     London  |   .8230999   .4289631    -0.37   0.709     .2963768     2.28592
+ North East  |   1.654959   .6863374     1.21   0.224     .7341428     3.73073
+ North West  |    1.14878   .4758808     0.33   0.738     .5100674    2.587296
+ South East  |   1.431382   .6992807     0.73   0.463     .5494318    3.729045
+ South West  |   .6542816   .3441969    -0.81   0.420      .233332    1.834657
+West Midl..  |    .953761   .5412783    -0.08   0.934     .3135926     2.90077
+Yorkshire..  |   1.875844   .6226635     1.90   0.058     .9787023    3.595362
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -367,13 +953,13 @@ Hospitali..  |   1.406705   .3587246     1.34   0.181     .8533709    2.318827
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.406705   .3587246     1.34   0.181     .8533709    2.318827
+         (1) |    1.09966   .2523522     0.41   0.679     .7013305    1.724224
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.000008 saved
-(256 real changes made)
+file /tmp/St00007.00000h saved
+(339 real changes made)
 -> stset CSexit_mentalhealth, failure(failsch) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -385,15 +971,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-          5  failures in single-record/single-failure data
- 10,428.827  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+          6  failures in single-record/single-failure data
+ 14,280.585  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  1
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 1
 
          failure _d:  failsch
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -401,43 +989,96 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22585 records included in the analysis)
+(31293 records included in the analysis)
 
   +------------------------------------------------------------------------+
   |                    group   D        Y       Rate      Lower      Upper |
   |------------------------------------------------------------------------|
-  |    Hospitalised COVID-19   2   6.1744   0.323917   0.081011   1.295163 |
-  | Hospitalised flu 2017_19   3   4.2544   0.705150   0.227426   2.186367 |
+  |    Hospitalised COVID-19   <=5   9.0895   0.220034   0.055030   0.879791 |
+  | Hospitalised flu 2017_19   4   5.1911   0.770555   0.289203   2.053073 |
   +------------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    24,629      6,658 |    31,287 
+         1 |    SMALL NS REDACTED |         6 
+-----------+----------------------+----------
+     Total |    24,631      6,662 |    31,293 
 
          failure _d:  failsch
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -48.953007
-Iteration 1:   log likelihood = -48.247053
-Iteration 2:   log likelihood = -48.244943
-Iteration 3:   log likelihood = -48.244943
+Iteration 0:   log likelihood = -60.134707
+Iteration 1:   log likelihood = -55.986165
+Iteration 2:   log likelihood = -55.495415
+Iteration 3:   log likelihood = -55.355365
+Iteration 4:   log likelihood = -55.306016
+Iteration 5:   log likelihood = -55.288082
+Iteration 6:   log likelihood = -55.281514
+Iteration 7:   log likelihood = -55.279101
+Iteration 8:   log likelihood = -55.278214
+Iteration 9:   log likelihood = -55.277888
+Iteration 10:  log likelihood = -55.277768
+Iteration 11:  log likelihood = -55.277724
+Iteration 12:  log likelihood = -55.277708
+Iteration 13:  log likelihood = -55.277702
+Iteration 14:  log likelihood = -55.277699
+Iteration 15:  log likelihood = -55.277699
+Iteration 16:  log likelihood = -55.277698
+Iteration 17:  log likelihood = -55.277698
+Iteration 18:  log likelihood = -55.277698
+Iteration 19:  log likelihood = -55.277698
+Iteration 20:  log likelihood = -55.277698
+Iteration 21:  log likelihood = -55.277698
+Iteration 22:  log likelihood = -55.277698
+Iteration 23:  log likelihood = -55.277698
+Iteration 24:  log likelihood = -55.277698
+Iteration 25:  log likelihood = -55.277698
+Iteration 26:  log likelihood = -55.277698
+Iteration 27:  log likelihood = -55.277698
+Iteration 28:  log likelihood = -55.277698
+Iteration 29:  log likelihood = -55.277698
+Iteration 30:  log likelihood = -55.277698
+Iteration 31:  log likelihood = -55.277698
+Iteration 32:  log likelihood = -55.277698
+Iteration 33:  log likelihood = -55.277698
+Iteration 34:  log likelihood = -55.277698
+Iteration 35:  log likelihood = -55.277698
 Refining estimates:
-Iteration 0:   log likelihood = -48.244943
+Iteration 0:   log likelihood = -55.277698
+Iteration 1:   log likelihood = -55.277698
 
 Cox regression -- no ties
 
-No. of subjects =       22,585                  Number of obs    =      22,585
-No. of failures =            5
-Time at risk    =  10428.82683
-                                                LR chi2(3)       =        1.42
-Log likelihood  =   -48.244943                  Prob > chi2      =      0.7018
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =            6
+Time at risk    =  14276.87474
+                                                LR chi2(11)      =        9.71
+Log likelihood  =   -55.277698                  Prob > chi2      =      0.5563
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   .3831933   .3547283    -1.04   0.300     .0624377    2.351739
-         age |   1.005439   .0250066     0.22   0.827     .9576024    1.055665
-        male |   .6812177   .6252872    -0.42   0.676     .1127123    4.117187
+Hospitali..  |   .1961202   .1745772    -1.83   0.067     .0342627    1.122594
+         age |   1.011556   .0235576     0.49   0.622     .9664218    1.058798
+        male |   1.048308   .8594026     0.06   0.954     .2102198    5.227617
+             |
+ region_real |
+East Midl..  |   .9007691   .9009725    -0.10   0.917     .1268293    6.397455
+     London  |   9.22e-17   1.03e-08    -0.00   1.000            0           .
+ North East  |   7.39e-17   8.58e-09    -0.00   1.000            0           .
+ North West  |   7.82e-17   7.68e-09    -0.00   1.000            0           .
+ South East  |   7.50e-17   1.11e-08    -0.00   1.000            0           .
+ South West  |   .5855325   .7260876    -0.43   0.666     .0515254    6.653966
+West Midl..  |   9.13e-17   1.26e-08    -0.00   1.000            0           .
+Yorkshire..  |   .5247149   .6432614    -0.53   0.599     .0474694    5.800069
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -445,13 +1086,13 @@ Hospitali..  |   .3831933   .3547283    -1.04   0.300     .0624377    2.351739
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   .3831933   .3547283    -1.04   0.300     .0624377    2.351739
+         (1) |   .1961202   .1745772    -1.83   0.067     .0342627    1.122594
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000b saved
-(254 real changes made)
+file /tmp/St00007.00000k saved
+(322 real changes made)
 -> stset CSexit_mentalhealth, failure(failmoo) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -463,15 +1104,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-          6  failures in single-record/single-failure data
- 10,428.827  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+         23  failures in single-record/single-failure data
+ 14,280.585  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  1
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 1
 
          failure _d:  failmoo
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -479,43 +1122,105 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22585 records included in the analysis)
+(31293 records included in the analysis)
 
-  +------------------------------------------------------------------------+
-  |                    group   D        Y       Rate      Lower      Upper |
-  |------------------------------------------------------------------------|
-  |    Hospitalised COVID-19   5   6.1744   0.809793   0.337059   1.945553 |
-  | Hospitalised flu 2017_19   1   4.2544   0.235050   0.033110   1.668637 |
-  +------------------------------------------------------------------------+
+  +----------------------------------------------------------------------+
+  |                    group    D        Y      Rate     Lower     Upper |
+  |----------------------------------------------------------------------|
+  |    Hospitalised COVID-19   19   9.0895   2.09032   1.33332   3.27711 |
+  | Hospitalised flu 2017_19    <=5 5.1911   0.77055   0.28920   2.05307 |
+  +----------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    24,612      6,658 |    31,270 
+         1 | SMALL Ns REDACTED	  |        23 
+-----------+----------------------+----------
+     Total |    24,631      6,662 |    31,293 
 
          failure _d:  failmoo
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -59.159672
-Iteration 1:   log likelihood =  -58.51502
-Iteration 2:   log likelihood = -58.501421
-Iteration 3:   log likelihood = -58.501386
+Iteration 0:   log likelihood =  -230.3422
+Iteration 1:   log likelihood = -214.48382
+Iteration 2:   log likelihood =  -212.5975
+Iteration 3:   log likelihood = -212.27196
+Iteration 4:   log likelihood = -212.15916
+Iteration 5:   log likelihood = -212.11798
+Iteration 6:   log likelihood = -212.10287
+Iteration 7:   log likelihood = -212.09731
+Iteration 8:   log likelihood = -212.09527
+Iteration 9:   log likelihood = -212.09452
+Iteration 10:  log likelihood = -212.09424
+Iteration 11:  log likelihood = -212.09414
+Iteration 12:  log likelihood =  -212.0941
+Iteration 13:  log likelihood = -212.09409
+Iteration 14:  log likelihood = -212.09409
+Iteration 15:  log likelihood = -212.09408
+Iteration 16:  log likelihood = -212.09408
+Iteration 17:  log likelihood = -212.09408
+Iteration 18:  log likelihood = -212.09408
+Iteration 19:  log likelihood = -212.09408
+Iteration 20:  log likelihood = -212.09408
+Iteration 21:  log likelihood = -212.09408
+Iteration 22:  log likelihood = -212.09408
+Iteration 23:  log likelihood = -212.09408
+Iteration 24:  log likelihood = -212.09408
+Iteration 25:  log likelihood = -212.09408
+Iteration 26:  log likelihood = -212.09408
+Iteration 27:  log likelihood = -212.09408
+Iteration 28:  log likelihood = -212.09408
+Iteration 29:  log likelihood = -212.09408
+Iteration 30:  log likelihood = -212.09408
+Iteration 31:  log likelihood = -212.09408
+Iteration 32:  log likelihood = -212.09408
+Iteration 33:  log likelihood = -212.09408
+Iteration 34:  log likelihood = -212.09408
+Iteration 35:  log likelihood = -212.09408
+Iteration 36:  log likelihood = -212.09408
+Iteration 37:  log likelihood = -212.09408
+Iteration 38:  log likelihood = -212.09408
+Iteration 39:  log likelihood = -212.09408
+Iteration 40:  log likelihood = -212.09408
+Iteration 41:  log likelihood = -212.09408
+Iteration 42:  log likelihood = -212.09408
+Iteration 43:  log likelihood = -212.09408
+Iteration 44:  log likelihood = -212.09408
+Iteration 45:  log likelihood = -212.09408
 Refining estimates:
-Iteration 0:   log likelihood = -58.501386
+Iteration 0:   log likelihood = -212.09408
 
-Cox regression -- no ties
+Cox regression -- Breslow method for ties
 
-No. of subjects =       22,585                  Number of obs    =      22,585
-No. of failures =            6
-Time at risk    =  10428.82683
-                                                LR chi2(3)       =        1.32
-Log likelihood  =   -58.501386                  Prob > chi2      =      0.7252
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =           23
+Time at risk    =  14276.87474
+                                                LR chi2(9)       =       36.50
+Log likelihood  =   -212.09408                  Prob > chi2      =      0.0000
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   2.394038   2.635292     0.79   0.428     .2767907    20.70669
-         age |   1.003882   .0242801     0.16   0.873     .9574043    1.052616
-        male |   1.722196   1.497075     0.63   0.532     .3134352    9.462749
+Hospitali..  |   1.609468   .8957203     0.86   0.392     .5407067    4.790746
+         age |   1.076094   .0190485     4.14   0.000       1.0394    1.114084
+        male |   2.384901   1.089312     1.90   0.057     .9742742     5.83794
+             |
+ region_real |
+East Midl..  |   .8979482   .5682654    -0.17   0.865     .2597583    3.104081
+     London  |   2.07e-20          .        .       .            .           .
+ North East  |   .9562408   .8013004    -0.05   0.957     .1850489    4.941378
+ North West  |   .9369854   .6848512    -0.09   0.929     .2236567    3.925399
+ South East  |     1.4146   1.184913     0.41   0.679     .2739309    7.305102
+ South West  |   2.27e-20          .        .       .            .           .
+West Midl..  |   .6278692   .6884091    -0.42   0.671     .0732139    5.384491
+Yorkshire..  |   .9933975   .6295932    -0.01   0.992     .2868471    3.440295
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -523,13 +1228,13 @@ Hospitali..  |   2.394038   2.635292     0.79   0.428     .2767907    20.70669
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   2.394038   2.635292     0.79   0.428     .2767907    20.70669
+         (1) |   1.609468   .8957203     0.86   0.392     .5407067    4.790746
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000e saved
-(248 real changes made)
+file /tmp/St00007.00000n saved
+(329 real changes made)
 -> stset CSexit_mentalhealth, failure(failneu) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -541,15 +1246,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-         13  failures in single-record/single-failure data
- 10,428.827  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+         16  failures in single-record/single-failure data
+ 14,280.585  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  1
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 1
 
          failure _d:  failneu
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -557,44 +1264,101 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22585 records included in the analysis)
+(31293 records included in the analysis)
 
   +----------------------------------------------------------------------+
   |                    group    D        Y      Rate     Lower     Upper |
   |----------------------------------------------------------------------|
-  |    Hospitalised COVID-19   11   6.1744   1.78155   0.98662   3.21695 |
-  | Hospitalised flu 2017_19    2   4.2544   0.47010   0.11757   1.87967 |
+  |    Hospitalised COVID-19   13   9.0895   1.43022   0.83047   2.46311 |
+  | Hospitalised flu 2017_19    3   5.1911   0.57792   0.18639   1.79187 |
   +----------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    24,618      6,659 |    31,277 
+         1 | SMALL Ns REDACTED	  |        16 
+-----------+----------------------+----------
+     Total |    24,631      6,662 |    31,293 
 
          failure _d:  failneu
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -127.91518
-Iteration 1:   log likelihood = -122.49281
-Iteration 2:   log likelihood =  -122.3719
-Iteration 3:   log likelihood = -122.37121
-Iteration 4:   log likelihood = -122.37121
+Iteration 0:   log likelihood = -159.78859
+Iteration 1:   log likelihood = -147.62354
+Iteration 2:   log likelihood = -146.60668
+Iteration 3:   log likelihood = -146.36611
+Iteration 4:   log likelihood = -146.28202
+Iteration 5:   log likelihood = -146.25133
+Iteration 6:   log likelihood = -146.24007
+Iteration 7:   log likelihood = -146.23593
+Iteration 8:   log likelihood = -146.23441
+Iteration 9:   log likelihood = -146.23385
+Iteration 10:  log likelihood = -146.23365
+Iteration 11:  log likelihood = -146.23357
+Iteration 12:  log likelihood = -146.23354
+Iteration 13:  log likelihood = -146.23353
+Iteration 14:  log likelihood = -146.23353
+Iteration 15:  log likelihood = -146.23353
+Iteration 16:  log likelihood = -146.23353
+Iteration 17:  log likelihood = -146.23353
+Iteration 18:  log likelihood = -146.23353
+Iteration 19:  log likelihood = -146.23353
+Iteration 20:  log likelihood = -146.23353
+Iteration 21:  log likelihood = -146.23353
+Iteration 22:  log likelihood = -146.23353
+Iteration 23:  log likelihood = -146.23353
+Iteration 24:  log likelihood = -146.23353
+Iteration 25:  log likelihood = -146.23353
+Iteration 26:  log likelihood = -146.23353
+Iteration 27:  log likelihood = -146.23353
+Iteration 28:  log likelihood = -146.23353
+Iteration 29:  log likelihood = -146.23353
+Iteration 30:  log likelihood = -146.23353
+Iteration 31:  log likelihood = -146.23353
+Iteration 32:  log likelihood = -146.23353
+Iteration 33:  log likelihood = -146.23353
+Iteration 34:  log likelihood = -146.23353
+Iteration 35:  log likelihood = -146.23353
+Iteration 36:  log likelihood = -146.23353
+Iteration 37:  log likelihood = -146.23353
 Refining estimates:
-Iteration 0:   log likelihood = -122.37121
+Iteration 0:   log likelihood = -146.23353
+Iteration 1:   log likelihood = -146.23353
+Iteration 2:   log likelihood = -146.23353
+Iteration 3:   log likelihood = -146.23353
+Iteration 4:   log likelihood = -146.23353
 
 Cox regression -- no ties
 
-No. of subjects =       22,585                  Number of obs    =      22,585
-No. of failures =           13
-Time at risk    =  10428.82683
-                                                LR chi2(3)       =       11.09
-Log likelihood  =   -122.37121                  Prob > chi2      =      0.0113
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =           16
+Time at risk    =  14276.87474
+                                                LR chi2(11)      =       27.11
+Log likelihood  =   -146.23353                  Prob > chi2      =      0.0044
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   3.467145   2.678334     1.61   0.108     .7628295    15.75856
-         age |   .9923993   .0150182    -0.50   0.614     .9633965    1.022275
-        male |   .1517763   .1168414    -2.45   0.014     .0335681    .6862483
+Hospitali..  |   2.592361   1.720133     1.44   0.151     .7061384    9.517021
+         age |   .9959432   .0135945    -0.30   0.766     .9696517    1.022948
+        male |   .1219348   .0922984    -2.78   0.005     .0276575    .5375803
+             |
+ region_real |
+East Midl..  |   5.476175   5.917022     1.57   0.116     .6587973    45.52007
+     London  |   3.02e-18   2.52e-09    -0.00   1.000            0           .
+ North East  |   2.480202   3.510195     0.64   0.521      .154808    39.73569
+ North West  |   3.11e-18   2.27e-09    -0.00   1.000            0           .
+ South East  |   3.20e-18   3.54e-09    -0.00   1.000            0           .
+ South West  |   6.951556   8.093963     1.67   0.096     .7095705    68.10336
+West Midl..  |   5.727365   7.017724     1.42   0.154     .5187763    63.23094
+Yorkshire..  |   3.049624    3.52531     0.96   0.335     .3164266    29.39136
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -602,14 +1366,14 @@ Hospitali..  |   3.467145   2.678334     1.61   0.108     .7628295    15.75856
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   3.467145   2.678334     1.61   0.108     .7628295    15.75856
+         (1) |   2.592361   1.720133     1.44   0.151     .7061384    9.517021
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000h saved
-(178 real changes made)
-(137 real changes made)
+file /tmp/St00007.00000q saved
+(155 real changes made)
+(190 real changes made)
 -> stset CSexit_mentalhealth, failure(failall) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
 
@@ -621,15 +1385,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
             origin:  time entrydate
 
 ------------------------------------------------------------------------------
-     22,646  total observations
-         61  observations end on or before enter()
+     31,362  total observations
+         69  observations end on or before enter()
 ------------------------------------------------------------------------------
-     22,585  observations remaining, representing
-        107  failures in single-record/single-failure data
- 10,428.827  total analysis time at risk and under observation
+     31,293  observations remaining, representing
+        155  failures in single-record/single-failure data
+ 14,280.585  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
-                                          last observed exit t =  .7282683
+                                          last observed exit t =  .8870637
+  8
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 8
 
          failure _d:  failall
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -637,44 +1403,64 @@ obs. time interval:  (origin, CSexit_mentalhealth]
   enter on or after:  time entrydate
 
 Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(22585 records included in the analysis)
+(31293 records included in the analysis)
 
-  +---------------------------------------------------------------------+
-  |                    group    D        Y      Rate    Lower     Upper |
-  |---------------------------------------------------------------------|
-  |    Hospitalised COVID-19   76   6.1744   12.3089   9.8306   15.4119 |
-  | Hospitalised flu 2017_19   31   4.2544    7.2866   5.1244   10.3610 |
-  +---------------------------------------------------------------------+
+  +-----------------------------------------------------------------------+
+  |                    group     D        Y      Rate     Lower     Upper |
+  |-----------------------------------------------------------------------|
+  |    Hospitalised COVID-19   114   9.0895   12.5419   10.4386   15.0691 |
+  | Hospitalised flu 2017_19    41   5.1911    7.8982    5.8156   10.7266 |
+  +-----------------------------------------------------------------------+
 
+
+      1 if |
+failure; 0 |
+        if |         group
+  censored | Hospitali  Hospitali |     Total
+-----------+----------------------+----------
+         0 |    24,517      6,621 |    31,138 
+         1 |       114         41 |       155 
+-----------+----------------------+----------
+     Total |    24,631      6,662 |    31,293 
 
          failure _d:  failall
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Iteration 0:   log likelihood = -1047.6083
-Iteration 1:   log likelihood = -1001.9111
-Iteration 2:   log likelihood = -999.67116
-Iteration 3:   log likelihood = -999.65289
-Iteration 4:   log likelihood = -999.65289
+Iteration 0:   log likelihood = -1546.5177
+Iteration 1:   log likelihood = -1476.4856
+Iteration 2:   log likelihood = -1473.3017
+Iteration 3:   log likelihood =  -1473.279
+Iteration 4:   log likelihood =  -1473.279
 Refining estimates:
-Iteration 0:   log likelihood = -999.65289
+Iteration 0:   log likelihood =  -1473.279
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =       22,585                  Number of obs    =      22,585
-No. of failures =          107
-Time at risk    =  10428.82683
-                                                LR chi2(3)       =       95.91
-Log likelihood  =   -999.65289                  Prob > chi2      =      0.0000
+No. of subjects =       31,285                  Number of obs    =      31,285
+No. of failures =          155
+Time at risk    =  14276.87474
+                                                LR chi2(11)      =      146.48
+Log likelihood  =    -1473.279                  Prob > chi2      =      0.0000
 
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        group |
-Hospitali..  |   1.401048   .3102483     1.52   0.128     .9077424    2.162435
-         age |   1.064961   .0081606     8.21   0.000     1.049086    1.081076
-        male |   .7716809   .1518714    -1.32   0.188     .5247062    1.134904
+Hospitali..  |   1.115815   .2107209     0.58   0.562     .7706252    1.615626
+         age |    1.06532   .0067759     9.95   0.000     1.052122    1.078684
+        male |   .9619648   .1558818    -0.24   0.811     .7002063    1.321577
+             |
+ region_real |
+East Midl..  |   1.559268   .4101343     1.69   0.091     .9311704    2.611033
+     London  |   .5838594   .2677169    -1.17   0.241     .2376879    1.434199
+ North East  |   1.309704   .4551457     0.78   0.438      .662774      2.5881
+ North West  |   .8969785   .3113886    -0.31   0.754     .4542397    1.771247
+ South East  |   1.197822   .4921214     0.44   0.660     .5354007    2.679821
+ South West  |   .7249451   .2881181    -0.81   0.418      .332666    1.579799
+West Midl..  |   1.130031   .4643344     0.30   0.766     .5050427     2.52844
+Yorkshire..  |   1.600699   .4279095     1.76   0.078     .9478962    2.703078
 ------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
@@ -682,18 +1468,22 @@ Hospitali..  |   1.401048   .3102483     1.52   0.128     .9077424    2.162435
 ------------------------------------------------------------------------------
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.401048   .3102483     1.52   0.128     .9077424    2.162435
+         (1) |   1.115815   .2107209     0.58   0.562     .7706252    1.615626
 ------------------------------------------------------------------------------
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000k saved
+file /tmp/St00007.00000t saved
 
 . clear
 
-. foreach run of any dem demexdem del sch moo neu all{
+. foreach run of any dem demwdem demexdem demcare demnocare del sch moo neu all
+> {
   2. append using `temp`run''
   3. }
+(label grouplab already defined)
+(label grouplab already defined)
+(label grouplab already defined)
 (label grouplab already defined)
 (label grouplab already defined)
 (label grouplab already defined)
@@ -703,11 +1493,24 @@ file /tmp/St00007.00000k saved
 
 . 
 . gen mentalhealthgrouped = "Dementia (F00-F03)" if failtype=="dem"
-(12 missing values generated)
+(18 missing values generated)
 
-. replace mentalhealthgrouped = "(among those with no baseline dementia)" if fa
+. replace mentalhealthgrouped = "(among those with baseline dementia)" if failt
+> ype=="demwdem"
+variable mentalhealthgrouped was str18 now str36
+(2 real changes made)
+
+. replace mentalhealthgrouped = "(among those with NO baseline dementia)" if fa
 > iltype=="demexdem"
-variable mentalhealthgrouped was str18 now str39
+variable mentalhealthgrouped was str36 now str39
+(2 real changes made)
+
+. replace mentalhealthgrouped = "(among those living in care homes)" if failtyp
+> e=="demcare"
+(2 real changes made)
+
+. replace mentalhealthgrouped = "(among those NOT living in care homes)" if fai
+> ltype=="demnocare"
 (2 real changes made)
 
 . replace mentalhealthgrouped = "Delirium (F05)" if failtype=="del"
@@ -731,20 +1534,19 @@ variable mentalhealthgrouped was str39 now str55
 
 . 
 . gen order = 1 if failtype!=failtype[_n-1]
-(7 missing values generated)
+(10 missing values generated)
 
 . replace order = sum(order)
-(13 real changes made)
+(19 real changes made)
 
 . gen rateci = string(_Rate, "%4.2f") + " (" + string(_Lower, "%4.2f") + "-" + 
 > string(_Upper, "%4.2f") + ")"
 
 . gen _dstr = string(_D) if _D>5
-(7 missing values generated)
+(5 missing values generated)
 
 . replace _dstr = "<=5" if _D<=5
-variable _dstr was str2 now str3
-(7 real changes made)
+(5 real changes made)
 
 . gen events_ratecov = "[" + _dstr + "] " + rateci
 
@@ -752,8 +1554,22 @@ variable _dstr was str2 now str3
 > ci, "%4.2f") + ")"
 
 . replace hrci = hrci[_n-1] if group==2
-(7 real changes made)
+(10 real changes made)
 
+. 
+. replace hrci = "`hrcicare'" if failtype=="demcare"
+(2 real changes made)
+
+. replace hrci = "`hrcinocare'" if failtype=="demnocare"
+(2 real changes made)
+
+. replace hrci = "`hrciwdem'" if failtype=="demwdem"
+(2 real changes made)
+
+. replace hrci = "`hrciexdem'" if failtype=="demexdem"
+(2 real changes made)
+
+. 
 . keep group mentalhealthgrouped events_ratecov hrci order
 
 . reshape wide events_ratecov , i(order) j(group)
@@ -761,7 +1577,7 @@ variable _dstr was str2 now str3
 
 Data                               long   ->   wide
 -----------------------------------------------------------------------------
-Number of obs.                       14   ->       7
+Number of obs.                       20   ->      10
 Number of variables                   5   ->       5
 j variable (2 values)             group   ->   (dropped)
 xij variables:
@@ -782,5 +1598,5 @@ xij variables:
       name:  <unnamed>
        log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- closed on:   2 Apr 2021, 01:55:55
+ closed on:   6 May 2021, 16:19:08
 -------------------------------------------------------------------------------
