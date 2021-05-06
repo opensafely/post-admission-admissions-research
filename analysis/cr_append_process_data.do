@@ -14,6 +14,19 @@ replace group = 4 if group==.
 
 replace setid=patient_id if group==1 
 
+*get SUS ethnicity
+preserve
+clear
+import delimited output/input_suseth.csv
+tempfile suseth
+save `suseth', replace
+restore
+
+cap drop _merge
+merge m:1 patient_id using `suseth', keep(match master)
+
+replace ethnicity = ethnicity_sus if (group==1|group==2) & ethnicity==.
+
 *SIMPLER CARE HOME CLASSIFIER
 gen carehomebin = care_home_type=="PC"|care_home_type=="PN"|care_home_type=="PS"
 

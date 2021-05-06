@@ -2,22 +2,22 @@
 
 cap postutil clear
 tempfile estimates
-postfile estimates str6 ctrl str9 outcome str10 adjustment shr lci uci using `estimates', replace
+postfile estimates str6 ctrl str9 outcome str30 adjustment shr lci uci using `estimates', replace
 foreach ctrl of any flu 2019gp{
 
 foreach coxoutcome of any COMPOSITE DEATH {
 estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_MINADJ
 lincom exposed, eform
 post estimates ("`ctrl'") ("`coxoutcome'") ("min") (r(estimate)) (r(lb)) (r(ub))
-estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_DEMOGADJ
+estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_COMORBS
 lincom exposed, eform
-post estimates ("`ctrl'") ("`coxoutcome'") ("demog") (r(estimate)) (r(lb)) (r(ub))
-estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_DEMOGLSTYLADJ
+post estimates ("`ctrl'") ("`coxoutcome'") ("comorbs") (r(estimate)) (r(lb)) (r(ub))
+estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_COMORBS_LSTYLE
 lincom exposed, eform
-post estimates ("`ctrl'") ("`coxoutcome'") ("demoglstyl") (r(estimate)) (r(lb)) (r(ub))
-estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_FULLADJ
+post estimates ("`ctrl'") ("`coxoutcome'") ("comorbs_lstyle") (r(estimate)) (r(lb)) (r(ub))
+estimates use analysis/output/models/an_cox_`coxoutcome'vs`ctrl'_COMORBS_LSTYLE_ETHIMD
 lincom exposed, eform
-post estimates ("`ctrl'") ("`coxoutcome'") ("full") (r(estimate)) (r(lb)) (r(ub))
+post estimates ("`ctrl'") ("`coxoutcome'") ("comorbs_lstyle_ethimd") (r(estimate)) (r(lb)) (r(ub))
 }
 /*
 foreach outcome of numlist 1/9 11/13{
@@ -56,10 +56,9 @@ preserve
 
 	gen adjlong = "Adj for age, sex, geography" if adjustment=="min" & ctrl=="flu"
 	replace adjlong = "Adj for matching factors " if adjustment=="min" & ctrl=="2019gp"
-	replace adjlong = " + ethnicity/IMD" if adjustment=="demog"
-	replace adjlong = " + ethnicity/IMD" if adjustment=="demog"
-	replace adjlong = " + obesity/smoking" if adjustment=="demoglstyl"
-	replace adjlong = " + comorbidities" if adjustment=="full"
+	replace adjlong = " + comorbidities" if adjustment=="comorbs"
+	replace adjlong = " + obesity/smoking*" if adjustment=="comorbs_lstyle"
+	replace adjlong = " + IMD/ethnicity*" if adjustment=="comorbs_lstyle_ethimd"
 
 	scatter graphorder shr, msize(small) mcol(black) || rcap lci uci graphorder, hor lw(thin) lc(black) ///
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///

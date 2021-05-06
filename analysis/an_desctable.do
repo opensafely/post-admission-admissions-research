@@ -67,10 +67,10 @@ file write tablecontent _n
 tabulatevariable, variable(male) start(1) end(0) 
 file write tablecontent _n 
 
-tabulatevariable, variable(obese4cat) start(1) end(4) 
+tabulatevariable, variable(obese4cat_withmiss) start(1) end(4) missing
 file write tablecontent _n 
 
-tabulatevariable, variable(smoke_nomiss) start(1) end(3) 
+tabulatevariable, variable(smoke) start(1) end(3) missing
 file write tablecontent _n 
 
 tabulatevariable, variable(ethnicity) start(1) end(5) missing 
