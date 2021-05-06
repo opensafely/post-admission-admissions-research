@@ -256,6 +256,7 @@ actions:
       - create_covid
       - create_pneum2019
       - create_flu2017_19
+      - generate_suseth
       - getmatches2019
     outputs:
       highly_sensitive:
