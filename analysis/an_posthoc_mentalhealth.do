@@ -134,4 +134,4 @@ order mentalhealthgrouped
 
 outsheet using analysis/output/an_posthoc_mentalhealth.txt, replace c 
 
-log closed
+log close
