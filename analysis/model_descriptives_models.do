@@ -12,3 +12,5 @@ do analysis/an_cox
 do analysis/an_cox_causespecific
 
 do analysis/an_posthoc_mentalhealth
+
+do analysis/an_deathvsflu_interactions
