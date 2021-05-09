@@ -1,8 +1,8 @@
--------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /workspace/analysis/output/an_flow.log
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_flow.log
   log type:  text
- opened on:   6 May 2021, 15:55:15
+ opened on:   9 May 2021, 14:18:36
 
 . 
 . clear
@@ -20,6 +20,24 @@ STARTING COUNT FROM IMPORT:
 . cou
   117,032
 
+. 
+. *correction
+. cap rename admitted1_dishcargedestination admitted1_dischargedestination
+
+. cap rename admitted1_dishchargedestination admitted1_dischargedestination
+
+. 
+. for num 2/5: cap rename admittedX_dishchargedestination admittedX_dischargedestination
+
+->  cap rename admitted2_dishchargedestination admitted2_dischargedestination
+
+->  cap rename admitted3_dishchargedestination admitted3_dischargedestination
+
+->  cap rename admitted4_dishchargedestination admitted4_dischargedestination
+
+->  cap rename admitted5_dishchargedestination admitted5_dischargedestination
+
+. 
 . 
 . qui{
 
@@ -49,73 +67,121 @@ COUNTS START HERE
 
 . 
 . *tie together admissions that are within 1 week of previous discharge
+. /*
+> gen finaldischargedate = discharged1_date
+> replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1_date+7)
+> replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+> replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
+> format %d finaldischargedate
+> *drop if there is a single day admission in the chain of admissions, as cannot then get f-up:
+> drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
+> *drop if we get to the 5th readmission with all short gaps
+> drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
+> */
+. 
+. *tie together admissions that are within 1 week of previous discharge
 . gen finaldischargedate = discharged1_date
 
-. replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1
-> _date+7)
+. gen finaldischargedest = admitted1_dischargedestination
+(36 missing values generated)
+
+. 
+. replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1_date+7)
 (12,236 real changes made)
 
-. replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1
-> _date+7) & admitted3_date<=(discharged2_date+7)
+. replace finaldischargedest = admitted2_dischargedestination if admitted2_date<=(discharged1_date+7)
+(8,204 real changes made, 3,637 to missing)
+
+. 
+. replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
 (1,625 real changes made)
 
-. replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1
-> _date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged
-> 3_date+7)
+. replace finaldischargedest = admitted3_dischargedestination if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+(823 real changes made, 403 to missing)
+
+. 
+. replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
 (281 real changes made)
 
+. replace finaldischargedest = admitted4_dischargedestination if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
+(125 real changes made, 73 to missing)
+
+. 
 . format %d finaldischargedate
 
-. *drop if there is a single day admission in the chain of admissions, as canno
-> t then get f-up:
-. drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_
-> date
+. 
+. 
+. *drop if there is a single day admission in the chain of admissions, as cannot then get f-up:
+. drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
 (8,724 observations deleted)
 
+. cou
+  108,308
+
+. 
+. *drop if hospital transfer
+. ***************
+. cou if (admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)) ///
+>         | (finaldischargedest==30|(finaldischargedest>=48 & finaldischargedest<=53)|finaldischargedest==84|finaldischargedest==87) ///
+>         | (finaldischargedest==88) 
+  2,243
+
+. ***************
 . *drop if we get to the 5th readmission with all short gaps
-. drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_d
-> ate+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_
-> date+7)
+. drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
 (62 observations deleted)
 
+. *drop if the final discharge destination is to hospital transfer, or to hospice
+. drop if finaldischargedest==30|(finaldischargedest>=48 & finaldischargedest<=53)|finaldischargedest==84|finaldischargedest==87 /*hospital transfers*/
+(1,941 observations deleted)
+
+. drop if finaldischargedest==88 /*hospice*/
+(240 observations deleted)
+
+. 
+. cou
+  106,065
+
+. 
 . 
 . gen entrydate = finaldischargedate+8
 
 . format %d entrydate
 
 . 
-. cou
-  108,246
-
+. 
 . 
 . local diedsource "ons"
 
 . *drop if died date on/before discharge date
-. cou if died_date_`diedsource'<entrydate /*total*/
-  30,070
+. cou if died_date_`diedsource'<entrydate|finaldischargedest==79  /*total*/
+  30,225
 
 . 
-. cou if died_date_`diedsource'==finaldischargedate
-  25,029
+. cou if died_date_`diedsource'==finaldischargedate|finaldischargedest==79  
+  28,562
 
-. cou if died_date_`diedsource'<finaldischargedate
-  3,139
+. cou if died_date_`diedsource'<finaldischargedate 
+  3,129
 
-. cou if died_date_`diedsource'<=finaldischargedate /*died during hosp*/
-  28,168
+. ***************
+. cou if died_date_`diedsource'<=finaldischargedate|finaldischargedest==79   /*died during hosp*/
+  28,652
+
+. ***************
+. cou
+  106,065
+
+. ***************
+. cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate & finaldischargedest!=79 /*died within 7d of discharge*/
+  1,573
+
+. ***************
+. drop if died_date_`diedsource'<entrydate|finaldischargedest==79  
+(30,225 observations deleted)
 
 . cou
-  108,246
-
-. cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<ent
-> rydate /*died within 7d of discharge*/
-  1,902
-
-. drop if died_date_`diedsource'<entrydate
-(30,070 observations deleted)
-
-. cou
-  78,176
+  75,840
 
 . 
 . /*  IMD  */
@@ -125,10 +191,10 @@ COUNTS START HERE
 . egen imd = cut(imd_o), group(5) icodes
 
 . replace imd = imd + 1
-(78,176 real changes made)
+(75,840 real changes made)
 
 . replace imd = . if imd_o==-1
-(593 real changes made, 593 to missing)
+(583 real changes made, 583 to missing)
 
 . drop imd_o
 
@@ -136,11 +202,11 @@ COUNTS START HERE
 . 
 . 
 . cou if age>105|(sex!="M"&sex!="F")| imd==.
-  597
+  587
 
 . 
 . drop if age>105
-(<=5 observation deleted)
+(1 observation deleted)
 
 . 
 . assert inlist(sex, "M", "F", "I", "U")
@@ -149,15 +215,15 @@ COUNTS START HERE
 DROPPING GENDER NOT M/F:
 
 . drop if inlist(sex, "I", "U")
-(<=5 observations deleted)
+(3 observations deleted)
 
 . 
 . drop if imd==.
-(593 observations deleted)
+(583 observations deleted)
 
 . 
 . cou
-  77,579
+  75,253
 
 . 
 . /*
@@ -174,32 +240,41 @@ DROPPING GENDER NOT M/F:
 
                       discharged1_date
 -------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    27mar2020      08feb2020
+ 5%    07apr2020      11feb2020
+10%    16apr2020      14feb2020       Obs              75,253
+25%    15jun2020      14feb2020       Sum of Wgt.      75,253
 
-REDACTED
-latest is 28 feb
+50%    05dec2020                      Mean          20oct2020
+                        Largest       Std. Dev.      112.7906
+75%    18jan2021      28feb2021
+90%    05feb2021      28feb2021       Variance       12721.73
+95%    15feb2021      28feb2021       Skewness      -.7523006
+99%    25feb2021      28feb2021       Kurtosis       1.942466
 
 . scalar censordate = r(max) - 60
 
 . drop if entrydate>=censordate
-(35,108 observations deleted)
+(33,711 observations deleted)
 
 . 
 . cou
-  42,471
+  41,542
 
 . 
 . *Only keep if COVID/FLU was the primary reason for hospitalisation
 . keep if admitted1_reason=="U071"|admitted1_reason=="U072"
-(17,373 observations deleted)
+(16,869 observations deleted)
 
 . cou 
-  25,098
+  24,673
 
 . 
 . 
 . log close
       name:  <unnamed>
-       log:  /workspace/analysis/output/an_flow.log
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_flow.log
   log type:  text
- closed on:   6 May 2021, 15:55:26
--------------------------------------------------------------------------------
+ closed on:   9 May 2021, 14:18:43
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
