@@ -11,6 +11,13 @@ import delimited ./output/input_covdischarged.csv
 di "STARTING COUNT FROM IMPORT:"
 cou
 
+*correction
+cap rename admitted1_dishcargedestination admitted1_dischargedestination
+cap rename admitted1_dishchargedestination admitted1_dischargedestination
+
+for num 2/5: cap rename admittedX_dishchargedestination admittedX_dischargedestination
+
+
 qui{
 
 /*
@@ -112,6 +119,7 @@ noi di _dup(30) "*"
 cou
 
 *tie together admissions that are within 1 week of previous discharge
+/*
 gen finaldischargedate = discharged1_date
 replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1_date+7)
 replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
@@ -121,22 +129,62 @@ format %d finaldischargedate
 drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
 *drop if we get to the 5th readmission with all short gaps
 drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
+*/
+
+*tie together admissions that are within 1 week of previous discharge
+gen finaldischargedate = discharged1_date
+gen finaldischargedest = admitted1_dischargedestination
+
+replace finaldischargedate = discharged2_date if admitted2_date<=(discharged1_date+7)
+replace finaldischargedest = admitted2_dischargedestination if admitted2_date<=(discharged1_date+7)
+
+replace finaldischargedate = discharged3_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+replace finaldischargedest = admitted3_dischargedestination if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7)
+
+replace finaldischargedate = discharged4_date if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
+replace finaldischargedest = admitted4_dischargedestination if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7)
+
+format %d finaldischargedate
+
+
+*drop if there is a single day admission in the chain of admissions, as cannot then get f-up:
+drop if finaldischargedate==discharged4_date & discharged4_date == admitted4_date
+cou
+
+*drop if hospital transfer
+***************
+cou if (admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)) ///
+	| (finaldischargedest==30|(finaldischargedest>=48 & finaldischargedest<=53)|finaldischargedest==84|finaldischargedest==87) ///
+	| (finaldischargedest==88) 
+***************
+*drop if we get to the 5th readmission with all short gaps
+drop if admitted2_date<=(discharged1_date+7) & admitted3_date<=(discharged2_date+7) & admitted4_date<=(discharged3_date+7) & admitted5_date<=(discharged4_date+7)
+*drop if the final discharge destination is to hospital transfer, or to hospice
+drop if finaldischargedest==30|(finaldischargedest>=48 & finaldischargedest<=53)|finaldischargedest==84|finaldischargedest==87 /*hospital transfers*/
+drop if finaldischargedest==88 /*hospice*/
+
+cou
+
 
 gen entrydate = finaldischargedate+8
 format %d entrydate
 
-cou
+
 
 local diedsource "ons"
 *drop if died date on/before discharge date
-cou if died_date_`diedsource'<entrydate /*total*/
+cou if died_date_`diedsource'<entrydate|finaldischargedest==79  /*total*/
 
-cou if died_date_`diedsource'==finaldischargedate
-cou if died_date_`diedsource'<finaldischargedate
-cou if died_date_`diedsource'<=finaldischargedate /*died during hosp*/
+cou if died_date_`diedsource'==finaldischargedate|finaldischargedest==79  
+cou if died_date_`diedsource'<finaldischargedate 
+***************
+cou if died_date_`diedsource'<=finaldischargedate|finaldischargedest==79   /*died during hosp*/
+***************
 cou
-cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate /*died within 7d of discharge*/
-drop if died_date_`diedsource'<entrydate
+***************
+cou if died_date_`diedsource'>finaldischargedate & died_date_`diedsource'<entrydate & finaldischargedest!=79 /*died within 7d of discharge*/
+***************
+drop if died_date_`diedsource'<entrydate|finaldischargedest==79  
 cou
 
 /*  IMD  */
