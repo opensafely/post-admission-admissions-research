@@ -186,8 +186,8 @@
 	<text x="352.80" y="889.58" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Other infections (A)</text>
 	<text x="352.80" y="1101.31" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Cancers (C ex C44)</text>
 	<text x="352.80" y="1313.03" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Endocrine, nutritional and metabolic (E)</text>
-	<text x="352.80" y="1524.53" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Mental and behavioural (F/X60-84)</text>
-	<text x="352.80" y="1736.26" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Nervous system (G)</text>
+	<text x="352.80" y="1524.53" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Mental health and cognitive (F/G30/X60-84)</text>
+	<text x="352.80" y="1736.26" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Nervous system (G, ex G30)</text>
 	<text x="352.80" y="1947.98" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Circulatory (I)</text>
 	<text x="352.80" y="2159.71" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">COVID/Flu/LRTI (J09-22, U071-072)</text>
 	<text x="352.80" y="2371.21" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Other respiratory (J23-99)</text>
@@ -198,8 +198,8 @@
 	<text x="352.80" y="4064.56" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Other infections (A)</text>
 	<text x="352.80" y="4276.28" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Cancers (C ex C44)</text>
 	<text x="352.80" y="4487.78" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Endocrine, nutritional and metabolic (E)</text>
-	<text x="352.80" y="4699.51" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Mental and behavioural (F/X60-84)</text>
-	<text x="352.80" y="4911.23" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Nervous system (G)</text>
+	<text x="352.80" y="4699.51" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Mental health and cognitive (F/G30/X60-84)</text>
+	<text x="352.80" y="4911.23" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Nervous system (G, ex G30)</text>
 	<text x="352.80" y="5122.96" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Circulatory (I)</text>
 	<text x="352.80" y="5334.46" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">COVID/Flu/LRTI (J09-22, U071-072)</text>
 	<text x="352.80" y="5546.18" style="font-family:'Helvetica';font-size:82.58px;fill:#707070">Other respiratory (J23-99)</text>
