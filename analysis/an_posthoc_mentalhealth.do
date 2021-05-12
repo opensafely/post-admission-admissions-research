@@ -15,8 +15,8 @@ scalar fupcovid = r(mean)*r(N)
 summ fup if group==2
 scalar fupflu = r(mean)*r(N)
 
-cou if CSfail_mentalhealth==1 & _d==1
-cou if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth ==1 & _d==1
+safecount if CSfail_mentalhealth==1 & _d==1
+safecount if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth ==1 & _d==1
 
 gen mentalhealthicd3 = substr(admitted_mentalhealth_reason, 1, 3) if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth!=1 & _d==1
 replace mentalhealthicd3 = substr(died_cause_ons, 1, 3) if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth==1 & _d==1
@@ -58,10 +58,10 @@ tempfile temp`run'
 gen fail`failtype' = CSfail_mentalhealth
 replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`failtype'"
 streset, fail(fail`failtype') scale(365.25)
-cou if _d==1 &CSfaildiedonly_mentalhealth==1
+safecount if _d==1 &CSfaildiedonly_mentalhealth==1
 di "N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = " r(N)
 strate group, per(1000) output(`temp`run'')
-tab _d group
+safetab _d group
 
 stcox ib2.group age male i.region_real
 lincom 1.group, hr
