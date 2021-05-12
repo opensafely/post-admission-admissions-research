@@ -17,11 +17,20 @@ syntax, variable(varname) condition(string)
 	    
 	safecount if group==`group'
 	local denom=r(N)
+	
+	if "`missing'"!="" {
+	safecount if group==`group' & `variable'<.
+	local denomnonmiss=r(N)
+	}
 		
 	safecount if `variable' `condition' & group==`group'
 	local cellcount = r(N)
 	local colpct = 100*(r(N)/`denom')
 	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
+	if "`missing'"!="" {
+	local colpctnonmiss = 100*(r(N)/`denomnonmiss')
+	file write tablecontent (" [") %3.1f (`colpctnonmiss') ("]") 
+	}
 	if `group'==4 file write tablecontent _n
 		else file write tablecontent _tab
 	}

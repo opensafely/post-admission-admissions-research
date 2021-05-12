@@ -283,6 +283,14 @@ actions:
     outputs:
       moderately_sensitive:
         graphs: analysis/output/an_processout_*.svg 
+
+  runsingledofile:
+    run: stata-mp:latest analysis/an_desctable.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        table: analysis/output/an_desctable.txt
+
       
   run_model:
     run: stata-mp:latest analysis/model.do
