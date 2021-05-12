@@ -1,0 +1,933 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/cr_append_process_data.log
+  log type:  text
+ opened on:  12 May 2021, 10:27:32
+
+. 
+. use ./analysis/cr_create_analysis_dataset_COVID, clear
+
+. gen group = 1
+
+. append using ./analysis/cr_create_analysis_dataset_FLU
+(label dischargedtocarehomelab already defined)
+(label diabcat already defined)
+(label reduced_kidney_function_cat2lab already defined)
+(label cancer already defined)
+(label bpcat already defined)
+(label asthmacat already defined)
+(label obese4cat already defined)
+(label bmicat already defined)
+(label agegroup already defined)
+(label ethnicity_16 already defined)
+(label ethnicity already defined)
+(label smoke already defined)
+(label imd already defined)
+
+. replace group = 2 if group==.
+(16,058 real changes made)
+
+. *append using ./analysis/cr_create_analysis_dataset_PNEUM
+. *replace group = 3 if group==.
+. append using ./analysis/cr_getmatches2019
+(label imd already defined)
+(label smoke already defined)
+(label ethnicity already defined)
+(label ethnicity_16 already defined)
+(label agegroup already defined)
+(label bmicat already defined)
+(label obese4cat already defined)
+(label asthmacat already defined)
+(label bpcat already defined)
+(label cancer already defined)
+(label reduced_kidney_function_cat2lab already defined)
+(label diabcat already defined)
+
+. replace group = 4 if group==.
+(123,362 real changes made)
+
+. 
+. replace setid=patient_id if group==1 
+(24,673 real changes made)
+
+. 
+. *Need to recreate age spline so all on same scale
+. drop age1 age2 age3
+
+. mkspline age = age, cubic nknots(4)
+
+. 
+. *get SUS ethnicity
+. preserve
+
+. clear
+
+. import delimited output/input_suseth.csv
+(2 vars, 16,716,282 obs)
+
+. tempfile suseth
+
+. save `suseth', replace
+(note: file E:\STATATMP\ST_ab24_000002.tmp not found)
+file E:\STATATMP\ST_ab24_000002.tmp saved
+
+. restore
+
+. 
+. cap drop _merge
+
+. merge m:1 patient_id using `suseth', keep(match master)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                        43,555
+        from master                    43,555  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                           120,538  (_merge==3)
+    -----------------------------------------
+
+. 
+. replace ethnicity = ethnicity_sus if (group==1|group==2) & ethnicity==.
+(8,846 real changes made)
+
+. 
+. *SIMPLER CARE HOME CLASSIFIER
+. gen carehomebin = care_home_type=="PC"|care_home_type=="PN"|care_home_type=="PS"
+
+. 
+. *LENGTH OF HOSPITALISATION
+. gen dayshosp = finaldischargedate - admitted1_date
+(123,362 missing values generated)
+
+. gen hosp_lte_1week = dayshosp<=7 if dayshosp<.
+(123,362 missing values generated)
+
+. 
+. *BMI with missingness
+. gen obese4cat_withmissing = obese4cat
+
+. replace obese4cat_withmissing = . if bmicat==.
+(12,012 real changes made, 12,012 to missing)
+
+. label values obese4cat_withmissing obese4cat 
+
+. 
+. **STSET FOR COMPOSITE OUTCOME OF SUS HOSP OR PRIMARY CARE DEATH
+. summ readmission_date, f d
+
+                      readmission_date
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    21mar2017      17jan2017
+ 5%    31jan2018      17jan2017
+10%    26mar2018      18jan2017       Obs              17,913
+25%    06dec2018      19jan2017       Sum of Wgt.      17,913
+
+50%    03dec2019                      Mean          29sep2019
+                        Largest       Std. Dev.      385.5441
+75%    03sep2020      28feb2021
+90%    18dec2020      28feb2021       Variance       148644.2
+95%    18jan2021      28feb2021       Skewness      -.4806354
+99%    17feb2021      28feb2021       Kurtosis       2.084205
+
+. replace censordate = r(max)-60 if group ==1
+(24,673 real changes made)
+
+. replace censordate = r(max)-60-365 if group==3|group==4
+(123,362 real changes made)
+
+. 
+. replace dereg_date="" if substr(dereg_date,1,4)=="9999"
+(146,544 real changes made)
+
+. replace dereg_date = dereg_date + "-30" if dereg_date!="" 
+variable dereg_date was str7 now str10
+(17,549 real changes made)
+
+. gen _dereg_date = date(dereg_date, "YMD") + 2
+(148,264 missing values generated)
+
+. format %d _dereg
+
+. drop dereg
+
+. rename _dereg dereg_date
+
+. 
+. replace censordate = min(censordate, dereg_date)
+(4,979 real changes made)
+
+. drop exitdate readmission
+
+. gen exitdate = readmission_date if readmission_date<=censordate & group!=4
+(150,806 missing values generated)
+
+. replace exitdate = admitted_any_date if admitted_any_date<=censordate & group==4
+(16,212 real changes made)
+
+. 
+. gen readmission = (exitdate<.)
+
+. 
+. replace exitdate = died_date_1ocare if died_date_1ocare <. & died_date_1ocare<=exitdate & died_date_1ocare<=censordate
+(1,509 real changes made)
+
+. format %d exitdate
+
+. assert died_date_1ocare<. if readmission ==0 & exitdate<. 
+
+. replace readmission = 3 if readmission ==0 & exitdate<.
+(1,505 real changes made)
+
+. replace exitdate = censordate if exitdate==. 
+(133,089 real changes made)
+
+. 
+. replace readmission = 2 if readmission==1 & (readmission_reason!="U071"&readmission_reason!="U072") 
+(29,011 real changes made)
+
+. 
+. replace exitdate = exitdate+0.5 if exitdate==entrydate
+(574 real changes made)
+
+. stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
+
+     failure event:  readmission != 0 & readmission < .
+obs. time interval:  (origin, exitdate]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    164,093  total observations
+         61  observations end on or before enter()
+------------------------------------------------------------------------------
+    164,032  observations remaining, representing
+     30,968  failures in single-record/single-failure data
+   24693403  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       333
+
+. 
+. 
+. 
+. **CLASSIFY READMISSIONS
+. gen icd10_3 = substr(readmission_reason,1,3) if (group==1|group==2|group==3) & (readmission==1|readmission==2)
+(151,221 missing values generated)
+
+. replace icd10_3 = substr(admitted_any_reason,1,3) if group==4 & (readmission==1|readmission==2)
+(15,689 real changes made)
+
+. 
+. 
+. gen readm_reason_broad = 1 if substr(icd10_3,1,1)=="A"
+(163,287 missing values generated)
+
+. replace readm_reason_broad = 2 if substr(icd10_3,1,1)=="C"
+(2,138 real changes made)
+
+. replace readm_reason_broad = 3 if substr(icd10_3,1,1)=="E"
+(576 real changes made)
+
+. replace readm_reason_broad = 4 if substr(icd10_3,1,1)=="F" ///
+>   |(substr(icd10_3,1,1)=="X" ///
+>   & (real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84)) ///
+>   |icd10_3=="G30" 
+(329 real changes made)
+
+. replace readm_reason_broad = 5 if substr(icd10_3,1,1)=="G" & icd10_3!="G30" 
+(534 real changes made)
+
+. replace readm_reason_broad = 6 if substr(icd10_3,1,1)=="I"
+(2,868 real changes made)
+
+. replace readm_reason_broad = 7 if (substr(icd10_3,1,1)=="J" & real(substr(icd10_3,2,2))>=09 & real(substr(icd10_3,2,2))<=22)|(icd10_3=="U071"|icd10_3=="U072")
+(2,007 real changes made)
+
+. replace readm_reason_broad = 8 if substr(icd10_3,1,1)=="J" & real(substr(icd10_3,2,2))>=23
+(1,618 real changes made)
+
+. replace readm_reason_broad = 9 if substr(icd10_3,1,1)=="K"
+(3,431 real changes made)
+
+. replace readm_reason_broad = 10 if substr(icd10_3,1,1)=="M"
+(2,125 real changes made)
+
+. replace readm_reason_broad = 11 if substr(icd10_3,1,1)=="N"
+(1,643 real changes made)
+
+. replace readm_reason_broad = 12 if substr(icd10_3,1,1)=="S" ///
+>  |substr(icd10_3,1,1)=="T" ///
+>  |substr(icd10_3,1,1)=="V" ///
+>  |substr(icd10_3,1,1)=="W" ///
+>  |(substr(icd10_3,1,1)=="X" ///
+>   & !(real(substr(icd10_3,2,2))>=60 & real(substr(icd10_3,2,2))<=84))
+(1,753 real changes made)
+
+. replace readm_reason_broad = 13 if readm_reason_broad==. & icd!=""
+(8,733 real changes made)
+
+. replace readm_reason_broad = 14 if readmission==3
+(1,505 real changes made)
+
+. replace readm_reason_broad = 0 if readmission==0
+(133,089 real changes made)
+
+. 
+. label define readm_reason_broadlab ///
+> 0 "None"        ///
+> 1 "Other infections (A)" ///
+> 2 "Cancers (C)" ///
+> 3 "Endocrine, nutritional and metabolic (E)" ///
+> 4 "Mental health and cognitive (F, G30, X60-84)" ///
+> 5 "Nervous system (G ex G30)" ///
+> 6 "Circulatory (I)" ///
+> 7 "COVID/Influenza/Pneumonia/LRTI (J09-22, U07.1/2)" ///
+> 71 "COVID-19 (U07.1/2)" ///
+> 8 "Respiratory (J23-99)" ///
+> 9 "Digestive (K)" ///
+> 10 "Musculoskeletal (M)" /// 
+> 11 "Genitourinary (N)" ///
+> 12 "External causes (S-Y exc X60-84)" ///
+> 13 "Other" ///
+> 14 "Any cause death", modify
+
+.  label values readm_reason_broad readm_reason_broadlab
+
+. 
+. gen readm_reason_specific = readm_reason_broad
+(938 missing values generated)
+
+. /*label define readm_reason_specificlab 0 "None" 1 "Circulatory" 2 "Cancers" ///
+>  3 "Respiratory" 4 "Digestive" 5 "Mental health" ///
+>  6 "Nervous system" 7 "Genitourinary" 8 "Endocrine, nutritional and metabolic" ///
+>  9 "External causes" 10 "COVID" 11 "Infections" 12 "Musculoskeletal" 13 "Other" 14 "Any cause death", modify
+>  label values readm_reason_specific readm_reason_specificlab
+> */
+. label copy readm_reason_broadlab readm_reason_specificlab
+
+. label values readm_reason_specific readm_reason_specificlab
+
+. 
+. cap prog drop icdgroup
+
+. prog define icdgroup
+  1. syntax, range(string) name(string)
+  2. noi di "`range'"
+  3. local keyletter = substr("`range'",1,1)
+  4. local startnum = real(substr("`range'",2,2))
+  5. local endnum = real(substr("`range'",6,2))
+  6. noi di "`keyletter'"
+  7. noi di "`name'"
+  8. noi di "`startnum'"
+  9. noi di "`endnum'"
+ 10. replace readm_reason_specific = 100*readm_reason_specific + `startnum' if substr(icd10_3,1,1)=="`keyletter'" & real(substr(icd10_3,2,2))>=`startnum'&real(substr(icd10_3,2,2))<=`endnum'
+ 11. sum readm_reason_specific if substr(icd10_3,1,1)=="`keyletter'" & real(substr(icd10_3,2,2))>=`startnum'&real(substr(icd10_3,2,2))<=`endnum'
+ 12. local newnum = r(mean)
+ 13. if `newnum'!=. label define readm_reason_specificlab `newnum' "`name'", modify 
+ 14. end
+
+. 
+. *Circulatory diseases
+. label define readm_reason_specificlab 1 "Other circulatory", modify
+
+. icdgroup, range(I11-I11) name("Hypertensive heart disease")
+I11-I11
+I
+Hypertensive heart disease
+11
+11
+(0 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |          0
+
+. icdgroup, range(I20-I25) name("Ischaemic heart disease")
+I20-I25
+I
+Ischaemic heart disease
+20
+25
+(621 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        621         620           0        620        620
+
+. icdgroup, range(I26-I26) name("Pulmonary embolism")
+I26-I26
+I
+Pulmonary embolism
+26
+26
+(152 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        152         626           0        626        626
+
+. icdgroup, range(I48-I48) name("Atrial fibrillation/flutter")
+I48-I48
+I
+Atrial fibrillation/flutter
+48
+48
+(319 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        319         648           0        648        648
+
+. icdgroup, range(I50-I50) name("Heart failure")
+I50-I50
+I
+Heart failure
+50
+50
+(514 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        514         650           0        650        650
+
+. icdgroup, range(I60-I69) name("Cerebrovascular disease")
+I60-I69
+I
+Cerebrovascular disease
+60
+69
+(392 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        392         660           0        660        660
+
+. icdgroup, range(I71-I71) name("Aortic aneurysm")
+I71-I71
+I
+Aortic aneurysm
+71
+71
+(30 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         30         671           0        671        671
+
+. icdgroup, range(I73-I73) name("Other peripheral vascular disease")
+I73-I73
+I
+Other peripheral vascular disease
+73
+73
+(17 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         17         673           0        673        673
+
+. icdgroup, range(I80-I80) name("Phlebitis/thrombophlebitis")
+I80-I80
+I
+Phlebitis/thrombophlebitis
+80
+80
+(84 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         84         680           0        680        680
+
+. 
+. *Cancers
+. label define readm_reason_specificlab 2 "Other cancer", modify
+
+. icdgroup, range(C15-C15) name("Oesophageal cancer")
+C15-C15
+C
+Oesophageal cancer
+15
+15
+(44 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         44         215           0        215        215
+
+. icdgroup, range(C16-C16) name("Stomach cancer")
+C16-C16
+C
+Stomach cancer
+16
+16
+(26 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         26         216           0        216        216
+
+. icdgroup, range(C18-C21) name("Colorectal cancer")
+C18-C21
+C
+Colorectal cancer
+18
+21
+(155 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        155         218           0        218        218
+
+. icdgroup, range(C22-C22) name("Liver cancer")
+C22-C22
+C
+Liver cancer
+22
+22
+(20 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         20         222           0        222        222
+
+. icdgroup, range(C25-C25) name("Pancreatic cancer")
+C25-C25
+C
+Pancreatic cancer
+25
+25
+(22 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         22         225           0        225        225
+
+. icdgroup, range(C34-C34) name("Lung cancer")
+C34-C34
+C
+Lung cancer
+34
+34
+(177 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        177         234           0        234        234
+
+. icdgroup, range(C43-C43) name("Malignant melanoma")
+C43-C43
+C
+Malignant melanoma
+43
+43
+(33 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         33         243           0        243        243
+
+. icdgroup, range(C45-C45) name("Mesothelioma")
+C45-C45
+C
+Mesothelioma
+45
+45
+(12 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         12         245           0        245        245
+
+. icdgroup, range(C50-C50) name("Breast cancer")
+C50-C50
+C
+Breast cancer
+50
+50
+(163 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        163         250           0        250        250
+
+. icdgroup, range(C56-C56) name("Ovarian cancer")
+C56-C56
+C
+Ovarian cancer
+56
+56
+(36 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         36         256           0        256        256
+
+. icdgroup, range(C61-C61) name("Prostate cancer")
+C61-C61
+C
+Prostate cancer
+61
+61
+(126 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        126         261           0        261        261
+
+. icdgroup, range(C64-C64) name("Kidney cancer")
+C64-C64
+C
+Kidney cancer
+64
+64
+(34 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         34         264           0        264        264
+
+. icdgroup, range(C67-C67) name("Bladder cancer")
+C67-C67
+C
+Bladder cancer
+67
+67
+(108 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        108         267           0        267        267
+
+. icdgroup, range(C71-C72) name("Brain/CNS cancer")
+C71-C72
+C
+Brain/CNS cancer
+71
+72
+(16 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         16         271           0        271        271
+
+. icdgroup, range(C80-C80) name("Cancer unspecified")
+C80-C80
+C
+Cancer unspecified
+80
+80
+(16 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         16         280           0        280        280
+
+. icdgroup, range(C81-C96) name("Haematological cancer")
+C81-C96
+C
+Haematological cancer
+81
+96
+(426 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        426         281           0        281        281
+
+. 
+. icdgroup, range(F00-F01) name("Dementia and alzheimers")
+F00-F01
+F
+Dementia and alzheimers
+0
+1
+(21 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         21         400           0        400        400
+
+. icdgroup, range(F03-F03) name("Dementia and alzheimers")
+F03-F03
+F
+Dementia and alzheimers
+3
+3
+(28 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         28         403           0        403        403
+
+. icdgroup, range(G30-G30) name("Dementia and alzheimers")
+G30-G30
+G
+Dementia and alzheimers
+30
+30
+(32 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         32         430           0        430        430
+
+. replace readm_reason_specific = 503 if readm_reason_specific==500|readm_reason_specific==501|readm_reason_specific==630
+(0 real changes made)
+
+. icdgroup, range(X60-X84) name("Suicide/intentional self-harm")
+X60-X84
+X
+Suicide/intentional self-harm
+60
+84
+(0 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |          0
+
+. icdgroup, range(J40-J47) name("Chronic lower respiratory disease")
+J40-J47
+J
+Chronic lower respiratory disease
+40
+47
+(988 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |        988         840           0        840        840
+
+. icdgroup, range(J09-J18) name("Influenza and pneumonia")
+J09-J18
+J
+Influenza and pneumonia
+9
+18
+(1,574 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |      1,574         709           0        709        709
+
+. icdgroup, range(K70-K77) name("Liver disease")
+K70-K77
+K
+Liver disease
+70
+77
+(69 real changes made)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+readm_reas~c |         69         970           0        970        970
+
+. 
+. replace readm_reason_specific = 100*readm_reason_specific if readm_reason_specific<100
+(23,811 real changes made)
+
+. 
+. label define readm_reason_specificlab 100 "Other circulatory" 200 "Other cancers" ///
+>  300 "Endocrine, nutritional and metabolic" 400 "Other mental and behavioural" 500 "Other nervous system" ///
+>  600 "Other circulatory" 700 "Other LRTI" 800 "Other respiratory" ///
+>  900 "Other digestive" 1000 "Musculoskeletal" 1100 "Genitourinary" 1200 "External causes" 1300 "Other" 1400 "Any cause death", modify
+
+. 
+. gen exposed=(group==1)
+
+.  
+. label define exposedlab 0 "Control" 1 "Exposed (prior COVID hospitalisation)"
+
+. label values exposed exposedlab
+
+. 
+. label define grouplab 1 "Hospitalised COVID-19" 2 "Hospitalised flu 2017_19" 3 "Hospitalised pneumonia 2019" 4 "General pop 2019" 
+
+. label values group grouplab
+
+. 
+. gen monthentry = month(entrydate)
+
+. encode region, gen(region_real)
+
+. 
+. stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
+
+     failure event:  readmission != 0 & readmission < .
+obs. time interval:  (origin, exitdate]
+ enter on or after:  time entrydate
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time entrydate
+
+------------------------------------------------------------------------------
+    164,093  total observations
+         61  observations end on or before enter()
+------------------------------------------------------------------------------
+    164,032  observations remaining, representing
+     30,968  failures in single-record/single-failure data
+   24693403  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       333
+
+. 
+. *****PREP FOR CAUSE SPECIFIC ANALYSIS
+. *include covid with flu/pneum/lrti
+. replace admitted_respiratorylrti_date = min(admitted_respiratorylrti_date, admitted_covid_date)
+(2,745 real changes made)
+
+. replace admitted_respiratorylrti_reason = admitted_covid_reason if admitted_respiratorylrti_date==admitted_covid_date
+(2,745 real changes made)
+
+. 
+. *classify cause of death
+. gen d_icd10_3 = substr(died_cause_ons,1,3) 
+(152,228 missing values generated)
+
+. 
+. gen died_reason = 1 if substr(d_icd10_3,1,1)=="A"
+(164,032 missing values generated)
+
+. replace died_reason = 2 if substr(d_icd10_3,1,1)=="C"
+(2,506 real changes made)
+
+. replace died_reason = 3 if substr(d_icd10_3,1,1)=="E"
+(222 real changes made)
+
+. replace died_reason = 4 if substr(d_icd10_3,1,1)=="F" ///
+>   |(substr(d_icd10_3,1,1)=="X" ///
+>   & (real(substr(d_icd10_3,2,2))>=60 & real(substr(d_icd10_3,2,2))<=84))
+(1,077 real changes made)
+
+. replace died_reason = 5 if substr(d_icd10_3,1,1)=="G"
+(787 real changes made)
+
+. replace died_reason = 6 if substr(d_icd10_3,1,1)=="I"
+(2,558 real changes made)
+
+. replace died_reason = 7 if (substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=09 & real(substr(d_icd10_3,2,2))<=22)|(substr(died_cause_ons,1,4)=="U071"|substr(died_cause_ons,1,4)=="U072")
+(2,153 real changes made)
+
+. replace died_reason = 8 if substr(d_icd10_3,1,1)=="J" & real(substr(d_icd10_3,2,2))>=23
+(1,014 real changes made)
+
+. replace died_reason = 9 if substr(d_icd10_3,1,1)=="K"
+(429 real changes made)
+
+. replace died_reason = 10 if substr(d_icd10_3,1,1)=="M"
+(96 real changes made)
+
+. replace died_reason = 11 if substr(d_icd10_3,1,1)=="N"
+(213 real changes made)
+
+. replace died_reason = 12 if substr(d_icd10_3,1,1)=="S" ///
+>  |substr(d_icd10_3,1,1)=="T" ///
+>  |substr(d_icd10_3,1,1)=="V" ///
+>  |substr(d_icd10_3,1,1)=="W" ///
+>  |(substr(d_icd10_3,1,1)=="X" ///
+>   & !(real(substr(d_icd10_3,2,2))>=60 & real(substr(d_icd10_3,2,2))<=84))
+(166 real changes made)
+
+. replace died_reason = 13 if died_reason==. & d_icd!=""
+(583 real changes made)
+
+. 
+. label copy readm_reason_broadlab died_reasonlab
+
+. label values died_reason died_reasonlab
+
+. 
+. 
+. foreach csoutcome of any circulatory cancer_ex_nmsc respiratory respiratorylrti digestive mentalhealth nervoussystem genitourinary endo_nutr_metabol external musculoskeletal  otherinfections {
+  2. 
+.         
+.         if "`csoutcome'"=="otherinfections" scalar thisreason = 1
+  3.         if "`csoutcome'"=="cancer_ex_nmsc" scalar thisreason = 2 
+  4.         if "`csoutcome'"=="endo_nutr_metabol" scalar thisreason = 3 
+  5.         if "`csoutcome'"=="mentalhealth" scalar thisreason = 4 
+  6.         if "`csoutcome'"=="nervoussystem" scalar thisreason = 5 
+  7.         if "`csoutcome'"=="circulatory" scalar thisreason = 6 
+  8.         if "`csoutcome'"=="respiratorylrti" scalar thisreason = 7 
+  9.         if "`csoutcome'"=="respiratory" scalar thisreason = 8  
+ 10.         if "`csoutcome'"=="digestive" scalar thisreason = 9 
+ 11.         if "`csoutcome'"=="musculoskeletal" scalar thisreason = 10 
+ 12.         if "`csoutcome'"=="genitourinary" scalar thisreason = 11 
+ 13.         if "`csoutcome'"=="external" scalar thisreason = 12
+ 14. 
+. local thisreason = thisreason
+ 15. 
+. *get exit dates for cause specific
+. gen CSexit_`csoutcome' = admitted_`csoutcome'_date
+ 16. replace CSexit_`csoutcome' = died_date_ons if died_date_ons<=CSexit_`csoutcome'
+ 17. replace CSexit_`csoutcome' = censordate if censordate<CSexit_`csoutcome'
+ 18. format %d CSexit_`csoutcome'
+ 19. gen CSfail_`csoutcome' = (CSexit_`csoutcome'==admitted_`csoutcome'_date)|(CSexit_`csoutcome'==died_date_ons & died_reason==thisreason)
+ 20. gen CSfaildiedonly_`csoutcome' = (CSexit_`csoutcome'==died_date_ons & died_reason==thisreason)
+ 21. 
+. replace CSexit_`csoutcome' = CSexit_`csoutcome'+0.5 if CSexit_`csoutcome'==entrydate
+ 22. }
+(155,161 missing values generated)
+(9,698 real changes made)
+(156,612 real changes made)
+(109 real changes made)
+(159,693 missing values generated)
+(10,302 real changes made)
+(158,335 real changes made)
+(108 real changes made)
+(159,613 missing values generated)
+(10,478 real changes made)
+(158,007 real changes made)
+(94 real changes made)
+(155,048 missing values generated)
+(8,659 real changes made)
+(155,879 real changes made)
+(175 real changes made)
+(154,154 missing values generated)
+(10,574 real changes made)
+(155,950 real changes made)
+(107 real changes made)
+(162,960 missing values generated)
+(11,434 real changes made)
+(159,872 real changes made)
+(62 real changes made)
+(162,458 missing values generated)
+(11,645 real changes made)
+(159,561 real changes made)
+(69 real changes made)
+(158,702 missing values generated)
+(10,644 real changes made)
+(157,896 real changes made)
+(91 real changes made)
+(162,486 missing values generated)
+(11,466 real changes made)
+(159,597 real changes made)
+(72 real changes made)
+(157,530 missing values generated)
+(10,325 real changes made)
+(157,702 real changes made)
+(85 real changes made)
+(158,256 missing values generated)
+(11,234 real changes made)
+(157,540 real changes made)
+(80 real changes made)
+(160,853 missing values generated)
+(10,656 real changes made)
+(158,977 real changes made)
+(73 real changes made)
+
+. 
+. save analysis/cr_append_process_data, replace
+file analysis/cr_append_process_data.dta saved
+
+. 
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/cr_append_process_data.log
+  log type:  text
+ closed on:  12 May 2021, 10:27:57
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
--------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- opened on:   6 May 2021, 16:18:33
+ opened on:  12 May 2021, 10:52:38
 
 .         
 . use analysis/cr_append_process_data, clear
@@ -15,8 +15,7 @@
 
 . 
 . 
-. stset CSexit_mentalhealth, fail(CSfail_mentalhealth) origin(entrydate) enter(
-> entrydate) 
+. stset CSexit_mentalhealth, fail(CSfail_mentalhealth) origin(entrydate) enter(entrydate) 
 
      failure event:  CSfail_mentalhealth != 0 & CSfail_mentalhealth < .
 obs. time interval:  (origin, CSexit_mentalhealth]
@@ -57,43 +56,37 @@ obs. time interval:  (origin, CSexit_mentalhealth]
 . scalar fupflu = r(mean)*r(N)
 
 . 
-. cou if CSfail_mentalhealth==1 & _d==1
+. safecount if CSfail_mentalhealth==1 & _d==1
   316
 
-. cou if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth ==1 & _d==1
+. safecount if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth ==1 & _d==1
   137
 
 . 
-. gen mentalhealthicd3 = substr(admitted_mentalhealth_reason, 1, 3) if CSfail_m
-> entalhealth==1 & CSfaildiedonly_mentalhealth!=1 & _d==1
+. gen mentalhealthicd3 = substr(admitted_mentalhealth_reason, 1, 3) if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth!=1 & _d==1
 (31,183 missing values generated)
 
-. replace mentalhealthicd3 = substr(died_cause_ons, 1, 3) if CSfail_mentalhealt
-> h==1 & CSfaildiedonly_mentalhealth==1 & _d==1
+. replace mentalhealthicd3 = substr(died_cause_ons, 1, 3) if CSfail_mentalhealth==1 & CSfaildiedonly_mentalhealth==1 & _d==1
 (137 real changes made)
 
 . gen icdnumeric = real(substr(mentalhealthicd3,2,2))
 (31,046 missing values generated)
 
 . 
-. gen mentalhealthgrouped = "Dementia (F00-F03, G30)" if icdnumer>=0 & icdnumer
-> <=3
+. gen mentalhealthgrouped = "Dementia (F00-F03, G30)" if icdnumer>=0 & icdnumer<=3
 (31,201 missing values generated)
 
 . replace mentalhealthgrouped = "Delirium (F05)" if icdnumeric==5
 (105 real changes made)
 
-. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders
->  (F20-29)" if icdnumeric>=20 & icdnumeric<=29
+. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders (F20-29)" if icdnumeric>=20 & icdnumeric<=29
 variable mentalhealthgrouped was str23 now str55
 (6 real changes made)
 
-. replace mentalhealthgrouped = "Mood disorders (F30-39)" if icdnumeric>=30 & i
-> cdnumeric<=39
+. replace mentalhealthgrouped = "Mood disorders (F30-39)" if icdnumeric>=30 & icdnumeric<=39
 (23 real changes made)
 
-. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (
-> F40-48)" if icdnumeric>=40 & icdnumeric<=49
+. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (F40-48)" if icdnumeric>=40 & icdnumeric<=49
 (16 real changes made)
 
 . 
@@ -105,11 +98,8 @@ variable mentalhealthgrouped was str23 now str55
 > 
 > 
 > stcox exposed age male i.region_real if group==1|group==2
-> stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_no
-> miss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i
-> .diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2
->  chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra
-> _sle_psoriasis other_immunosuppression if group==1|group==2 
+> stcox exposed age male i.region_real i.ethnicity i.imd i.obese4cat i.smoke_nomiss htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduce
+> d_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if group==1|group==2 
 > */
 . /*
 > gen fail2 = CSfail_mentalhealth
@@ -120,25 +110,22 @@ variable mentalhealthgrouped was str23 now str55
 > stcox ib2.group age male dementia
 > stcox ib2.group age male if dementia==0
 > */
-. foreach run of any dem demwdem demexdem demnocare demcare del sch moo neu all
-> {
+. foreach run of any dem demwdem demexdem demnocare demcare del sch moo neu all{
   2. preserve
   3. local failtype = substr("`run'",1,3)
   4. if "`run'"=="demwdem" keep if dementia==1
   5. if "`run'"=="demexdem" drop if dementia==1
   6. if "`run'"=="demnocare" drop if carehomebin==1
   7. if "`run'"=="demcare" keep if carehomebin==1
-  8. if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-
-> F99)" if icdnumeric>=5 & icdnumeric<.
+  8. if "`run'"=="all" replace mentalhealthgrouped = "All except dementia (F05-F99)" if icdnumeric>=5 & icdnumeric<.
   9. tempfile temp`run'
  10. gen fail`failtype' = CSfail_mentalhealth
- 11. replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`fa
-> iltype'"
+ 11. replace fail`failtype' = 0 if substr(lower(mentalhealthgrouped),1,3)!="`failtype'"
  12. streset, fail(fail`failtype') scale(365.25)
- 13. cou if _d==1 &CSfaildiedonly_mentalhealth==1
+ 13. safecount if _d==1 &CSfaildiedonly_mentalhealth==1
  14. di "N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = " r(N)
  15. strate group, per(1000) output(`temp`run'')
- 16. tab _d group
+ 16. safetab _d group
  17. 
 . stcox ib2.group age male i.region_real
  18. lincom 1.group, hr
@@ -151,20 +138,16 @@ variable mentalhealthgrouped was str23 now str55
  24. test 1.group#1.dementia
  25. local pint_dem = string(r(p), "%4.2f")
  26. lincom 1.group, hr
- 27. local hrciexdem = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.
-> 2f") + "-" + string(r(ub), "%4.2f") + ")"
+ 27. local hrciexdem = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2f") + "-" + string(r(ub), "%4.2f") + ")"
  28. lincom 1.group + 1.group#1.dementia, hr
- 29. local hrciwdem = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2
-> f") + "-" + string(r(ub), "%4.2f") + ")"
+ 29. local hrciwdem = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2f") + "-" + string(r(ub), "%4.2f") + ")"
  30. stcox ib2.group##i.carehomebin age male i.region_real
  31. test 1.group#1.carehomebin
  32. local pint_care = string(r(p), "%4.2f")
  33. lincom 1.group, hr
- 34. local hrcinocare = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4
-> .2f") + "-" + string(r(ub), "%4.2f") + ")"
+ 34. local hrcinocare = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2f") + "-" + string(r(ub), "%4.2f") + ")"
  35. lincom 1.group + 1.group#1.carehomebin, hr
- 36. local hrcicare = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2
-> f") + "-" + string(r(ub), "%4.2f") + ")"
+ 36. local hrcicare = string(r(estimate), "%4.2f") + " (" + string(r(lb), "%4.2f") + "-" + string(r(ub), "%4.2f") + ")"
  37. }
  38. 
 . restore
@@ -206,8 +189,8 @@ N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 129
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(31293 records included in the analysis)
+Estimated failure rates
+Number of records  =       31293
 
   +-----------------------------------------------------------------------+
   |                    group     D        Y      Rate     Lower     Upper |
@@ -215,6 +198,8 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   134   9.0895   14.7423   12.4460   17.4621 |
   | Hospitalised flu 2017_19    27   5.1911    5.2012    3.5669    7.5844 |
   +-----------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
       1 if |
@@ -248,24 +233,24 @@ Time at risk    =  14276.87474
                                                 LR chi2(11)      =      348.53
 Log likelihood  =   -1425.8278                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   2.318659   .5344364     3.65   0.000     1.475843    3.642784
-         age |   1.122711   .0095226    13.65   0.000     1.104202    1.141531
-        male |   .9239409   .1484271    -0.49   0.622     .6743764    1.265861
-             |
- region_real |
-East Midl..  |   .8751369      .2191    -0.53   0.594     .5357578    1.429498
-     London  |   .6452835    .242858    -1.16   0.244     .3085983    1.349297
- North East  |   1.487711   .4225522     1.40   0.162     .8526154    2.595876
- North West  |   .7477157   .2330212    -0.93   0.351     .4059424    1.377236
- South East  |   .7282645   .3033722    -0.76   0.447     .3218883    1.647681
- South West  |     .33194   .1605682    -2.28   0.023     .1286207    .8566599
-West Midl..  |   .8887214   .3345829    -0.31   0.754     .4249209     1.85876
-Yorkshire..  |   .9615541   .2390294    -0.16   0.875      .590713    1.565204
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   2.318659   .5344364     3.65   0.000     1.475843    3.642784
+                      age |   1.122711   .0095226    13.65   0.000     1.104202    1.141531
+                     male |   .9239409   .1484271    -0.49   0.622     .6743764    1.265861
+                          |
+              region_real |
+           East Midlands  |   .8751369      .2191    -0.53   0.594     .5357578    1.429498
+                  London  |   .6452835    .242858    -1.16   0.244     .3085983    1.349297
+              North East  |   1.487711   .4225522     1.40   0.162     .8526154    2.595876
+              North West  |   .7477157   .2330212    -0.93   0.351     .4059424    1.377236
+              South East  |   .7282645   .3033722    -0.76   0.447     .3218883    1.647681
+              South West  |     .33194   .1605682    -2.28   0.023     .1286207    .8566599
+           West Midlands  |   .8887214   .3345829    -0.31   0.754     .4249209     1.85876
+Yorkshire and The Humber  |   .9615541   .2390294    -0.16   0.875      .590713    1.565204
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -298,31 +283,29 @@ Time at risk    =  14276.87474
                                                 LR chi2(13)      =      586.67
 Log likelihood  =   -1306.7596                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.232761    .423231     0.61   0.542     .6289912    2.416089
-  1.dementia |   8.147154   3.173401     5.39   0.000     3.797118    17.48066
-             |
-       group#|
-    dementia |
-Hospitali.. #|
-          1  |   2.002982   .8726351     1.59   0.111     .8527775    4.704552
-             |
-         age |   1.085924   .0102246     8.75   0.000     1.066068     1.10615
-        male |   1.134259   .1838981     0.78   0.437     .8254793     1.55854
-             |
- region_real |
-East Midl..  |   .9033235   .2262083    -0.41   0.685     .5529518    1.475704
-     London  |    .642535    .241713    -1.18   0.240     .3073875    1.343097
- North East  |   1.482968   .4211763     1.39   0.165     .8499294    2.587502
- North West  |   .7741962   .2414191    -0.82   0.412     .4201644    1.426537
- South East  |   .7783236   .3242783    -0.60   0.547     .3439682    1.761173
- South West  |   .3849995   .1864807    -1.97   0.049     .1489934    .9948402
-West Midl..  |   .9710457   .3655736    -0.08   0.938     .4642847     2.03093
-Yorkshire..  |   1.032863   .2568565     0.13   0.897     .6343993    1.681601
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.232761    .423231     0.61   0.542     .6289912    2.416089
+               1.dementia |   8.147154   3.173401     5.39   0.000     3.797118    17.48066
+                          |
+           group#dementia |
+ Hospitalised COVID-19#1  |   2.002982   .8726351     1.59   0.111     .8527775    4.704552
+                          |
+                      age |   1.085924   .0102246     8.75   0.000     1.066068     1.10615
+                     male |   1.134259   .1838981     0.78   0.437     .8254793     1.55854
+                          |
+              region_real |
+           East Midlands  |   .9033235   .2262083    -0.41   0.685     .5529518    1.475704
+                  London  |    .642535    .241713    -1.18   0.240     .3073875    1.343097
+              North East  |   1.482968   .4211763     1.39   0.165     .8499294    2.587502
+              North West  |   .7741962   .2414191    -0.82   0.412     .4201644    1.426537
+              South East  |   .7783236   .3242783    -0.60   0.547     .3439682    1.761173
+              South West  |   .3849995   .1864807    -1.97   0.049     .1489934    .9948402
+           West Midlands  |   .9710457   .3655736    -0.08   0.938     .4642847     2.03093
+Yorkshire and The Humber  |   1.032863   .2568565     0.13   0.897     .6343993    1.681601
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group#1.dementia = 0
 
@@ -368,31 +351,29 @@ Time at risk    =  14276.87474
                                                 LR chi2(13)      =      417.48
 Log likelihood  =   -1391.3511                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.795255   .4657101     2.26   0.024     1.079728    2.984955
-1.carehome~n |   3.468548   1.732249     2.49   0.013     1.303299    9.231057
-             |
-       group#|
- carehomebin |
-Hospitali.. #|
-          1  |   1.406496   .7402077     0.65   0.517     .5013833    3.945545
-             |
-         age |   1.105817   .0095086    11.70   0.000     1.087337    1.124612
-        male |   1.032044   .1671178     0.19   0.846     .7513872     1.41753
-             |
- region_real |
-East Midl..  |   .8722128   .2185937    -0.55   0.585     .5336968    1.425445
-     London  |   .8250967   .3125908    -0.51   0.612     .3926667    1.733746
- North East  |   1.565321   .4446891     1.58   0.115     .8969889    2.731616
- North West  |   .7317338   .2280006    -1.00   0.316     .3973083    1.347655
- South East  |   .7806299   .3254839    -0.59   0.553     .3447755    1.767478
- South West  |   .3585712   .1735752    -2.12   0.034      .138845    .9260204
-West Midl..  |    .888929   .3346334    -0.31   0.754     .4250461     1.85908
-Yorkshire..  |   .9744036   .2422784    -0.10   0.917     .5985409    1.586295
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.795255   .4657101     2.26   0.024     1.079728    2.984955
+            1.carehomebin |   3.468548   1.732249     2.49   0.013     1.303299    9.231057
+                          |
+        group#carehomebin |
+ Hospitalised COVID-19#1  |   1.406496   .7402077     0.65   0.517     .5013833    3.945545
+                          |
+                      age |   1.105817   .0095086    11.70   0.000     1.087337    1.124612
+                     male |   1.032044   .1671178     0.19   0.846     .7513872     1.41753
+                          |
+              region_real |
+           East Midlands  |   .8722128   .2185937    -0.55   0.585     .5336968    1.425445
+                  London  |   .8250967   .3125908    -0.51   0.612     .3926667    1.733746
+              North East  |   1.565321   .4446891     1.58   0.115     .8969889    2.731616
+              North West  |   .7317338   .2280006    -1.00   0.316     .3973083    1.347655
+              South East  |   .7806299   .3254839    -0.59   0.553     .3447755    1.767478
+              South West  |   .3585712   .1735752    -2.12   0.034      .138845    .9260204
+           West Midlands  |    .888929   .3346334    -0.31   0.754     .4250461     1.85908
+Yorkshire and The Humber  |   .9744036   .2422784    -0.10   0.917     .5985409    1.586295
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group#1.carehomebin = 0
 
@@ -417,7 +398,7 @@ Yorkshire..  |   .9744036   .2422784    -0.10   0.917     .5985409    1.586295
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.000002 saved
+file E:\STATATMP\ST_ab24_000002.tmp saved
 (29,183 observations deleted)
 (50 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
@@ -448,8 +429,8 @@ N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 99
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(2160 records included in the analysis)
+Estimated failure rates
+Number of records  =       2160
 
   +-----------------------------------------------------------------------+
   |                    group     D        Y      Rate     Lower     Upper |
@@ -457,6 +438,8 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   102   0.6069   168.074   138.427   204.072 |
   | Hospitalised flu 2017_19    14   0.2344    59.725    35.372   100.843 |
   +-----------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
       1 if |
@@ -490,24 +473,24 @@ Time at risk    =   841.284052
                                                 LR chi2(11)      =       38.98
 Log likelihood  =   -816.61133                  Prob > chi2      =      0.0001
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   2.230868   .6701127     2.67   0.008     1.238192    4.019384
-         age |   1.045973   .0131865     3.57   0.000     1.020444     1.07214
-        male |   1.191608   .2275725     0.92   0.359     .8195427    1.732588
-             |
- region_real |
-East Midl..  |   .8811766    .249814    -0.45   0.655       .50553    1.535957
-     London  |   .4733541   .2312039    -1.53   0.126     .1817303    1.232949
- North East  |   1.447007    .461206     1.16   0.246     .7747582    2.702558
- North West  |    .727989   .2623715    -0.88   0.378     .3592087    1.475376
- South East  |   .2939199   .2158022    -1.67   0.095     .0697042    1.239364
- South West  |   .3462826   .2126147    -1.73   0.084     .1039441    1.153617
-West Midl..  |   .5603046   .3011691    -1.08   0.281     .1953868    1.606768
-Yorkshire..  |   1.034739   .2906463     0.12   0.903     .5966757    1.794418
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   2.230868   .6701127     2.67   0.008     1.238192    4.019384
+                      age |   1.045973   .0131865     3.57   0.000     1.020444     1.07214
+                     male |   1.191608   .2275725     0.92   0.359     .8195427    1.732588
+                          |
+              region_real |
+           East Midlands  |   .8811766    .249814    -0.45   0.655       .50553    1.535957
+                  London  |   .4733541   .2312039    -1.53   0.126     .1817303    1.232949
+              North East  |   1.447007    .461206     1.16   0.246     .7747582    2.702558
+              North West  |    .727989   .2623715    -0.88   0.378     .3592087    1.475376
+              South East  |   .2939199   .2158022    -1.67   0.095     .0697042    1.239364
+              South West  |   .3462826   .2126147    -1.73   0.084     .1039441    1.153617
+           West Midlands  |   .5603046   .3011691    -1.08   0.281     .1953868    1.606768
+Yorkshire and The Humber  |   1.034739   .2906463     0.12   0.903     .5966757    1.794418
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -519,7 +502,7 @@ Yorkshire..  |   1.034739   .2906463     0.12   0.903     .5966757    1.794418
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.000005 saved
+file E:\STATATMP\ST_ab24_000005.tmp saved
 (2,179 observations deleted)
 (134 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
@@ -550,8 +533,8 @@ N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 30
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(29133 records included in the analysis)
+Estimated failure rates
+Number of records  =       29133
 
   +-------------------------------------------------------------------+
   |                    group    D        Y     Rate    Lower    Upper |
@@ -559,6 +542,8 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   32   8.4826   3.7724   2.6678   5.3345 |
   | Hospitalised flu 2017_19   13   4.9567   2.6227   1.5229   4.5168 |
   +-------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
       1 if |
@@ -593,24 +578,24 @@ Time at risk    =  13435.59069
                                                 LR chi2(11)      =      114.30
 Log likelihood  =   -381.29213                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.462501   .5456011     1.02   0.308     .7039575    3.038405
-         age |   1.137566    .018665     7.86   0.000     1.101565    1.174743
-        male |   .8150469   .2480943    -0.67   0.502     .4488313    1.480069
-             |
- region_real |
-East Midl..  |   .9254466   .4950047    -0.14   0.885     .3243837    2.640242
-     London  |   1.346026   .8447006     0.47   0.636     .3934418    4.604964
- North East  |   1.339608   .8416805     0.47   0.642      .390989    4.589768
- North West  |   .9527467   .5974655    -0.08   0.938     .2787345    3.256598
- South East  |   2.233266   1.311765     1.37   0.171     .7062623    7.061793
- South West  |   .4791825   .3881094    -0.91   0.364     .0979666    2.343817
-West Midl..  |   2.470925   1.451202     1.54   0.124     .7815185    7.812317
-Yorkshire..  |   1.001826   .5362671     0.00   0.997     .3508753    2.860433
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.462501   .5456011     1.02   0.308     .7039575    3.038405
+                      age |   1.137566    .018665     7.86   0.000     1.101565    1.174743
+                     male |   .8150469   .2480943    -0.67   0.502     .4488313    1.480069
+                          |
+              region_real |
+           East Midlands  |   .9254466   .4950047    -0.14   0.885     .3243837    2.640242
+                  London  |   1.346026   .8447006     0.47   0.636     .3934418    4.604964
+              North East  |   1.339608   .8416805     0.47   0.642      .390989    4.589768
+              North West  |   .9527467   .5974655    -0.08   0.938     .2787345    3.256598
+              South East  |   2.233266   1.311765     1.37   0.171     .7062623    7.061793
+              South West  |   .4791825   .3881094    -0.91   0.364     .0979666    2.343817
+           West Midlands  |   2.470925   1.451202     1.54   0.124     .7815185    7.812317
+Yorkshire and The Humber  |   1.001826   .5362671     0.00   0.997     .3508753    2.860433
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -622,7 +607,7 @@ Yorkshire..  |   1.001826   .5362671     0.00   0.997     .3508753    2.860433
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.000008 saved
+file E:\STATATMP\ST_ab24_000008.tmp saved
 (1,329 observations deleted)
 (171 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
@@ -653,8 +638,8 @@ N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 76
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(29968 records included in the analysis)
+Estimated failure rates
+Number of records  =       29968
 
   +--------------------------------------------------------------------+
   |                    group    D        Y     Rate    Lower     Upper |
@@ -662,6 +647,8 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   78   8.6513   9.0160   7.2216   11.2563 |
   | Hospitalised flu 2017_19   22   5.1004   4.3134   2.8402    6.5508 |
   +--------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
       1 if |
@@ -695,24 +682,24 @@ Time at risk    =   13748.6653
                                                 LR chi2(11)      =      223.33
 Log likelihood  =   -876.47263                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.927736   .5190523     2.44   0.015     1.137254    3.267666
-         age |   1.128788   .0122632    11.15   0.000     1.105006    1.153081
-        male |    .905792   .1838484    -0.49   0.626     .6084996    1.348331
-             |
- region_real |
-East Midl..  |   1.198219   .3872379     0.56   0.576     .6359845     2.25749
-     London  |   .8742782   .3928294    -0.30   0.765     .3624007    2.109164
- North East  |   1.502041   .5825123     1.05   0.294     .7023833    3.212104
- North West  |   .6822043    .306644    -0.85   0.395     .2826883    1.646346
- South East  |   1.337712   .6016716     0.65   0.518     .5540026    3.230079
- South West  |    .566723   .2915384    -1.10   0.270     .2067705    1.553292
-West Midl..  |   1.181887   .5621648     0.35   0.725     .4652663    3.002273
-Yorkshire..  |   1.038309   .3517466     0.11   0.912     .5345229    2.016913
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.927736   .5190523     2.44   0.015     1.137254    3.267666
+                      age |   1.128788   .0122632    11.15   0.000     1.105006    1.153081
+                     male |    .905792   .1838484    -0.49   0.626     .6084996    1.348331
+                          |
+              region_real |
+           East Midlands  |   1.198219   .3872379     0.56   0.576     .6359845     2.25749
+                  London  |   .8742782   .3928294    -0.30   0.765     .3624007    2.109164
+              North East  |   1.502041   .5825123     1.05   0.294     .7023833    3.212104
+              North West  |   .6822043    .306644    -0.85   0.395     .2826883    1.646346
+              South East  |   1.337712   .6016716     0.65   0.518     .5540026    3.230079
+              South West  |    .566723   .2915384    -1.10   0.270     .2067705    1.553292
+           West Midlands  |   1.181887   .5621648     0.35   0.725     .4652663    3.002273
+Yorkshire and The Humber  |   1.038309   .3517466     0.11   0.912     .5345229    2.016913
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -724,7 +711,7 @@ Yorkshire..  |   1.038309   .3517466     0.11   0.912     .5345229    2.016913
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000b saved
+file E:\STATATMP\ST_ab24_00000b.tmp saved
 (30,033 observations deleted)
 (13 real changes made)
 -> stset CSexit_mentalhealth, failure(faildem) enter(time entrydate)
@@ -755,26 +742,21 @@ N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 53
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(1325 records included in the analysis)
+Estimated failure rates
+Number of records  =       1325
 
   +---------------------------------------------------------------------+
   |                    group    D        Y      Rate    Lower     Upper |
   |---------------------------------------------------------------------|
   |    Hospitalised COVID-19   56   0.4382   127.781   98.338   166.040 |
-  | Hospitalised flu 2017_19    <=5   0.0907    55.137   22.950   132.468 |
+  | Hospitalised flu 2017_19    5   0.0907    55.137   22.950   132.468 |
   +---------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
-      1 if |
-failure; 0 |
-        if |         group
-  censored | Hospitali  Hospitali |     Total
------------+----------------------+----------
-         0 |     1,139        125 |    
-         1 |        56        <=5 |    
------------+----------------------+----------
-     Total |         
+**TABLE OF _d group REDACTED DUE TO SMALL N**
+
 
          failure _d:  faildem
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -816,36 +798,46 @@ Iteration 31:  log likelihood = -394.70211
 Iteration 32:  log likelihood = -394.70211
 Iteration 33:  log likelihood = -394.70211
 Iteration 34:  log likelihood = -394.70211
+Iteration 35:  log likelihood = -394.70211
+Iteration 36:  log likelihood = -394.70211
+Iteration 37:  log likelihood = -394.70211
+Iteration 38:  log likelihood = -394.70211
+Iteration 39:  log likelihood = -394.70211
+Iteration 40:  log likelihood = -394.70211
+Iteration 41:  log likelihood = -394.70211
+Iteration 42:  log likelihood = -394.70211
+Iteration 43:  log likelihood = -394.70211
 Refining estimates:
 Iteration 0:   log likelihood = -394.70211
 Iteration 1:   log likelihood = -394.70211
+Iteration 2:   log likelihood = -394.70211
 
 Cox regression -- Breslow method for ties
 
 No. of subjects =        1,324                  Number of obs    =       1,324
 No. of failures =           61
 Time at risk    =  528.2094456
-                                                LR chi2(11)      =       32.36
-Log likelihood  =   -394.70211                  Prob > chi2      =      0.0007
+                                                LR chi2(10)      =       32.36
+Log likelihood  =   -394.70211                  Prob > chi2      =      0.0003
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.803821   .8509202     1.25   0.211     .7155734    4.547079
-         age |   1.049789   .0157687     3.23   0.001     1.019333    1.081154
-        male |   1.187465   .3147644     0.65   0.517     .7063023    1.996416
-             |
- region_real |
-East Midl..  |   .5657932   .2377231    -1.36   0.175     .2483235    1.289133
-     London  |   .9894816   .7445338    -0.01   0.989      .226424    4.324072
- North East  |   1.680903   .7035505     1.24   0.215     .7400613    3.817837
- North West  |   .8458616    .367341    -0.39   0.700     .3611098    1.981341
- South East  |   4.35e-16   1.17e-08    -0.00   1.000            0           .
- South West  |   4.84e-16   1.03e-08    -0.00   1.000            0           .
-West Midl..  |   .6834526   .4309917    -0.60   0.546     .1985787    2.352254
-Yorkshire..  |   .9564947   .3513546    -0.12   0.904     .4655924    1.964985
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.803821   .8509202     1.25   0.211     .7155734    4.547079
+                      age |   1.049789   .0157687     3.23   0.001     1.019333    1.081154
+                     male |   1.187465   .3147644     0.65   0.517     .7063023    1.996416
+                          |
+              region_real |
+           East Midlands  |   .5657932   .2377231    -1.36   0.175     .2483235    1.289133
+                  London  |   .9894816   .7445338    -0.01   0.989      .226424    4.324072
+              North East  |   1.680903   .7035505     1.24   0.215     .7400613    3.817837
+              North West  |   .8458616    .367341    -0.39   0.700     .3611098    1.981341
+              South East  |   1.97e-20          .        .       .            .           .
+              South West  |   2.20e-20   6.92e-11    -0.00   1.000            0           .
+           West Midlands  |   .6834526   .4309917    -0.60   0.546     .1985787    2.352254
+Yorkshire and The Humber  |   .9564947   .3513546    -0.12   0.904     .4655924    1.964985
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -857,7 +849,7 @@ Yorkshire..  |   .9564947   .3513546    -0.12   0.904     .4655924    1.964985
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000e saved
+file E:\STATATMP\ST_ab24_00000e.tmp saved
 (240 real changes made)
 -> stset CSexit_mentalhealth, failure(faildel) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -879,16 +871,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =  .8870637
-  <=5
-N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = <=5
+
+** COUNT <=5 **
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = .
 
          failure _d:  faildel
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(31293 records included in the analysis)
+Estimated failure rates
+Number of records  =       31293
 
   +--------------------------------------------------------------------+
   |                    group    D        Y     Rate    Lower     Upper |
@@ -896,6 +889,8 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   77   9.0895   8.4713   6.7756   10.5914 |
   | Hospitalised flu 2017_19   28   5.1911   5.3939   3.7243    7.8120 |
   +--------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
       1 if |
@@ -929,24 +924,24 @@ Time at risk    =  14276.87474
                                                 LR chi2(11)      =      160.43
 Log likelihood  =   -966.98024                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |    1.09966   .2523522     0.41   0.679     .7013305    1.724224
-         age |   1.094926   .0099976     9.93   0.000     1.075505    1.114697
-        male |   1.046207   .2062447     0.23   0.819     .7109114    1.539642
-             |
- region_real |
-East Midl..  |   1.641255   .5481242     1.48   0.138     .8529104    3.158267
-     London  |   .8230999   .4289631    -0.37   0.709     .2963768     2.28592
- North East  |   1.654959   .6863374     1.21   0.224     .7341428     3.73073
- North West  |    1.14878   .4758808     0.33   0.738     .5100674    2.587296
- South East  |   1.431382   .6992807     0.73   0.463     .5494318    3.729045
- South West  |   .6542816   .3441969    -0.81   0.420      .233332    1.834657
-West Midl..  |    .953761   .5412783    -0.08   0.934     .3135926     2.90077
-Yorkshire..  |   1.875844   .6226635     1.90   0.058     .9787023    3.595362
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |    1.09966   .2523522     0.41   0.679     .7013305    1.724224
+                      age |   1.094926   .0099976     9.93   0.000     1.075505    1.114697
+                     male |   1.046207   .2062447     0.23   0.819     .7109114    1.539642
+                          |
+              region_real |
+           East Midlands  |   1.641255   .5481242     1.48   0.138     .8529104    3.158267
+                  London  |   .8230999   .4289631    -0.37   0.709     .2963768     2.28592
+              North East  |   1.654959   .6863374     1.21   0.224     .7341428     3.73073
+              North West  |    1.14878   .4758808     0.33   0.738     .5100674    2.587296
+              South East  |   1.431382   .6992807     0.73   0.463     .5494318    3.729045
+              South West  |   .6542816   .3441969    -0.81   0.420      .233332    1.834657
+           West Midlands  |    .953761   .5412783    -0.08   0.934     .3135926     2.90077
+Yorkshire and The Humber  |   1.875844   .6226635     1.90   0.058     .9787023    3.595362
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -958,7 +953,7 @@ Yorkshire..  |   1.875844   .6226635     1.90   0.058     .9787023    3.595362
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000h saved
+file E:\STATATMP\ST_ab24_00000h.tmp saved
 (339 real changes made)
 -> stset CSexit_mentalhealth, failure(failsch) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -980,34 +975,30 @@ obs. time interval:  (origin, CSexit_mentalhealth]
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =  .8870637
-  1
-N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 1
+
+** COUNT <=5 **
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = .
 
          failure _d:  failsch
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(31293 records included in the analysis)
+Estimated failure rates
+Number of records  =       31293
 
   +------------------------------------------------------------------------+
   |                    group   D        Y       Rate      Lower      Upper |
   |------------------------------------------------------------------------|
-  |    Hospitalised COVID-19   <=5   9.0895   0.220034   0.055030   0.879791 |
+  |    Hospitalised COVID-19   2   9.0895   0.220034   0.055030   0.879791 |
   | Hospitalised flu 2017_19   4   5.1911   0.770555   0.289203   2.053073 |
   +------------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
-      1 if |
-failure; 0 |
-        if |         group
-  censored | Hospitali  Hospitali |     Total
------------+----------------------+----------
-         0 |    24,629      6,658 |    31,287 
-         1 |    SMALL NS REDACTED |         6 
------------+----------------------+----------
-     Total |    24,631      6,662 |    31,293 
+**TABLE OF _d group REDACTED DUE TO SMALL N**
+
 
          failure _d:  failsch
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -1048,8 +1039,6 @@ Iteration 30:  log likelihood = -55.277698
 Iteration 31:  log likelihood = -55.277698
 Iteration 32:  log likelihood = -55.277698
 Iteration 33:  log likelihood = -55.277698
-Iteration 34:  log likelihood = -55.277698
-Iteration 35:  log likelihood = -55.277698
 Refining estimates:
 Iteration 0:   log likelihood = -55.277698
 Iteration 1:   log likelihood = -55.277698
@@ -1062,24 +1051,24 @@ Time at risk    =  14276.87474
                                                 LR chi2(11)      =        9.71
 Log likelihood  =   -55.277698                  Prob > chi2      =      0.5563
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   .1961202   .1745772    -1.83   0.067     .0342627    1.122594
-         age |   1.011556   .0235576     0.49   0.622     .9664218    1.058798
-        male |   1.048308   .8594026     0.06   0.954     .2102198    5.227617
-             |
- region_real |
-East Midl..  |   .9007691   .9009725    -0.10   0.917     .1268293    6.397455
-     London  |   9.22e-17   1.03e-08    -0.00   1.000            0           .
- North East  |   7.39e-17   8.58e-09    -0.00   1.000            0           .
- North West  |   7.82e-17   7.68e-09    -0.00   1.000            0           .
- South East  |   7.50e-17   1.11e-08    -0.00   1.000            0           .
- South West  |   .5855325   .7260876    -0.43   0.666     .0515254    6.653966
-West Midl..  |   9.13e-17   1.26e-08    -0.00   1.000            0           .
-Yorkshire..  |   .5247149   .6432614    -0.53   0.599     .0474694    5.800069
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   .1961202   .1745772    -1.83   0.067     .0342627    1.122594
+                      age |   1.011556   .0235576     0.49   0.622     .9664218    1.058798
+                     male |   1.048308   .8594026     0.06   0.954     .2102198    5.227617
+                          |
+              region_real |
+           East Midlands  |   .9007691   .9009725    -0.10   0.917     .1268293    6.397455
+                  London  |   6.81e-16   2.81e-08    -0.00   1.000            0           .
+              North East  |   5.46e-16   2.33e-08    -0.00   1.000            0           .
+              North West  |   5.78e-16   2.09e-08    -0.00   1.000            0           .
+              South East  |   5.54e-16   3.01e-08    -0.00   1.000            0           .
+              South West  |   .5855325   .7260876    -0.43   0.666     .0515254    6.653966
+           West Midlands  |   6.74e-16   3.41e-08    -0.00   1.000            0           .
+Yorkshire and The Humber  |   .5247149   .6432614    -0.53   0.599     .0474694    5.800069
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -1091,7 +1080,7 @@ Yorkshire..  |   .5247149   .6432614    -0.53   0.599     .0474694    5.800069
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000k saved
+file E:\STATATMP\ST_ab24_00000k.tmp saved
 (322 real changes made)
 -> stset CSexit_mentalhealth, failure(failmoo) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -1113,34 +1102,30 @@ obs. time interval:  (origin, CSexit_mentalhealth]
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =  .8870637
-  1
-N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 1
+
+** COUNT <=5 **
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = .
 
          failure _d:  failmoo
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(31293 records included in the analysis)
+Estimated failure rates
+Number of records  =       31293
 
   +----------------------------------------------------------------------+
   |                    group    D        Y      Rate     Lower     Upper |
   |----------------------------------------------------------------------|
   |    Hospitalised COVID-19   19   9.0895   2.09032   1.33332   3.27711 |
-  | Hospitalised flu 2017_19    <=5 5.1911   0.77055   0.28920   2.05307 |
+  | Hospitalised flu 2017_19    4   5.1911   0.77055   0.28920   2.05307 |
   +----------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
-      1 if |
-failure; 0 |
-        if |         group
-  censored | Hospitali  Hospitali |     Total
------------+----------------------+----------
-         0 |    24,612      6,658 |    31,270 
-         1 | SMALL Ns REDACTED	  |        23 
------------+----------------------+----------
-     Total |    24,631      6,662 |    31,293 
+**TABLE OF _d group REDACTED DUE TO SMALL N**
+
 
          failure _d:  failmoo
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -1204,24 +1189,24 @@ Time at risk    =  14276.87474
                                                 LR chi2(9)       =       36.50
 Log likelihood  =   -212.09408                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.609468   .8957203     0.86   0.392     .5407067    4.790746
-         age |   1.076094   .0190485     4.14   0.000       1.0394    1.114084
-        male |   2.384901   1.089312     1.90   0.057     .9742742     5.83794
-             |
- region_real |
-East Midl..  |   .8979482   .5682654    -0.17   0.865     .2597583    3.104081
-     London  |   2.07e-20          .        .       .            .           .
- North East  |   .9562408   .8013004    -0.05   0.957     .1850489    4.941378
- North West  |   .9369854   .6848512    -0.09   0.929     .2236567    3.925399
- South East  |     1.4146   1.184913     0.41   0.679     .2739309    7.305102
- South West  |   2.27e-20          .        .       .            .           .
-West Midl..  |   .6278692   .6884091    -0.42   0.671     .0732139    5.384491
-Yorkshire..  |   .9933975   .6295932    -0.01   0.992     .2868471    3.440295
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.609468   .8957203     0.86   0.392     .5407067    4.790746
+                      age |   1.076094   .0190485     4.14   0.000       1.0394    1.114084
+                     male |   2.384901   1.089312     1.90   0.057     .9742742     5.83794
+                          |
+              region_real |
+           East Midlands  |   .8979482   .5682654    -0.17   0.865     .2597583    3.104081
+                  London  |   2.07e-20          .        .       .            .           .
+              North East  |   .9562408   .8013004    -0.05   0.957     .1850489    4.941378
+              North West  |   .9369854   .6848512    -0.09   0.929     .2236567    3.925399
+              South East  |     1.4146   1.184913     0.41   0.679     .2739309    7.305102
+              South West  |   2.27e-20          .        .       .            .           .
+           West Midlands  |   .6278692   .6884091    -0.42   0.671     .0732139    5.384491
+Yorkshire and The Humber  |   .9933975   .6295932    -0.01   0.992     .2868471    3.440295
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -1233,7 +1218,7 @@ Yorkshire..  |   .9933975   .6295932    -0.01   0.992     .2868471    3.440295
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000n saved
+file E:\STATATMP\ST_ab24_00000n.tmp saved
 (329 real changes made)
 -> stset CSexit_mentalhealth, failure(failneu) enter(time entrydate)
                               origin(time entrydate) scale(365.25)
@@ -1255,16 +1240,17 @@ obs. time interval:  (origin, CSexit_mentalhealth]
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =  .8870637
-  1
-N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 1
+
+** COUNT <=5 **
+N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = .
 
          failure _d:  failneu
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(31293 records included in the analysis)
+Estimated failure rates
+Number of records  =       31293
 
   +----------------------------------------------------------------------+
   |                    group    D        Y      Rate     Lower     Upper |
@@ -1272,17 +1258,12 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   13   9.0895   1.43022   0.83047   2.46311 |
   | Hospitalised flu 2017_19    3   5.1911   0.57792   0.18639   1.79187 |
   +----------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
-      1 if |
-failure; 0 |
-        if |         group
-  censored | Hospitali  Hospitali |     Total
------------+----------------------+----------
-         0 |    24,618      6,659 |    31,277 
-         1 | SMALL Ns REDACTED	  |        16 
------------+----------------------+----------
-     Total |    24,631      6,662 |    31,293 
+**TABLE OF _d group REDACTED DUE TO SMALL N**
+
 
          failure _d:  failneu
    analysis time _t:  (CSexit_mentalhealth-origin)/365.25
@@ -1324,15 +1305,9 @@ Iteration 31:  log likelihood = -146.23353
 Iteration 32:  log likelihood = -146.23353
 Iteration 33:  log likelihood = -146.23353
 Iteration 34:  log likelihood = -146.23353
-Iteration 35:  log likelihood = -146.23353
-Iteration 36:  log likelihood = -146.23353
-Iteration 37:  log likelihood = -146.23353
 Refining estimates:
 Iteration 0:   log likelihood = -146.23353
 Iteration 1:   log likelihood = -146.23353
-Iteration 2:   log likelihood = -146.23353
-Iteration 3:   log likelihood = -146.23353
-Iteration 4:   log likelihood = -146.23353
 
 Cox regression -- no ties
 
@@ -1342,24 +1317,24 @@ Time at risk    =  14276.87474
                                                 LR chi2(11)      =       27.11
 Log likelihood  =   -146.23353                  Prob > chi2      =      0.0044
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   2.592361   1.720133     1.44   0.151     .7061384    9.517021
-         age |   .9959432   .0135945    -0.30   0.766     .9696517    1.022948
-        male |   .1219348   .0922984    -2.78   0.005     .0276575    .5375803
-             |
- region_real |
-East Midl..  |   5.476175   5.917022     1.57   0.116     .6587973    45.52007
-     London  |   3.02e-18   2.52e-09    -0.00   1.000            0           .
- North East  |   2.480202   3.510195     0.64   0.521      .154808    39.73569
- North West  |   3.11e-18   2.27e-09    -0.00   1.000            0           .
- South East  |   3.20e-18   3.54e-09    -0.00   1.000            0           .
- South West  |   6.951556   8.093963     1.67   0.096     .7095705    68.10336
-West Midl..  |   5.727365   7.017724     1.42   0.154     .5187763    63.23094
-Yorkshire..  |   3.049624    3.52531     0.96   0.335     .3164266    29.39136
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   2.592361   1.720133     1.44   0.151     .7061384    9.517021
+                      age |   .9959432   .0135945    -0.30   0.766     .9696517    1.022948
+                     male |   .1219348   .0922984    -2.78   0.005     .0276575    .5375803
+                          |
+              region_real |
+           East Midlands  |   5.476175   5.917022     1.57   0.116     .6587973    45.52007
+                  London  |   1.22e-15   5.07e-08    -0.00   1.000            0           .
+              North East  |   2.480202   3.510195     0.64   0.521      .154808    39.73569
+              North West  |   1.26e-15   4.57e-08    -0.00   1.000            0           .
+              South East  |   1.29e-15   7.11e-08    -0.00   1.000            0           .
+              South West  |   6.951556   8.093963     1.67   0.096     .7095705    68.10336
+           West Midlands  |   5.727365   7.017724     1.42   0.154     .5187763    63.23094
+Yorkshire and The Humber  |   3.049624    3.52531     0.96   0.335     .3164266    29.39136
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -1371,7 +1346,7 @@ Yorkshire..  |   3.049624    3.52531     0.96   0.335     .3164266    29.39136
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000q saved
+file E:\STATATMP\ST_ab24_00000q.tmp saved
 (155 real changes made)
 (190 real changes made)
 -> stset CSexit_mentalhealth, failure(failall) enter(time entrydate)
@@ -1402,8 +1377,8 @@ N FAILURES THAT WERE DEATHS RATHER THAN HOSPITALISATIONS = 8
              origin:  time entrydate
   enter on or after:  time entrydate
 
-Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
-(31293 records included in the analysis)
+Estimated failure rates
+Number of records  =       31293
 
   +-----------------------------------------------------------------------+
   |                    group     D        Y      Rate     Lower     Upper |
@@ -1411,6 +1386,8 @@ Estimated rates (per 1000) and lower/upper bounds of 95% confidence intervals
   |    Hospitalised COVID-19   114   9.0895   12.5419   10.4386   15.0691 |
   | Hospitalised flu 2017_19    41   5.1911    7.8982    5.8156   10.7266 |
   +-----------------------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
 
 
       1 if |
@@ -1444,24 +1421,24 @@ Time at risk    =  14276.87474
                                                 LR chi2(11)      =      146.48
 Log likelihood  =    -1473.279                  Prob > chi2      =      0.0000
 
-------------------------------------------------------------------------------
-          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       group |
-Hospitali..  |   1.115815   .2107209     0.58   0.562     .7706252    1.615626
-         age |    1.06532   .0067759     9.95   0.000     1.052122    1.078684
-        male |   .9619648   .1558818    -0.24   0.811     .7002063    1.321577
-             |
- region_real |
-East Midl..  |   1.559268   .4101343     1.69   0.091     .9311704    2.611033
-     London  |   .5838594   .2677169    -1.17   0.241     .2376879    1.434199
- North East  |   1.309704   .4551457     0.78   0.438      .662774      2.5881
- North West  |   .8969785   .3113886    -0.31   0.754     .4542397    1.771247
- South East  |   1.197822   .4921214     0.44   0.660     .5354007    2.679821
- South West  |   .7249451   .2881181    -0.81   0.418      .332666    1.579799
-West Midl..  |   1.130031   .4643344     0.30   0.766     .5050427     2.52844
-Yorkshire..  |   1.600699   .4279095     1.76   0.078     .9478962    2.703078
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                       _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    group |
+   Hospitalised COVID-19  |   1.115815   .2107209     0.58   0.562     .7706252    1.615626
+                      age |    1.06532   .0067759     9.95   0.000     1.052122    1.078684
+                     male |   .9619648   .1558818    -0.24   0.811     .7002063    1.321577
+                          |
+              region_real |
+           East Midlands  |   1.559268   .4101343     1.69   0.091     .9311704    2.611033
+                  London  |   .5838594   .2677169    -1.17   0.241     .2376879    1.434199
+              North East  |   1.309704   .4551457     0.78   0.438      .662774      2.5881
+              North West  |   .8969785   .3113886    -0.31   0.754     .4542397    1.771247
+              South East  |   1.197822   .4921214     0.44   0.660     .5354007    2.679821
+              South West  |   .7249451   .2881181    -0.81   0.418      .332666    1.579799
+           West Midlands  |   1.130031   .4643344     0.30   0.766     .5050427     2.52844
+Yorkshire and The Humber  |   1.600699   .4279095     1.76   0.078     .9478962    2.703078
+-------------------------------------------------------------------------------------------
 
  ( 1)  1.group = 0
 
@@ -1473,12 +1450,11 @@ Yorkshire..  |   1.600699   .4279095     1.76   0.078     .9478962    2.703078
 (1 missing value generated)
 (1 missing value generated)
 (1 missing value generated)
-file /tmp/St00007.00000t saved
+file E:\STATATMP\ST_ab24_00000t.tmp saved
 
 . clear
 
-. foreach run of any dem demwdem demexdem demcare demnocare del sch moo neu all
-> {
+. foreach run of any dem demwdem demexdem demcare demnocare del sch moo neu all{
   2. append using `temp`run''
   3. }
 (label grouplab already defined)
@@ -1495,41 +1471,34 @@ file /tmp/St00007.00000t saved
 . gen mentalhealthgrouped = "Dementia (F00-F03)" if failtype=="dem"
 (18 missing values generated)
 
-. replace mentalhealthgrouped = "(among those with baseline dementia)" if failt
-> ype=="demwdem"
+. replace mentalhealthgrouped = "(among those with baseline dementia)" if failtype=="demwdem"
 variable mentalhealthgrouped was str18 now str36
 (2 real changes made)
 
-. replace mentalhealthgrouped = "(among those with NO baseline dementia)" if fa
-> iltype=="demexdem"
+. replace mentalhealthgrouped = "(among those with NO baseline dementia)" if failtype=="demexdem"
 variable mentalhealthgrouped was str36 now str39
 (2 real changes made)
 
-. replace mentalhealthgrouped = "(among those living in care homes)" if failtyp
-> e=="demcare"
+. replace mentalhealthgrouped = "(among those living in care homes)" if failtype=="demcare"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "(among those NOT living in care homes)" if fai
-> ltype=="demnocare"
+. replace mentalhealthgrouped = "(among those NOT living in care homes)" if failtype=="demnocare"
 (2 real changes made)
 
 . replace mentalhealthgrouped = "Delirium (F05)" if failtype=="del"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders
->  (F20-29)" if failtype=="sch"
+. replace mentalhealthgrouped = "Schizophrenia/schizotypal/delusional disorders (F20-29)" if failtype=="sch"
 variable mentalhealthgrouped was str39 now str55
 (2 real changes made)
 
 . replace mentalhealthgrouped = "Mood disorders (F30-39)" if failtype=="moo"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (
-> F40-48)" if failtype=="neu"
+. replace mentalhealthgrouped = "Neurotic/stress-related/somatoform disorders (F40-48)" if failtype=="neu"
 (2 real changes made)
 
-. replace mentalhealthgrouped = "All except dementia (F05-F99)" if failtype=="a
-> ll"
+. replace mentalhealthgrouped = "All except dementia (F05-F99)" if failtype=="all"
 (2 real changes made)
 
 . 
@@ -1539,8 +1508,7 @@ variable mentalhealthgrouped was str39 now str55
 . replace order = sum(order)
 (19 real changes made)
 
-. gen rateci = string(_Rate, "%4.2f") + " (" + string(_Lower, "%4.2f") + "-" + 
-> string(_Upper, "%4.2f") + ")"
+. gen rateci = string(_Rate, "%4.2f") + " (" + string(_Lower, "%4.2f") + "-" + string(_Upper, "%4.2f") + ")"
 
 . gen _dstr = string(_D) if _D>5
 (5 missing values generated)
@@ -1550,8 +1518,7 @@ variable mentalhealthgrouped was str39 now str55
 
 . gen events_ratecov = "[" + _dstr + "] " + rateci
 
-. gen hrci = string(hr, "%4.2f") + " (" + string(lci, "%4.2f") + "-" + string(u
-> ci, "%4.2f") + ")"
+. gen hrci = string(hr, "%4.2f") + " (" + string(lci, "%4.2f") + "-" + string(uci, "%4.2f") + ")"
 
 . replace hrci = hrci[_n-1] if group==2
 (10 real changes made)
@@ -1591,12 +1558,11 @@ xij variables:
 
 . 
 . outsheet using analysis/output/an_posthoc_mentalhealth.txt, replace c 
-(note: file analysis/output/an_posthoc_mentalhealth.txt not found)
 
 . 
 . log close
       name:  <unnamed>
-       log:  /workspace/analysis/output/an_posthoc_mentalhealth.log
+       log:  e:\analyses\post-admission-admissions-research\analysis/output/an_posthoc_mentalhealth.log
   log type:  text
- closed on:   6 May 2021, 16:19:08
--------------------------------------------------------------------------------
+ closed on:  12 May 2021, 10:53:22
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

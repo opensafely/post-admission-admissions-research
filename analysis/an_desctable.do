@@ -7,7 +7,7 @@
 *Generic code to output one row of table
 cap prog drop generaterow
 program define generaterow
-syntax, variable(varname) condition(string) 
+syntax, variable(varname) condition(string) [missing(string)]
 	
 	*put the varname and condition to left so that alignment can be checked vs shell
 	file write tablecontent ("`variable'") _tab ("`condition'") _tab
@@ -44,7 +44,7 @@ prog define tabulatevariable
 syntax, variable(varname) start(real) end(real) [missing] 
 
 	foreach varlevel of numlist `start'/`end'{ 
-		generaterow, variable(`variable') condition("==`varlevel'") 
+		generaterow, variable(`variable') condition("==`varlevel'") missing("`missing'")
 	}
 	if "`missing'"!="" generaterow, variable(`variable') condition(">=.") 
 
