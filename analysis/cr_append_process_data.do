@@ -14,6 +14,10 @@ replace group = 4 if group==.
 
 replace setid=patient_id if group==1 
 
+*Need to recreate age spline so all on same scale
+drop age1 age2 age3
+mkspline age = age, cubic nknots(4)
+
 *get SUS ethnicity
 preserve
 clear

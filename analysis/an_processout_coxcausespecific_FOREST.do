@@ -31,14 +31,14 @@ postclose estimates
 
 use `estimates', clear
 
-keep if adj=="matchfac"
+keep if adj=="matchfac"|adj=="comorbs_lstyle_ethimd"
 
 *COX GRAPHS OF NON-COMPETING OUTCOMES
 gen counter=1
-*replace counter = 2 if adjustment=="matchfac"
-*replace counter = 4 if adjustment=="matchfac" & ctrl=="2019gp" & outcome=="otherinfections"
+replace counter = 2 if adjustment=="matchfac"
+replace counter = 4 if adjustment=="matchfac" & ctrl=="2019gp" & outcome=="otherinfections"
 
-replace counter = 4 if ctrl=="2019gp" & outcome=="otherinfections"
+*replace counter = 4 if ctrl=="2019gp" & outcome=="otherinfections"
 
 gen cumcounter = sum(counter)
 summ cumcounter
@@ -66,13 +66,13 @@ replace outcometext = "External causes (S-Y except U/X60-84)" if outcome=="exter
 
 
 scatter graphorder shr if adjustment=="matchfac", m(Oh) msize(small) mcol(black) || rcap lci uci graphorder if adjustment=="matchfac", hor lw(thin) lc(black) ///
-	|| scatter graphorder shr if adjustment=="full", m(O) msize(small) mcol(black) || rcap lci uci graphorder if adjustment=="full", hor lw(thin) lc(black) ///
+	|| scatter graphorder shr if adjustment=="comorbs_lstyle_ethimd", m(O) msize(small) mcol(black) || rcap lci uci graphorder if adjustment=="comorbs_lstyle_ethimd", hor lw(thin) lc(black) ///
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 	|| scatter graphorder modelpos, m(i) mlab(outcometext) mlabsize(vsmall) mlabcol(gs7)  ///
-	||, xscale(log range(0.004 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(30)) ylab(0 30, nogrid) ytick(none) legend(off) xtitle(HR and 95% CI) ///
-	text(28 0.004 "vs flu controls", size(small) placement(e)) ///
-	text(13 0.004 "vs 2019 general population controls", size(small) placement(e)) ///
-	text(28 35 "HR and 95% CI", size(vsmall) placement(e)) 
+	||, xscale(log range(0.004 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(75)) ylab(0 75, nogrid) ytick(none) legend(cols(1) order(1 3) label(1 "Adjusted for age, sex, geography") label(3 "Fully adjusted")) xtitle(HR and 95% CI) ///
+	text(75 0.004 "vs flu controls", size(small) placement(e)) ///
+	text(37 0.004 "vs 2019 general population controls", size(small) placement(e)) ///
+	text(75 35 "HR and 95% CI", size(vsmall) placement(e)) 
 	graph export analysis/output/an_processout_coxcausespecific_FOREST.svg, as(svg) replace
 
 
