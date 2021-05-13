@@ -12,7 +12,7 @@ syntax, variable(varname) condition(string) [missing(string)]
 	*put the varname and condition to left so that alignment can be checked vs shell
 	file write tablecontent ("`variable'") _tab ("`condition'") _tab
 	
-	foreach group of numlist 1 2 4 {
+	foreach group of numlist 1 4 2 {
 		/*1=covid 2=flu 3=gp2019*/
 	    
 	safecount if group==`group'
