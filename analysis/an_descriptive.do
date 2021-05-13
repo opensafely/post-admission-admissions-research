@@ -66,12 +66,20 @@ drop if group==2 & entrydate<d(1/1/2019)
 include analysis/stsetfordeath1ocare.doi
 preserve 
 qui table died_reason group if _d==1, replace
-table died_reason group if table1>5 [fw=table1]
+table died_reason group  [fw=table1]
 restore
 
+/*cov group causes of death
+THESE TABLES PRODUCE SMALL Ns - commenting out for routine runs
+tab died_reason if _d==1 & gr==1 & died_date_1o>=d(1/1/2019), sort f m
+tab died_cause_ons if gr==1 & _d==1 & died_r==7
 
+*flu causes of death
+tab died_reason if _d==1 & gr==2 & died_date_1o>=d(1/1/2019), sort f m
+tab died_cause_ons if gr==2 & _d==1 & died_r==8 /*copds*/
+*/
 
-foreach csoutcome of any DENOM otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
+foreach csoutcome of any respiratorylrti DENOM otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
 
 foreach group of numlist 1 2 4 {
 
@@ -79,6 +87,7 @@ foreach group of numlist 1 2 4 {
 if "`csoutcome'"=="DENOM" local condition 
 else{
 	stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entrydate) 
+	wd
 	local condition " & _d == 1"
 	local conditiondied " & _d == 1 & CSfaildiedonly_`csoutcome' == 1"
 
