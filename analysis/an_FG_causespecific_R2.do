@@ -33,7 +33,7 @@ stcrreg exposed age male i.region_real if group==1|group==2, compete(CSfail_`cso
 estimates save analysis/output/models/an_FG_causespecific_R2`csoutcome'_cflu_MATCHFACONLY, replace
 
 ***VS GENERAL POP
-stcrreg exposed age male i.region_real if group==1|group==4
+stcrreg exposed age male i.region_real if group==1|group==4, compete(CSfail_`csoutcome'==2)
 estimates save analysis/output/models/an_FG_causespecific_R2`csoutcome'_c2019gp_MATCHFACONLY, replace
 
 
