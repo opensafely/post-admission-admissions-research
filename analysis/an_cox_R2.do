@@ -50,7 +50,7 @@ preserve
 	replace cumhgp = cumhgp + 1
 	mi set wide
 	mi register imputed ethnicity
-	mi impute mlogit ethnicity _d i.cumhgp age1 age2 age3 male i.stp i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(23983)
+	mi impute mlogit ethnicity _d i.cumhgp i.group age1 age2 age3 male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(23983)
 	mi stset exitdate, fail(readmission) enter(entrydate) origin(entrydate)
 
 	*vs flu controls
