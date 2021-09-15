@@ -12,7 +12,8 @@ use analysis/cr_append_process_data, clear
 drop if obese4cat_withmiss==.
 drop if smoke==.
 safetab group
-
+drop if region_real==.
+safetab group
 	
 ***Composite***
 *vs 2017_19-flu controls
@@ -21,7 +22,7 @@ keep if group==1|group==2
 	stcox exposed age1 age2 age3 male i.stp 
 	estimates save analysis/output/models/an_cox_R2_COMPOSITEvsflu_MINADJ, replace
 	
-	stcox exposed age1 age2 age3 male i.stp htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
+	noi stcox exposed age1 age2 age3 male i.stp htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
 	estimates save analysis/output/models/an_cox_R2_COMPOSITEvsflu_COMORBS, replace
 	
 	stcox exposed age1 age2 age3 male i.stp i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression 
@@ -137,7 +138,7 @@ preserve
 	replace cumhgp = cumhgp + 1
 	mi set wide
 	mi register imputed ethnicity
-	mi impute mlogit ethnicity _d i.cumhgp age1 age2 age3 male i.stp i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(95184)
+	mi impute mlogit ethnicity _d i.cumhgp i.group age1 age2 age3 male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(95184)
 	mi stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate)
 
 
