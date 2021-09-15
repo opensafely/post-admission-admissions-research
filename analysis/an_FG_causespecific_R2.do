@@ -22,7 +22,7 @@ safetab group
 drop if region_real==.
 safetab group
 
-replace CSfail_`csoutcome'==2 if CSfail_`csoutcome'==0 & died_date_1ocare<CSexit_`csoutcome' /*distinguish those experiencing competing risk of death*/
+replace CSfail_`csoutcome'=2 if CSfail_`csoutcome'==0 & CSexit_`csoutcome'==died_date_ons /*distinguish those that were censored due to competing risk of death*/
 stset CSexit_`csoutcome', fail(CSfail_`csoutcome'==1) origin(entrydate) enter(entrydate) 
 
 
@@ -45,7 +45,7 @@ egen cumhgp = cut(cumh), group(5)
 replace cumhgp = cumhgp + 1
 mi set wide
 mi register imputed ethnicity
-mi impute mlogit ethnicity _d i.cumhazgrp age male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(`rseed')
+mi impute mlogit ethnicity _d i.cumhgp age male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(`rseed')
 anmi stset CSexit_`csoutcome', fail(CSfail_`csoutcome'==1) origin(entrydate) enter(entrydate) 
 
 ***VS FLU
