@@ -277,6 +277,122 @@ actions:
         timefig: analysis/output/an_desc*.svg
         models: analysis/output/models/an_cox*.ster
 
+ ancoxMI:
+     run: stata-mp:latest analysis/an_cox_R2.do
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_cox_R2.log
+         models: analysis/output/models/an_cox_R2*.ster
+         
+ anFGcirculatory:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do circulatory 23498
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2circulatory.log
+         models: analysis/output/models/an_FG_causespecific_R2circulatory*.ster
+ 
+ anFGcancer_ex_nmsc:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do cancer_ex_nmsc 54668
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2cancer_ex_nmsc.log
+         models: analysis/output/models/an_FG_causespecific_R2cancer_ex_nmsc*.ster
+ 
+  
+ anFGrespiratory:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do respiratory 1309
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2respiratory.log
+         models: analysis/output/models/an_FG_causespecific_R2respiratory*.ster
+ 
+ 
+ anFGrespiratorylrti:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do respiratorylrti 235
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2respiratorylrti.log
+         models: analysis/output/models/an_FG_causespecific_R2respiratorylrti*.ster
+  
+  
+ anFGdigestive:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do digestive 32463
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2digestive.log
+         models: analysis/output/models/an_FG_causespecific_R2digestive*.ster
+  
+  
+ anFGmentalhealth:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do mentalhealth 25465
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2mentalhealth.log
+         models: analysis/output/models/an_FG_causespecific_R2mentalhealth*.ster
+  
+  
+ anFGnervoussystem:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do nervoussystem 2355
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2nervoussystem.log
+         models: analysis/output/models/an_FG_causespecific_R2nervoussystem*.ster
+  
+  
+ anFGgenitourinary:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do genitourinary 239802
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2genitourinary.log
+         models: analysis/output/models/an_FG_causespecific_R2genitourinary*.ster
+  
+  
+ anFGendo_nutr_metabol:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do endo_nutr_metabol 155545
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2endo_nutr_metabol.log
+         models: analysis/output/models/an_FG_causespecific_R2endo_nutr_metabol*.ster
+  
+  
+ anFGexternal:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do external 125554
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2external.log
+         models: analysis/output/models/an_FG_causespecific_R2external*.ster
+  
+  
+ anFGmusculoskeletal:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do musculoskeletal 124
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2musculoskeletal.log
+         models: analysis/output/models/an_FG_causespecific_R2musculoskeletal*.ster
+  
+  
+ anFGotherinfections:
+     run: stata-mp:latest analysis/an_FG_causespecific_R2.do otherinfections 789
+     needs: [appenddata]
+     outputs:
+       moderately_sensitive:
+         log: analysis/output/an_FG_causespecific_R2otherinfections.log
+         models: analysis/output/models/an_FG_causespecific_R2otherinfections*.ster
+
+ 
+
   anprocess_forestplots:
     run: stata-mp:latest analysis/model_forestplots.do
     needs: [andescriptives_models]
