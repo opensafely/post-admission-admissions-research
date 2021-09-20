@@ -391,6 +391,14 @@ actions:
         log: analysis/output/an_FG_causespecific_R2otherinfections.log
         models: analysis/output/models/an_FG_causespecific_R2otherinfections*.ster
 
+  ancoxbytime:
+    run: stata-mp:latest analysis/an_coxbytime_R2.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_R2.log
+        models: analysis/output/models/an_coxbytime_R2*.ster
+  
  
   anprocess_forestplots:
     run: stata-mp:latest analysis/model_forestplots.do
