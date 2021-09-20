@@ -17,7 +17,7 @@ safetab group
 
 local other_immunosuppression "other_immunosuppression"
 if "`csoutcome'"=="mentalhealth"{
-recode cancerhaemcat 1=0 2/4=1
+recode cancer_haem_cat 1=0 2/4=1
 local other_immunosuppression
 local simplified simplified
 }
