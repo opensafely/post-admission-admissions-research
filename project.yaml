@@ -399,6 +399,33 @@ actions:
       moderately_sensitive:
         graphs: analysis/output/an_processout_*.svg 
 
+  anprocess_forestplots_CoxR2:
+    run: stata-mp:latest analysis/an_processout_regressionmodels_FOREST_R2.do
+    needs: [ancoxMI]
+    outputs:
+      moderately_sensitive:
+        graphs: analysis/output/an_processout_regressionmodels_FOREST_R2_COX.svg 
+
+  anprocess_forestplots_FG:
+    run: stata-mp:latest analysis/an_processout_FGcausespecific_FOREST_R2.do
+    needs: 
+      - anFGcirculatory
+      - anFGcancer_ex_nmsc 
+      - anFGrespiratory
+      - anFGrespiratorylrti
+      - anFGdigestive
+      - anFGmentalhealth
+      - anFGnervoussystem
+      - anFGgenitourinary
+      - anFGendo_nutr_metabol
+      - anFGexternal
+      - anFGmusculoskeletal
+      - anFGotherinfections
+    outputs:
+      moderately_sensitive:
+        graphs: analysis/output/an_processout_FGcausespecific_FOREST_R2_COX.svg 
+
+
   runsingledofile:
     run: stata-mp:latest analysis/an_desctable.do
     needs: [appenddata]
