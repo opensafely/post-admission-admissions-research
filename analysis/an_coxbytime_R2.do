@@ -16,7 +16,7 @@ drop if region_real==.
 safetab group
 
 gen id=_n
-streset, id(n)
+streset, id(id)
 	
 ***Composite***
 *vs 2017_19-flu controls
@@ -41,7 +41,7 @@ restore
 *vs 2017_19-flu controls
 preserve
 	include analysis/stsetfordeath1ocare.doi
-	streset, id(n)
+	streset, id(id)
 	keep if group==1|group==2
 	
 	stsplit timesinceentry, at(23, 73, 1000)
@@ -52,7 +52,7 @@ restore
 *vs 2019 general pop controls
 preserve
 	include analysis/stsetfordeath1ocare.doi
-	streset, id(n)
+	streset, id(id)
 	keep if group==1|group==4
 	
 	stsplit timesinceentry, at(23, 73, 1000)
