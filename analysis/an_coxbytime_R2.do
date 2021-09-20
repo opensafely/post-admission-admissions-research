@@ -22,7 +22,7 @@ streset, id(id)
 *vs 2017_19-flu controls
 preserve
 keep if group==1|group==2
-	stsplit timesinceentry, at(23, 73, 1000)
+	stsplit timesinceentry, at(22, 82, 1000)
 	stcox i.exposed##i.timesinceentry age1 age2 age3 male i.stp 
 	estimates save analysis/output/models/an_coxbytime_R2_COMPOSITEvsflu_MINADJ, replace
 restore
@@ -30,7 +30,7 @@ restore
 *vs 2019 general pop age/sex/stp matched controls
 preserve
 keep if group==1|group==4
-	stsplit timesinceentry, at(23, 73, 1000)
+	stsplit timesinceentry, at(22, 82, 1000)
 	stcox i.exposed##i.timesinceentry, strata(setid)
 	estimates save analysis/output/models/an_coxbytime_R2_COMPOSITEvs2019gp_MINADJ, replace
 restore	
@@ -44,7 +44,7 @@ preserve
 	streset, id(id)
 	keep if group==1|group==2
 	
-	stsplit timesinceentry, at(23, 73, 1000)
+	stsplit timesinceentry, at(22, 82, 1000)
 	stcox i.exposed##i.timesinceentry age1 age2 age3 male i.stp 
 	estimates save analysis/output/models/an_coxbytime_R2_DEATHvsflu_MINADJ, replace
 restore
@@ -55,7 +55,7 @@ preserve
 	streset, id(id)
 	keep if group==1|group==4
 	
-	stsplit timesinceentry, at(23, 73, 1000)
+	stsplit timesinceentry, at(22, 82, 1000)
 	stcox i.exposed##i.timesinceentry, strata(setid)
 	estimates save analysis/output/models/an_coxbytime_R2_DEATHvs2019gp_MINADJ, replace
 restore
