@@ -11,13 +11,13 @@ estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`ctrl'_MAT
 lincom exposed, eform
 post estimates ("`ctrl'") ("`outcome'") ("matchfac") ("`deathhandling'") (r(estimate)) (r(lb)) (r(ub))
 
-estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`ctrl'_COMORBS
+/*estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`ctrl'_COMORBS
 lincom exposed, eform
 post estimates ("`ctrl'") ("`outcome'") ("comorbs") ("`deathhandling'") (r(estimate)) (r(lb)) (r(ub))
 
 estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`ctrl'_COMORBS_LSTYLE
 lincom exposed, eform
-post estimates ("`ctrl'") ("`outcome'") ("comorbs_lstyle") ("`deathhandling'") (r(estimate)) (r(lb)) (r(ub))
+post estimates ("`ctrl'") ("`outcome'") ("comorbs_lstyle") ("`deathhandling'") (r(estimate)) (r(lb)) (r(ub))*/
 
 estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`ctrl'_COMORBS_LSTYLE_ETHIMD
 lincom exposed, eform
