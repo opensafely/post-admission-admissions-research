@@ -423,7 +423,7 @@ actions:
       - anFGotherinfections
     outputs:
       moderately_sensitive:
-        graphs: analysis/output/an_processout_FGcausespecific_FOREST_R2_COX.svg 
+        graphs: analysis/output/an_processout_FGcausespecific_R2_FOREST.svg 
 
 
   runsingledofile:
