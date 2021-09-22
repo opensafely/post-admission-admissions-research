@@ -391,6 +391,113 @@ actions:
         log: analysis/output/an_FG_causespecific_R2otherinfections.log
         models: analysis/output/models/an_FG_causespecific_R2otherinfections*.ster
 
+  anCOXr2circulatory:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do circulatory 23498
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2circulatory.log
+        models: analysis/output/models/an_cox_causespecific_R2circulatory*.ster
+ 
+  anCOXr2cancer_ex_nmsc:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do cancer_ex_nmsc 54668
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2cancer_ex_nmsc.log
+        models: analysis/output/models/an_cox_causespecific_R2cancer_ex_nmsc*.ster
+ 
+  
+  anCOXr2respiratory:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do respiratory 1309
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2respiratory.log
+        models: analysis/output/models/an_cox_causespecific_R2respiratory*.ster
+ 
+ 
+  anCOXr2respiratorylrti:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do respiratorylrti 235
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2respiratorylrti.log
+        models: analysis/output/models/an_cox_causespecific_R2respiratorylrti*.ster
+  
+  
+  anCOXr2digestive:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do digestive 32463
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2digestive.log
+        models: analysis/output/models/an_cox_causespecific_R2digestive*.ster
+  
+  
+  anCOXr2mentalhealth:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do mentalhealth 25465
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2mentalhealth.log
+        models: analysis/output/models/an_cox_causespecific_R2mentalhealth*.ster
+  
+ 
+  anCOXr2nervoussystem:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do nervoussystem 2355
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2nervoussystem.log
+        models: analysis/output/models/an_cox_causespecific_R2nervoussystem*.ster
+  
+  
+  anCOXr2genitourinary:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do genitourinary 239802
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2genitourinary.log
+        models: analysis/output/models/an_cox_causespecific_R2genitourinary*.ster
+  
+  
+  anCOXr2endo_nutr_metabol:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do endo_nutr_metabol 155545
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2endo_nutr_metabol.log
+        models: analysis/output/models/an_cox_causespecific_R2endo_nutr_metabol*.ster
+  
+  
+  anCOXr2external:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do external 125554
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2external.log
+        models: analysis/output/models/an_cox_causespecific_R2external*.ster
+  
+  
+  anCOXr2musculoskeletal:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do musculoskeletal 124
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2musculoskeletal.log
+        models: analysis/output/models/an_cox_causespecific_R2musculoskeletal*.ster
+  
+  
+  anCOXr2otherinfections:
+    run: stata-mp:latest analysis/an_cox_causespecific_R2.do otherinfections 789
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_cox_causespecific_R2otherinfections.log
+        models: analysis/output/models/an_cox_causespecific_R2otherinfections*.ster
+
+
   ancoxbytime:
     run: stata-mp:latest analysis/an_coxbytime_R2.do
     needs: [appenddata]
@@ -505,6 +612,112 @@ actions:
         log: analysis/output/an_FGbytime_causespecific_R2otherinfections.log
         models: analysis/output/models/an_FGbytime_causespecific_R2otherinfections*.ster
 
+
+  anCOXr2bytimecirculatory:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do circulatory 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2circulatory.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2circulatory*.ster
+ 
+  anCOXr2bytimecancer_ex_nmsc:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do cancer_ex_nmsc 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2cancer_ex_nmsc.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2cancer_ex_nmsc*.ster
+ 
+  
+  anCOXr2bytimerespiratory:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do respiratory 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2respiratory.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2respiratory*.ster
+ 
+ 
+  anCOXr2bytimerespiratorylrti:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do respiratorylrti 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2respiratorylrti.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2respiratorylrti*.ster
+  
+  
+  anCOXr2bytimedigestive:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do digestive 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2digestive.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2digestive*.ster
+  
+  
+  anCOXr2bytimementalhealth:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do mentalhealth 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2mentalhealth.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2mentalhealth*.ster
+  
+ 
+  anCOXr2bytimenervoussystem:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do nervoussystem 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2nervoussystem.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2nervoussystem*.ster
+  
+  
+  anCOXr2bytimegenitourinary:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do genitourinary 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2genitourinary.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2genitourinary*.ster
+  
+  
+  anCOXr2bytimeendo_nutr_metabol:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do endo_nutr_metabol 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2endo_nutr_metabol.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2endo_nutr_metabol*.ster
+  
+  
+  anCOXr2bytimeexternal:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do external 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2external.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2external*.ster
+  
+  
+  anCOXr2bytimemusculoskeletal:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do musculoskeletal 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2musculoskeletal.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2musculoskeletal*.ster
+  
+  
+  anCOXr2bytimeotherinfections:
+    run: stata-mp:latest analysis/an_coxbytime_causespecific_R2.do otherinfections 
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_coxbytime_causespecific_R2otherinfections.log
+        models: analysis/output/models/an_coxbytime_causespecific_R2otherinfections*.ster
   
  
   anprocess_forestplots:
