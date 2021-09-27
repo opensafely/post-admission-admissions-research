@@ -11,7 +11,7 @@ gen age_c = age-r(mean)
 
 
 *Composite outcome
-sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) name(composite, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
+sts graph, failure by(group) xtitle(Days from index date) legend(cols(1)) title("") xtitle(Days from index date) ytitle(Cumulative incidence of composite outcome) name(composite, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 graph export analysis/output/an_cumulativeincidence_composite.svg, as(svg) replace
 sts list, at(0 100 183 200) by(group) fail
 *Composite outcome, adjusted for age/sex
@@ -24,12 +24,12 @@ preserve
 	sts graph, failure by(group) legend(cols(1)) title("") xtitle(Days from index date) name(death, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 	graph export analysis/output/an_cumulativeincidence_death.svg, as(svg) replace
 	sts list, at(0 100 183 200) by(group) fail
-  sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) name(death_agesex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
+  sts graph, failure by(group) adjustfor(age_c male) legend(cols(1)) title("")  xtitle(Days from index date) ytitle(Cumulative incidence of death) name(death_agesex, replace) plot1opt(lc(black)) plot2opt(lc(black) lp(dash)) plot3opt(lc(gs9) lp(dash_dot))
 	graph export analysis/output/an_cumulativeincidence_death_adjagesex.svg, as(svg) replace
 restore
 
 log close
-
+/*
 *By reason for readmission/death
 *can't do for pre2019 flu
 drop if group==2 & entrydate<d(1/1/2019)
@@ -73,5 +73,5 @@ global allgraphs "$allgraphs `csoutcome'"
 
 grc1leg  $allgraphs, iscale(*.6)
 graph export analysis/output/an_cumulativeincidence_causespecific.svg, as(svg) replace
-
+*/
 

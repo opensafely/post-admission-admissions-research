@@ -769,7 +769,15 @@ actions:
     outputs:
       moderately_sensitive:
         tables: analysis/output/an_desctable*.txt
-            
+
+  runKMsalone:
+    run: stata-mp:latest analysis/an_cumulativeincidence.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        kmcis: analysis/output/an_cumulativeincidence*.svg
+    
+
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]
