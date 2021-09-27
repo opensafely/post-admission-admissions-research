@@ -63,8 +63,8 @@ preserve
 	cou
 	local newobs = r(N)+2
 	set obs `newobs'
-	replace graphorder == 0 if _n==_N-1
-	replace graphorder == 24 if _n==_N
+	replace graphorder = 0 if _n==_N-1
+	replace graphorder = 24 if _n==_N
 	gen one = 1
 	
 	
