@@ -65,10 +65,10 @@ file write tablecontent _n
 tabulatevariable, variable(agegroup) start(1) end(6)  
 qui summ age if group==1, d
 file write tablecontent ("age") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if group==2 , d
-file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
 qui summ age if group==4 , d
 file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
+qui summ age if group==2 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _n
 
 
 file write tablecontent _n 
@@ -255,13 +255,20 @@ tabulatevariable, variable(cons) start(1) end(1)
 file write tablecontent _n 
 
 tabulatevariable, variable(agegroup) start(1) end(6)  
-qui summ age if group==1, d
+qui summ age if group==11, d
 file write tablecontent ("age") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if group==2 , d
-file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
-qui summ age if group==4 , d
+qui summ age if group==10 , d
 file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
 
+qui summ age if group==41 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
+qui summ age if group==40 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
+
+qui summ age if group==21 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
+qui summ age if group==20 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _n
 
 file write tablecontent _n 
 tabulatevariable, variable(male) start(1) end(0) 
