@@ -36,7 +36,7 @@ stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entry
 **Adj match factors only
 
 ***VS FLU
-stcox exposed if group==1|group==2, strata(setid)
+stcox exposed age male i.region_real if group==1|group==2
 estimates save analysis/output/models/an_cox_causespecific_R2`csoutcome'_cflu_MATCHFACONLY, replace
 
 ***VS GENERAL POP

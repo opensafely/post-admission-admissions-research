@@ -76,7 +76,7 @@ scatter graphorder shr if adjustment=="matchfac", m(Oh) msize(small) mcol(black)
 	|| scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 	|| scatter graphorder modelpos, m(i) mlab(outcometext) mlabsize(vsmall) mlabcol(gs7)  ///
 	|| line graphorder one if _n>=(_N-1), lp(dash) lc(red) ///
-	||, xscale(log range(0.004 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(75)) ylab(0 75, nogrid) ytick(none) legend(cols(1) order(1 3) label(1 "Adjusted for age, sex, geography") label(3 "Fully adjusted")) xtitle(HR and 95% CI) ///
+	||, xscale(log range(0.004 320)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(75)) ylab(0 75, nogrid) ytick(none) legend(cols(1) order(1 3) label(1 "Adjusted for age, sex, geography") label(3 "Fully adjusted")) xtitle(HR and 95% CI) ///
 	text(37 0.004 "vs flu controls", size(small) placement(e)) ///
 	text(75 0.004 "vs 2019 general population controls", size(small) placement(e)) ///
 	text(75 35 "HR and 95% CI", size(vsmall) placement(e)) 
