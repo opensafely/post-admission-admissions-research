@@ -762,7 +762,14 @@ actions:
         log: analysis/output/an_descriptive.log
         table: analysis/output/an_descriptive_OUTCOMES.txt
         histogram: analysis/output/an_descriptive_EVENTSBYTIME.svg
-      
+
+  rundescriptivetablealone:
+    run: stata-mp:latest analysis/an_desctable.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        tables: analysis/output/an_desctable*.txt
+            
   run_model:
     run: stata-mp:latest analysis/model.do
     needs: [generate_study_pop_covdischarged]

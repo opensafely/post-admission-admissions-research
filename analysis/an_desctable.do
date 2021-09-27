@@ -13,8 +13,7 @@ syntax, variable(varname) condition(string) [missing(string)]
 	file write tablecontent ("`variable'") _tab ("`condition'") _tab
 	
 	foreach group of numlist 1 4 2 {
-		/*1=covid 2=flu 3=gp2019*/
-	    
+			    
 	safecount if group==`group'
 	local denom=r(N)
 	
@@ -31,7 +30,7 @@ syntax, variable(varname) condition(string) [missing(string)]
 	local colpctnonmiss = 100*(r(N)/`denomnonmiss')
 	file write tablecontent (" [") %3.1f (`colpctnonmiss') ("]") 
 	}
-	if `group'==4 file write tablecontent _n
+	if `group'==2 file write tablecontent _n
 		else file write tablecontent _tab
 	}
 	
@@ -152,4 +151,126 @@ file write tablecontent (", exposed group: ") (r(N)) (")")
 			
 file close tablecontent
 
+***Add missing vs non-missing desctable
 
+
+*******************************************************************************
+*Generic code to output one row of table
+cap prog drop generaterow
+program define generaterow
+syntax, variable(varname) condition(string) [missing(string)]
+	
+	*put the varname and condition to left so that alignment can be checked vs shell
+	file write tablecontent ("`variable'") _tab ("`condition'") _tab
+	
+	foreach group of numlist 1 4 2 {
+		/*1=covid 2=flu 3=gp2019*/
+	    
+	safecount if group==`group'
+	local denom=r(N)
+	
+	if "`missing'"!="" {
+	safecount if group==`group' & `variable'<.
+	local denomnonmiss=r(N)
+	}
+		
+	safecount if `variable' `condition' & group==`group'
+	local cellcount = r(N)
+	local colpct = 100*(r(N)/`denom')
+	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
+	if "`missing'"!="" {
+	local colpctnonmiss = 100*(r(N)/`denomnonmiss')
+	file write tablecontent (" [") %3.1f (`colpctnonmiss') ("]") 
+	}
+	if `group'==4 file write tablecontent _n
+		else file write tablecontent _tab
+	}
+	
+end
+
+*******************************************************************************
+*Generic code to output one section (varible) within table (calls above)
+cap prog drop tabulatevariable
+prog define tabulatevariable
+syntax, variable(varname) start(real) end(real) [missing] 
+
+	foreach varlevel of numlist `start'/`end'{ 
+		generaterow, variable(`variable') condition("==`varlevel'") missing("`missing'")
+	}
+	if "`missing'"!="" generaterow, variable(`variable') condition(">=.") 
+
+end
+
+*******************************************************************************
+
+*******************************************************************************
+*Generic code to output one row of table
+cap prog drop generaterow
+program define generaterow
+syntax, variable(varname) condition(string) [missing(string)]
+	
+	*put the varname and condition to left so that alignment can be checked vs shell
+	file write tablecontent ("`variable'") _tab ("`condition'") _tab
+	
+	foreach group of numlist 11 10 41 40 21 20 {
+		/*first digit 1=covid 2=flu 3=gp2019; second digit 1=missing data 0=no missing data*/
+	    
+	safecount if groupmiss==`group'
+	local denom=r(N)
+	
+	if "`missing'"!="" {
+	safecount if groupmiss==`group' & `variable'<.
+	local denomnonmiss=r(N)
+	}
+		
+	safecount if `variable' `condition' & groupmiss==`group'
+	local cellcount = r(N)
+	local colpct = 100*(r(N)/`denom')
+	file write tablecontent (`cellcount')  (" (") %3.1f (`colpct') (")") 
+	if "`missing'"!="" {
+	local colpctnonmiss = 100*(r(N)/`denomnonmiss')
+	file write tablecontent (" [") %3.1f (`colpctnonmiss') ("]") 
+	}
+	if `group'==20 file write tablecontent _n
+		else file write tablecontent _tab
+	}
+	
+end
+
+*******************************************************************************
+
+
+
+*Set up output file
+cap file close tablecontent
+file open tablecontent using ./analysis/output/an_desctable_MISSINGVNON.txt, write text replace
+
+use analysis/cr_append_process_data, clear
+
+gen missingindicator = (obese4cat_withmiss==.|smoke==.)
+gen groupmiss = 10*group+missingindicator
+
+gen byte cons=1
+tabulatevariable, variable(cons) start(1) end(1) 
+file write tablecontent _n 
+
+tabulatevariable, variable(agegroup) start(1) end(6)  
+qui summ age if group==1, d
+file write tablecontent ("age") _tab ("median-iqr") _tab %3.0f (r(p50))  (" (")  (r(p25)) ("-") (r(p75)) (")")  _tab
+qui summ age if group==2 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
+qui summ age if group==4 , d
+file write tablecontent %3.0f  (r(p50))  (" (") (r(p25)) ("-") (r(p75)) (")")  _tab
+
+
+file write tablecontent _n 
+tabulatevariable, variable(male) start(1) end(0) 
+file write tablecontent _n 
+
+tabulatevariable, variable(ethnicity) start(1) end(5) missing 
+file write tablecontent _n 
+
+tabulatevariable, variable(imd) start(1) end(5) 
+file write tablecontent _n 
+
+file close tablecontent
