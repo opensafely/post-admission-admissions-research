@@ -775,7 +775,7 @@ actions:
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        kmcis: analysis/output/an_cumulativeincidence*.svg
+        kmcis: analysis/output/an_cumulativeinc*.svg
     
 
   run_model:
