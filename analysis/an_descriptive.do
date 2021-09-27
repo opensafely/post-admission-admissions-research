@@ -94,7 +94,7 @@ foreach group of numlist 1 2 4 {
 if "`csoutcome'"=="DENOM" local condition 
 else{
 	stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entrydate) 
-	wd
+	
 	local condition " & _d == 1"
 	local conditiondied " & _d == 1 & CSfaildiedonly_`csoutcome' == 1"
 
