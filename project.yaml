@@ -755,12 +755,13 @@ actions:
 
 
   runsingledofile:
-    run: stata-mp:latest analysis/an_desctable.do
+    run: stata-mp:latest analysis/an_descriptive.do
     needs: [appenddata]
     outputs:
       moderately_sensitive:
-        table: analysis/output/an_desctable.txt
-
+        log: analysis/output/an_descriptive.log
+        table: analysis/output/an_descriptive_OUTCOMES.txt
+        histogram: analysis/output/an_descriptive_EVENTSBYTIME.svg
       
   run_model:
     run: stata-mp:latest analysis/model.do
