@@ -734,8 +734,8 @@ actions:
       moderately_sensitive:
         graphs: analysis/output/an_processout_regressionmodels_FOREST_R2_COX.svg 
 
-  anprocess_forestplots_FG:
-    run: stata-mp:latest analysis/an_processout_FGcausespecific_FOREST_R2.do
+  anprocess_forestplots_CoxCauseSpecificR2:
+    run: stata-mp:latest analysis/an_processout_coxcausespecific_R2_FOREST.do
     needs: 
       - anFGcirculatory
       - anFGcancer_ex_nmsc 
@@ -751,7 +751,27 @@ actions:
       - anFGotherinfections
     outputs:
       moderately_sensitive:
-        graphs: analysis/output/an_processout_FGcausespecific_R2_FOREST.svg 
+        graphs: analysis/output/an_processout_regressionmodels_FOREST_R2_COX.svg 
+
+
+  anprocess_forestplots_FG:
+    run: stata-mp:latest analysis/an_processout_FGcausespecific_FOREST_R2.do
+    needs: 
+      - ancoxR2circulatory
+      - ancoxR2cancer_ex_nmsc 
+      - ancoxR2respiratory
+      - ancoxR2respiratorylrti
+      - ancoxR2digestive
+      - ancoxR2mentalhealth
+      - ancoxR2nervoussystem
+      - ancoxR2genitourinary
+      - ancoxR2endo_nutr_metabol
+      - ancoxR2external
+      - ancoxR2musculoskeletal
+      - ancoxR2otherinfections
+    outputs:
+      moderately_sensitive:
+        graphs: analysis/output/an_processout_coxcausespecific_R2_FOREST.svg 
 
 
   runsingledofile:
