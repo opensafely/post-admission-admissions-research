@@ -737,18 +737,18 @@ actions:
   anprocess_forestplots_CoxCauseSpecificR2:
     run: stata-mp:latest analysis/an_processout_coxcausespecific_R2_FOREST.do
     needs: 
-      - ancoxR2circulatory
-      - ancoxR2cancer_ex_nmsc 
-      - ancoxR2respiratory
-      - ancoxR2respiratorylrti
-      - ancoxR2digestive
-      - ancoxR2mentalhealth
-      - ancoxR2nervoussystem
-      - ancoxR2genitourinary
-      - ancoxR2endo_nutr_metabol
-      - ancoxR2external
-      - ancoxR2musculoskeletal
-      - ancoxR2otherinfections
+      - anCOXr2circulatory
+      - anCOXr2cancer_ex_nmsc 
+      - anCOXr2respiratory
+      - anCOXr2respiratorylrti
+      - anCOXr2digestive
+      - anCOXr2mentalhealth
+      - anCOXr2nervoussystem
+      - anCOXr2genitourinary
+      - anCOXr2endo_nutr_metabol
+      - anCOXr2external
+      - anCOXr2musculoskeletal
+      - anCOXr2otherinfections
     outputs:
       moderately_sensitive:
         graphs: analysis/output/an_processout_coxcausespecific_R2_FOREST.svg 
