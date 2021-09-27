@@ -57,8 +57,8 @@ preserve
 	gen adjlong = "Adj for age, sex, geography" if adjustment=="min" & ctrl=="flu"
 	replace adjlong = "Adj for matching factors " if adjustment=="min" & ctrl=="2019gp"
 	replace adjlong = " + comorbidities" if adjustment=="comorbs"
-	replace adjlong = " + obesity/smoking*" if adjustment=="comorbs_lstyle"
-	replace adjlong = " + IMD/ethnicity*" if adjustment=="comorbs_lstyle_ethimd"
+	replace adjlong = " + obesity/smoking" if adjustment=="comorbs_lstyle"
+	replace adjlong = " + IMD/ethnicity" if adjustment=="comorbs_lstyle_ethimd"
 
 	cou
 	local newobs = r(N)+2
