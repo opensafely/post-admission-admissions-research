@@ -86,7 +86,7 @@ tab died_reason if _d==1 & gr==2 & died_date_1o>=d(1/1/2019), sort f m
 tab died_cause_ons if gr==2 & _d==1 & died_r==8 /*copds*/
 */
 
-foreach csoutcome of any respiratorylrti DENOM otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
+foreach csoutcome of any DENOM otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
 
 foreach group of numlist 1 2 4 {
 
