@@ -61,7 +61,7 @@ preserve
 	replace adjlong = " + IMD/ethnicity*" if adjustment=="comorbs_lstyle_ethimd"
 
 	cou
-	gen newobs = r(N)+2
+	local newobs = r(N)+2
 	set obs `newobs'
 	replace graphorder == 0 if _n==_N-1
 	replace graphorder == 24 if _n==_N
