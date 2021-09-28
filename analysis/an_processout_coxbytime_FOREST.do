@@ -67,7 +67,7 @@ if "`outcome'"=="flu" local outcomelab "vs flu"
 
 
 scatter graphorder hr if time==0 , msize(small) mcol(black) || rcap lci uci graphorder if time==0 , hor lw(thin) lc(black) ///
-|| scatter graphorder hr if time=22 , msize(small) mcol(gs5) || rcap lci uci graphorder if time==22, hor lw(thin) lc(gs7) ///
+|| scatter graphorder hr if time==22 , msize(small) mcol(gs5) || rcap lci uci graphorder if time==22, hor lw(thin) lc(gs7) ///
 || scatter graphorder hr if tim==82 , msize(small) mcol(gs10) || rcap lci uci graphorder if time==82, hor lw(thin) lc(gs10) ///
 || scatter graphorder hrcipos, m(i) mlab(hrandci) mlabsize(vsmall) mlabcol(black) ///
 || scatter graphorder modelpos, m(i) mlab(outcometext) mlabsize(vsmall) mlabcol (black) ///
