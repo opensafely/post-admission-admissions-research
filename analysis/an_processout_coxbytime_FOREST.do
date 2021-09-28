@@ -56,8 +56,8 @@ replace outcometext = "Musculoskeletal (M)" if outcome=="musculoskeletal" & time
 replace outcometext = "Genitourinary (N)" if outcome=="genitourinary" & timestratum==0
 replace outcometext = "External causes (S-Y except U/X60-84)" if outcome=="external" & timestratum==0 
 
-replace outcometext = "COMPOSITE (hospitalisation/death)" if outcome="COMPOSITE" & timestratum==0
-replace outcometext = "ALL CAUSE HORTALITY" if outcome=="DEATH" & timestratum=0
+replace outcometext = "COMPOSITE (hospitalisation/death)" if outcome=="COMPOSITE" & timestratum==0
+replace outcometext = "ALL CAUSE MORTALITY" if outcome=="DEATH" & timestratum==0
      
 gen pintstr = "(p-interaction <0.001)" if pinteraction<0.001 & timestratum==82
 replace pintstr = "(p-interaction = " + string(pinteraction, "%4.3f") + ")" if pinteraction>=0.001 & timestratum==82
