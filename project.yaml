@@ -773,6 +773,26 @@ actions:
       moderately_sensitive:
         graphs: analysis/output/an_processout_FGcausespecific_R2_FOREST.svg 
 
+  anprocess_forestplots_coxbytime:
+    run: stata-mp:latest analysis/an_processout_coxbytime_FOREST.do
+    needs: 
+      - ancoxbytime
+      - anCOXr2bytimecirculatory
+      - anCOXr2bytimecancer_ex_nmsc 
+      - anCOXr2bytimerespiratory
+      - anCOXr2bytimerespiratorylrti
+      - anCOXr2bytimedigestive
+      - anCOXr2bytimementalhealth
+      - anCOXr2bytimenervoussystem
+      - anCOXr2bytimegenitourinary
+      - anCOXr2bytimeendo_nutr_metabol
+      - anCOXr2bytimeexternal
+      - anCOXr2bytimemusculoskeletal
+      - anCOXr2bytimeotherinfections
+    outputs:
+      moderately_sensitive:
+        graphs: analysis/output/an_processout_coxbytime_FOREST.svg 
+
 
   runsingledofile:
     run: stata-mp:latest analysis/an_descriptive.do
