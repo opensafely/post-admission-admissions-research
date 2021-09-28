@@ -74,7 +74,7 @@ scatter graphorder hr if time==0 , msize(small) mcol(black) || rcap lci uci grap
 || scatter graphorder modelpos, m(i) mlab(pintstr) mlabsize(vsmall) mlabcol(gs7) ///
 ||, xscale(log range(0.004 320)) xline(1, lp(dash)) xlab(0.5 1 2 5 10 20) ysize(10) ytitle("") yscale(off range(70)) ylab(0 70, nogrid) ytick(none) legend(cols(1) order(1 3 5) label(1 "<30 days (from hospital discharge date)") label(3 "30-<90 days") label(5 "90+ days") size(vsmall)) xtitle(HR and 95% CI) ///
  text(70 0.0025 "`outcomelab'", size(small) placement(e)) ///
- text (70 35 "HR and 95% CI", size(vsmall) placement(e)) name(_`outcome', replace)
+ text(70 35 "HR and 95% CI", size(vsmall) placement(e)) name(_`outcome', replace)
 
 restore
 } /*outcome 2019gp, flu*/
