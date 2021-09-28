@@ -5,9 +5,9 @@ tempfile estimates
 postfile estimates str6 ctrl str20 outcome timestratum hr lei uci pinteraction using `estimates', replace
 
 foreach ctrl of any 2019gp flu{
-foreach outcome of any composite death otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
+foreach outcome of any COMPOSITE DEATH otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
 
-if "`outcome'"!="composite" & "`outcome'"!="death" estimates use analysis/output/models/an_coxbytime_causespecific_R2`outcome'_c`ctrl'_MATCHFACONLY
+if "`outcome'"!="COMPOSITE" & "`outcome'"!="DEATH" estimates use analysis/output/models/an_coxbytime_causespecific_R2`outcome'_c`ctrl'_MATCHFACONLY
 
 else estimates use analysis/output/models/an_coxbytime_R2_`outcome'vs`ctrl'_MINADJ
 
@@ -56,8 +56,8 @@ replace outcometext = "Musculoskeletal (M)" if outcome=="musculoskeletal" & time
 replace outcometext = "Genitourinary (N)" if outcome=="genitourinary" & timestratum==0
 replace outcometext = "External causes (S-Y except U/X60-84)" if outcome=="external" & timestratum==0 
 
-replace outcometext = "COMPOSITE (hospitalisation/death)" if outcome="composite" & timestratum==0
-replace outcometext = "ALL CAUSE HORTALITY" if outcome=="death" & timestratum=0
+replace outcometext = "COMPOSITE (hospitalisation/death)" if outcome="COMPOSITE" & timestratum==0
+replace outcometext = "ALL CAUSE HORTALITY" if outcome=="DEATH" & timestratum=0
      
 gen pintstr = "(p-interaction <0.001)" if pinteraction<0.001 & timestratum==82
 replace pintstr = "(p-interaction = " + string(pinteraction, "%4.3f") + ")" if pinteraction>=0.001 & timestratum==82
