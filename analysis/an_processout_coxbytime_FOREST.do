@@ -2,7 +2,7 @@
 
 cap postutil clear
 tempfile estimates
-postfile estimates str6 ctrl str20 outcome timestratum hr lei uci pinteraction using `estimates', replace
+postfile estimates str6 ctrl str20 outcome timestratum hr lci uci pinteraction using `estimates', replace
 
 foreach ctrl of any 2019gp flu{
 foreach outcome of any COMPOSITE DEATH otherinfections cancer_ex_nmsc endo_nutr_metabol mentalhealth nervoussystem circulatory respiratorylrti respiratory digestive musculoskeletal genitourinary external {
