@@ -39,7 +39,7 @@ replace counter = 3 if timestratum==82 & _n>1
 
 gen graphorder = sum(counter)
 
-gen hrandci + string(hr, "%5.2f") + " (" + string(lci , "%5.2f") + "-" + string(uci , "%5.2f") + ")"
+gen hrandci = string(hr, "%5.2f") + " (" + string(lci , "%5.2f") + "-" + string(uci , "%5.2f") + ")"
 gen hrcipos = 30
 gen modelpos = 0.003
  
