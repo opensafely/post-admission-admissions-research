@@ -32,7 +32,7 @@ preserve
 
 keep if ctrl=="`outcome'"
 gen n=_n
-gsort =n
+gsort -n
  
 gen counter=1
 replace counter = 3 if timestratum==82 & _n>1
