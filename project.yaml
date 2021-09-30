@@ -831,7 +831,7 @@ actions:
       moderately_sensitive:
         log: analysis/output/an_SAcausespecificrespiratory.log
         models: analysis/output/models/an_SAcausespecificrespiratory*.ster
-		
+
   an_SArespiratorylrti:
     run: stata-mp:latest analysis/an_SAcausespecific.do respiratorylrti 40905
     needs: [appenddata]
