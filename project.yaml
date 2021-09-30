@@ -841,7 +841,7 @@ actions:
         models: analysis/output/models/an_SAcausespecificrespiratorylrti*.ster
 
   an_SAdigestive:
-    run: stata-mp:latest analysis/an_SAcausespecific.do digestive 3985-
+    run: stata-mp:latest analysis/an_SAcausespecific.do digestive 3985
     needs: [appenddata]
     outputs:
       moderately_sensitive:

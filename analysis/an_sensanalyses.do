@@ -23,7 +23,6 @@ preserve
 	mi set wide
 	mi register imputed ethnicity
 	mi impute mlogit ethnicity _d i.cumhgp i.group age1 age2 age3 male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(234958)
-	gen id=_n
 	mi stset exitdate, fail(readmission) enter(entrydate) origin(entrydate) id(id)
 	mi stsplit timesinceentry, at(22, 82, 1000)
 	
@@ -54,10 +53,6 @@ preserve
 	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression carehomebin if (group==1|group==4), strata(setid) 
 	estimates save analysis/output/models/an_sensanalyses_compositevs2019gpADJCAREHOME, replace
 	
-	*adj critical care
-	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression anycriticalcare if (group==1|group==4), strata(setid) 
-	estimates save analysis/output/models/an_sensanalyses_compositevs2019gpADJCRITCARE, replace
-	
 	*restrict to u071 
 	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if ((group==1&admitted1_reason=="U071")|group==4), strata(setid) 
 	estimates save analysis/output/models/an_sensanalyses_compositevs2019gpU071, replace
@@ -75,7 +70,6 @@ preserve
 	mi set wide
 	mi register imputed ethnicity
 	mi impute mlogit ethnicity _d i.cumhgp i.group age1 age2 age3 male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(59390)
-	gen id=_n
 	mi stset deathexit, enter(entrydate) fail(deathindicator) origin(entrydate) id(id)
 	mi stsplit timesinceentry, at(22, 82, 1000)
 

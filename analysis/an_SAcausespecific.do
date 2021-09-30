@@ -78,15 +78,15 @@ estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vsfluU071, r
 ***VS GENERAL POP
 *adj non ph
 if "`csoutcome'"=="cancer_ex_nmsc"{
-mi estimate, eform post: stcox exposed i.ethnicity`simplified' i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.timesinceentry##i.cancer_exhaem_cat i.timesinceentry##i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
+mi estimate, eform post noisily: stcox exposed i.ethnicity`simplified' i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.timesinceentry##i.cancer_exhaem_cat i.timesinceentry##i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
 estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJNONPH, replace
 }
 if "`csoutcome'"=="respiratory"{
-mi estimate, eform post: stcox exposed i.ethnicity`simplified' i.timesinceentry##i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 i.timesinceentry##i.chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
+mi estimate, eform post noisily: stcox exposed i.ethnicity`simplified' i.timesinceentry##i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 i.timesinceentry##i.chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
 estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJNONPH, replace
 }
 if "`csoutcome'"=="respiratorylrti"{
-mi estimate, eform post: stcox exposed i.ethnicity`simplified' i.imd i.timesinceentry##i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
+mi estimate, eform post noisily: stcox exposed i.ethnicity`simplified' i.imd i.timesinceentry##i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
 estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJNONPH, replace
 }
 
@@ -95,10 +95,6 @@ estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJN
 *adj care home
 mi estimate, eform post: stcox exposed i.ethnicity`simplified' i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' carehomebin if group==1|group==4, strata(setid)
 estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJCAREHOME, replace
-
-*adj critical care
-mi estimate, eform post: stcox exposed i.ethnicity`simplified' i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' anycriticalcare if group==1|group==4, strata(setid)
-estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJCRITCARE, replace
 
 *restrict to u071
 mi estimate, eform post: stcox exposed i.ethnicity`simplified' i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if ((group==1&admitted1_reason=="U071")|group==4), strata(setid)
