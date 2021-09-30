@@ -793,6 +793,12 @@ actions:
       moderately_sensitive:
         graphs: analysis/output/an_processout_coxbytime_FOREST.svg 
 
+  anphchecks:
+    run: stata-mp:latest analysis/an_phchecks.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_phchecks.log
 
   runsingledofile:
     run: stata-mp:latest analysis/an_descriptive.do
