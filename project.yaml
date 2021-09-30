@@ -800,6 +800,116 @@ actions:
       moderately_sensitive:
         log: analysis/output/an_phchecks.log
 
+  ansensanal:
+    run: stata-mp:latest analysis/an_sensanalyses.do
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_senseanalyses.log
+
+
+  an_SAcirculatory:
+    run: stata-mp:latest analysis/an_SAcausespecific.do circulatory 345
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificcirculatory.log
+        models: analysis/output/models/an_SAcausespecificcirculatory*.ster
+
+  an_SAcancer_ex_nmsc:
+    run: stata-mp:latest analysis/an_SAcausespecific.do cancer_ex_nmsc 6266
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificcancer_ex_nmsc.log
+        models: analysis/output/models/an_SAcausespecificcancer_ex_nmsc*.ster
+
+  an_SArespiratory:
+    run: stata-mp:latest analysis/an_SAcausespecific.do respiratory 7883
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificrespiratory.log
+        models: analysis/output/models/an_SAcausespecificrespiratory*.ster
+		
+  an_SArespiratorylrti:
+    run: stata-mp:latest analysis/an_SAcausespecific.do respiratorylrti 40905
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificrespiratorylrti.log
+        models: analysis/output/models/an_SAcausespecificrespiratorylrti*.ster
+
+  an_SAdigestive:
+    run: stata-mp:latest analysis/an_SAcausespecific.do digestive 3985-
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificdigestive.log
+        models: analysis/output/models/an_SAcausespecificdigestive*.ster
+
+  an_SAmentalhealth:
+    run: stata-mp:latest analysis/an_SAcausespecific.do mentalhealth 347
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificmentalhealth.log
+        models: analysis/output/models/an_SAcausespecificmentalhealth*.ster
+
+  an_SAnervoussystem:
+    run: stata-mp:latest analysis/an_SAcausespecific.do nervoussystem 23
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificnervoussystem.log
+        models: analysis/output/models/an_SAcausespecificnervoussystem*.ster
+
+
+  an_SAgenitourinary:
+    run: stata-mp:latest analysis/an_SAcausespecific.do genitourinary 4556
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificgenitourinary.log
+        models: analysis/output/models/an_SAcausespecificgenitourinary*.ster
+
+
+  an_SAendo_nutr_metabol:
+    run: stata-mp:latest analysis/an_SAcausespecific.do endo_nutr_metabol 5995
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificendo_nutr_metabol.log
+        models: analysis/output/models/an_SAcausespecificendo_nutr_metabol*.ster
+		
+
+  an_SAexternal:
+    run: stata-mp:latest analysis/an_SAcausespecific.do external 2068
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificexternal.log
+        models: analysis/output/models/an_SAcausespecificexternal*.ster
+
+
+  an_SAmusculoskeletal:
+    run: stata-mp:latest analysis/an_SAcausespecific.do musculoskeletal 92885
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificmusculoskeletal.log
+        models: analysis/output/models/an_SAcausespecificmusculoskeletal*.ster
+
+		
+  an_SAotherinfections:
+    run: stata-mp:latest analysis/an_SAcausespecific.do otherinfections 158
+    needs: [appenddata]
+    outputs:
+      moderately_sensitive:
+        log: analysis/output/an_SAcausespecificotherinfections.log
+        models: analysis/output/models/an_SAcausespecificotherinfections*.ster
+
+
   runsingledofile:
     run: stata-mp:latest analysis/an_descriptive.do
     needs: [appenddata]
