@@ -42,7 +42,8 @@ mi register imputed ethnicity
 mi passive: gen ethnicitysimplified = ethnicity
 mi passive: replace ethnicitysimplified = 5 if ethnicitysimplified == 2
 mi impute mlogit ethnicity _d i.cumhgp i.group age male i.region_real i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression , add(10) rseed(`rseed')
-mi stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entrydate) 
+gen id=_n
+mi stset CSexit_`csoutcome', fail(CSfail_`csoutcome') origin(entrydate) enter(entrydate) id(id)
 mi stsplit timesinceentry, at(22, 82, 1000)
 
 ***VS FLU
