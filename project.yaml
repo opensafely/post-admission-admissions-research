@@ -864,7 +864,6 @@ actions:
         log: analysis/output/an_SAcausespecificnervoussystem.log
         models: analysis/output/models/an_SAcausespecificnervoussystem*.ster
 
-
   an_SAgenitourinary:
     run: stata-mp:latest analysis/an_SAcausespecific.do genitourinary 4556
     needs: [appenddata]
@@ -873,7 +872,6 @@ actions:
         log: analysis/output/an_SAcausespecificgenitourinary.log
         models: analysis/output/models/an_SAcausespecificgenitourinary*.ster
 
-
   an_SAendo_nutr_metabol:
     run: stata-mp:latest analysis/an_SAcausespecific.do endo_nutr_metabol 5995
     needs: [appenddata]
@@ -881,7 +879,6 @@ actions:
       moderately_sensitive:
         log: analysis/output/an_SAcausespecificendo_nutr_metabol.log
         models: analysis/output/models/an_SAcausespecificendo_nutr_metabol*.ster
-		
 
   an_SAexternal:
     run: stata-mp:latest analysis/an_SAcausespecific.do external 2068
@@ -891,7 +888,6 @@ actions:
         log: analysis/output/an_SAcausespecificexternal.log
         models: analysis/output/models/an_SAcausespecificexternal*.ster
 
-
   an_SAmusculoskeletal:
     run: stata-mp:latest analysis/an_SAcausespecific.do musculoskeletal 92885
     needs: [appenddata]
@@ -900,7 +896,6 @@ actions:
         log: analysis/output/an_SAcausespecificmusculoskeletal.log
         models: analysis/output/models/an_SAcausespecificmusculoskeletal*.ster
 
-		
   an_SAotherinfections:
     run: stata-mp:latest analysis/an_SAcausespecific.do otherinfections 158
     needs: [appenddata]
