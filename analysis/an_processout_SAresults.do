@@ -53,8 +53,9 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
 postclose results
 
 use `results', clear
-log using analysis/output/an_processout_SAresults, replace tempfile
+log using analysis/output/an_processout_SAresults, replace 
 list 
+outsheet using analysis/output/an_processout_SAresults.txt, replace c
 log close
 
 

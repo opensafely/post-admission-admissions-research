@@ -948,6 +948,7 @@ actions:
     outputs:
       moderately_sensitive:
         log: analysis/output/an_processout_SAresults.log
+        hrs: analysis/output/an_processout_SAresults.txt
 
   runsingledofile:
     run: stata-mp:latest analysis/an_descriptive.do
