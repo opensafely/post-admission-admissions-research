@@ -40,7 +40,7 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
 		}
 		
 	*post the hr lci uci
-	if _rc==0{
+	if _rc==0 & !("`comparator'"="2019gp" & "`SA'"=="ADJCRITCARE") {
 	    lincom exposed, eform
 	    post results ("`SA'") ("`outcome'") ("`comparator'") (r(estimate)) (r(lb)) (r(ub))	
 		}
