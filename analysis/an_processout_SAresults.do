@@ -9,7 +9,7 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
     
 	foreach SA of any original FGmodel ADJNONPH ADJCAREHOME ADJCRITCARE U071 {
 	
-	foreach comparator of any flu gp2019 {
+	foreach comparator of any flu 2019gp {
 	
 	*load the estimates
 		
@@ -17,7 +17,7 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
 	local outcomeupper = upper("`outcome'")
 	if "`SA'"=="original"{
 		if ("`outcome'"=="death"|"`outcome'"=="composite") cap estimates use analysis/output/models/an_cox_R2_`outcomeupper'vs`comparator'_COMORBS_LSTYLE_ETHIMD
-		else cap estimates use analysis/output/models/an_cox_causespecific_R2`outcome'_c`comparator'_COMORBS_LSTYLE_ETHIMD, replace
+		else cap estimates use analysis/output/models/an_cox_causespecific_R2`outcome'_c`comparator'_COMORBS_LSTYLE_ETHIMD
 	}
 	
 	*FG MODEL (only applies to c-s outcomes)
