@@ -932,7 +932,6 @@ actions:
       - anFGexternal
       - anFGmusculoskeletal
       - anFGotherinfections  
-      - ansensanal
       - an_SAcirculatory
       - an_SAcancer_ex_nmsc
       - an_SArespiratory
