@@ -945,8 +945,8 @@ actions:
       - an_SAmusculoskeletal
       - an_SAotherinfections
     outputs:
-    moderately_sensitive:
-      log: analysis/output/an_processout_SAresults.log
+      moderately_sensitive:
+        log: analysis/output/an_processout_SAresults.log
 
   runsingledofile:
     run: stata-mp:latest analysis/an_descriptive.do
