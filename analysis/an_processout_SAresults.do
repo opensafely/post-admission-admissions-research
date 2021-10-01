@@ -12,35 +12,51 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
 	foreach comparator of any flu gp2019 {
 	
 	*load the estimates
-	*post the hr lci uci
-	
+		
 	*ORIGINAL 
-	
+	local outcomeupper = upper("`outcome'"")
+	if "`SA'"=="original"{
+		if ("`outcome'"=="death"|"`outcome'"=="composite") cap estimates use analysis/output/models/an_cox_R2_`outcomeupper'vs`comparator'_COMORBS_LSTYLE_ETHIMD
+		else cap estimates use analysis/output/models/an_cox_causespecific_R2`outcome'_c`comparator'_COMORBS_LSTYLE_ETHIMD, replace
+	}
 	
 	*FG MODEL (only applies to c-s outcomes)
-	an_FG_causespecific_R2circulatory_cflu_COMORBS_LSTYLE_ETHIMD
+	else if "SA"=="FGmodel"{
+		cap estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`comparator'_COMORBS_LSTYLE_ETHIMD
+	}
 	
 	*adjNONPH
-	an_sensanalyses_deathvsfluADJNONPH (not for deaths vs gp )
-	an_SAcausespecificcirculatory_vsfluADJNONPH (selected c-s only)
+	else if "SA"=="ADJNONPH"{
+		if ("`outcome'"=="death"|"`outcome'"=="composite") cap estimates use analysis/output/models/an_sensanalyses_`outcome'vs`comparator'ADJNONPH 
+		else cap estimates use analysis/output/models/an_SAcausespecific`outcome'_vs`comparator'ADJNONPH 
+	}
 	
 	*adjCAREHOME
-	an_sensanalyses_deathvsfluADJCRITCARE (composite death)
-	an_SAcausespecificcirculatory_vsfluADJCAREHOME
-	
 	*adjCRITCARE
-	an_sensanalyses_deathvsfluADJCAREHOME (composite death) ; vs flu only
-	an_SAcausespecificcirculatory_vsfluADJCRITCARE ; vs flu only
-
 	*u071
-	an_sensanalyses... (composite death)
-	an_SAcausespecificcirculatory_vsfluU071
-
-	
+	else {
+	    if ("`outcome'"=="death"|"`outcome'"=="composite") cap estimates use analysis/output/models/an_sensanalyses_`outcome'vs`comparator'`SA'
+		else cap estimates use analysis/output/models/an_SAcausespecific`outcome'_vs`comparator'`SA'
+		}
+		
+	*post the hr lci uci
+	if _rc==0{
+	    lincom exposed, eform
+	    post results ("`SA'") ("`outcome'") ("comparator") (r(estimate)) (r(lb)) (r(ub))	
+		}
+			
 	} /*comparator*/
 	} /*SA*/
 	
 } /*outcome*/
+
+postclose results
+
+use `results', clear
+log using analysis/output/an_processout_SAresults, replace tempfile
+list 
+log close
+
 
 
 

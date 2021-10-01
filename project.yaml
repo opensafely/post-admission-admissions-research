@@ -904,6 +904,50 @@ actions:
         log: analysis/output/an_SAcausespecificotherinfections.log
         models: analysis/output/models/an_SAcausespecificotherinfections*.ster
 
+  anprocessoutSA:
+    run: stata-mp:latest analysis/an_processout_SAresults.do
+    needs: 
+      - ancoxMI
+      - anCOXr2circulatory
+      - anCOXr2cancer_ex_nmsc
+      - anCOXr2respiratory
+      - anCOXr2respiratorylrti
+      - anCOXr2digestive
+      - anCOXr2mentalhealth
+      - anCOXr2nervoussystem
+      - anCOXr2genitourinary
+      - anCOXr2endo_nutr_metabol
+      - anCOXr2external
+      - anCOXr2musculoskeletal
+      - anCOXr2otherinfections  
+      - anFGcirculatory
+      - anFGcancer_ex_nmsc
+      - anFGrespiratory
+      - anFGrespiratorylrti
+      - anFGdigestive
+      - anFGmentalhealth
+      - anFGnervoussystem
+      - anFGgenitourinary
+      - anFGendo_nutr_metabol
+      - anFGexternal
+      - anFGmusculoskeletal
+      - anFGotherinfections  
+      - ansensanal
+      - an_SAcirculatory
+      - an_SAcancer_ex_nmsc
+      - an_SArespiratory
+      - an_SArespiratorylrti
+      - an_SAdigestive
+      - an_SAmentalhealth
+      - an_SAnervoussystem
+      - an_SAgenitourinary
+      - an_SAendo_nutr_metabol
+      - an_SAexternal
+      - an_SAmusculoskeletal
+      - an_SAotherinfections
+    outputs:
+    moderately_sensitive:
+      log: analysis/output/an_processout_SAresults.log
 
   runsingledofile:
     run: stata-mp:latest analysis/an_descriptive.do
