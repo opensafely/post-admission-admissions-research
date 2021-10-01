@@ -28,7 +28,17 @@ preserve
 	
 	*vs flu controls
 	*adj non ph
-	mi estimate, eform post: stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd i.timesinceentry##i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.timesinceentry##i.cancer_exhaem_cat i.timesinceentry##i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia i.timesinceentry##i.other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if (group==1|group==2)
+	mi estimate, eform post: stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd ///
+	i.obese4cat_withmiss 22.timesinceentry#2.obese4cat_withmiss 22.timesinceentry#3.obese4cat_withmiss 22.timesinceentry#4.obese4cat_withmiss ///
+	i.obese4cat_withmiss 82.timesinceentry#2.obese4cat_withmiss 82.timesinceentry#3.obese4cat_withmiss 82.timesinceentry#4.obese4cat_withmiss ///
+	i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat ///
+	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem.cat 22.timesinceentry#2.cancer_exhaem.cat 22.timesinceentry#3.cancer_exhaem.cat ///
+						82.timesinceentry#1.cancer_exhaem.cat 82.timesinceentry#2.cancer_exhaem.cat 82.timesinceentry#3.cancer_exhaem.cat ///
+	i.cancer_haem_cat 22.timesinceentry#1.cancer_haem.cat 22.timesinceentry#2.cancer_haem.cat 22.timesinceentry#3.cancer_haem.cat ///
+						82.timesinceentry#1.cancer_haem.cat 82.timesinceentry#2.cancer_haem.cat 82.timesinceentry#3.cancer_haem.cat ///
+	i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia ///
+	i.other_neuro 22.timesinceentry#1.other_neuro 82.timesinceentry#1.other_neuro ///
+	organ_transplant spleen ra_sle_psoriasis other_immunosuppression if (group==1|group==2)
 	estimates save analysis/output/models/an_sensanalyses_compositevsfluADJNONPH, replace
 	
 	*adj carehome
@@ -46,7 +56,10 @@ preserve
 	
 	*vs 2019 gen pop controls
 	*adj non ph
-	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.timesinceentry##i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if (group==1|group==4), strata(setid) 
+	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat ///
+	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem.cat 22.timesinceentry#2.cancer_exhaem.cat 22.timesinceentry#3.cancer_exhaem.cat ///
+						82.timesinceentry#1.cancer_exhaem.cat 82.timesinceentry#2.cancer_exhaem.cat 82.timesinceentry#3.cancer_exhaem.cat ///
+	i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if (group==1|group==4), strata(setid) 
 	estimates save analysis/output/models/an_sensanalyses_compositevs2019gpADJNONPH, replace
 	
 	*adj carehome
@@ -75,7 +88,20 @@ preserve
 
 *vs 2017_19-flu controls
 	*adj non ph
-	mi estimate, eform post: stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd i.timesinceentry##i.obese4cat_withmiss i.smoke htdiag i.timesinceentry##i.chronic_respiratory_disease i.asthmacat i.timesinceentry##i.chronic_cardiac_disease i.diabcat i.timesinceentry##i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke i.timesinceentry##i.dementia i.timesinceentry##i.other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if (group==1|group==2)
+	mi estimate, eform post: stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd ///
+	i.obese4cat_withmiss 22.timesinceentry#2.obese4cat_withmiss 22.timesinceentry#3.obese4cat_withmiss 22.timesinceentry#4.obese4cat_withmiss ///
+	i.obese4cat_withmiss 82.timesinceentry#2.obese4cat_withmiss 82.timesinceentry#3.obese4cat_withmiss 82.timesinceentry#4.obese4cat_withmiss ///
+	i.smoke htdiag ///
+	i.chronic_respiratory_disease 22.timesinceentry#1.chronic_respiratory_disease 82.timesinceentry#1.chronic_respiratory_disease ///
+	i.asthmacat ///
+	i.chronic_cardiac_disease 22.timesinceentry#1.chronic_cardiac_disease 82.timesinceentry#1.chronic_cardiac_disease ///
+	i.diabcat ///
+	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem.cat 22.timesinceentry#2.cancer_exhaem.cat 22.timesinceentry#3.cancer_exhaem.cat ///
+						82.timesinceentry#1.cancer_exhaem.cat 82.timesinceentry#2.cancer_exhaem.cat 82.timesinceentry#3.cancer_exhaem.cat ///
+	i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke ///
+	i.dementia 22.timesinceentry#1.dementia 82.timesinceentry#1.dementia ///
+	i.other_neuro 22.timesinceentry#1.other_neuro 82.timesinceentry#1.other_neuro ///
+	organ_transplant spleen ra_sle_psoriasis other_immunosuppression if (group==1|group==2)
 	estimates save analysis/output/models/an_sensanalyses_deathvsfluADJNONPH
 	*adj carehome
 	mi estimate, eform post: stcox exposed age1 age2 age3 male i.stp i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression carehomebin if (group==1|group==2)
@@ -95,10 +121,6 @@ preserve
 	*adj carehome
 	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression carehomebin if (group==1|group==4), strata(setid) 
 	estimates save analysis/output/models/an_sensanalyses_deathvs2019gpADJCAREHOME, replace
-	
-	*adj critical care
-	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression anycriticalcare if (group==1|group==4), strata(setid) 
-	estimates save analysis/output/models/an_sensanalyses_deathvs2019gpADJCRITCARE, replace
 	
 	*restrict tou071
 	mi estimate, eform post: stcox exposed i.ethnicity i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat i.cancer_exhaem_cat i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis other_immunosuppression if ((group==1&admitted1_reason=="U071")|group==4), strata(setid) 
