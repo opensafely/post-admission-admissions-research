@@ -14,19 +14,19 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
 	*load the estimates
 		
 	*ORIGINAL 
-	local outcomeupper = upper("`outcome'"")
+	local outcomeupper = upper("`outcome'")
 	if "`SA'"=="original"{
 		if ("`outcome'"=="death"|"`outcome'"=="composite") cap estimates use analysis/output/models/an_cox_R2_`outcomeupper'vs`comparator'_COMORBS_LSTYLE_ETHIMD
 		else cap estimates use analysis/output/models/an_cox_causespecific_R2`outcome'_c`comparator'_COMORBS_LSTYLE_ETHIMD, replace
 	}
 	
 	*FG MODEL (only applies to c-s outcomes)
-	else if "SA"=="FGmodel"{
+	else if "`SA'"=="FGmodel"{
 		cap estimates use analysis/output/models/an_FG_causespecific_R2`outcome'_c`comparator'_COMORBS_LSTYLE_ETHIMD
 	}
 	
 	*adjNONPH
-	else if "SA"=="ADJNONPH"{
+	else if "`SA'"=="ADJNONPH"{
 		if ("`outcome'"=="death"|"`outcome'"=="composite") cap estimates use analysis/output/models/an_sensanalyses_`outcome'vs`comparator'ADJNONPH 
 		else cap estimates use analysis/output/models/an_SAcausespecific`outcome'_vs`comparator'ADJNONPH 
 	}
@@ -42,7 +42,7 @@ foreach outcome of any composite death circulatory cancer_ex_nmsc respiratory re
 	*post the hr lci uci
 	if _rc==0{
 	    lincom exposed, eform
-	    post results ("`SA'") ("`outcome'") ("comparator") (r(estimate)) (r(lb)) (r(ub))	
+	    post results ("`SA'") ("`outcome'") ("`comparator'") (r(estimate)) (r(lb)) (r(ub))	
 		}
 			
 	} /*comparator*/
