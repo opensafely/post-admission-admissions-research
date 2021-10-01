@@ -92,7 +92,7 @@ replace analysislong = "Confirmed COVID-19" if analysis=="U071"
 replace analysislong = "Fine & Gray model" if analysis=="FGmodel"
 replace analysislong = "Adj non-PH" if analysis=="ADJNONPH"
 replace analysislong = "Adj critical care" if analysis=="ADJCRITCARE"
-replace analysislong = "Adj care home" if analysis=="ADJCAREHOME""
+replace analysislong = "Adj care home" if analysis=="ADJCAREHOME"
 
 scatter n adjhr || rcap lci uci n, hor || scatter n xpos, m(i) mlab(analysislong) mlabsize(vsmall) || if comparator=="flu", subtitle(,size(small)) by(outcome, legend(off)) xscale(log) xline(1,lp(dash)) xtitle("HR/sHR* & 95% CI") ylabel(none) ytitle("")
 graph export analysis/output/an_processout_SAresults_VSFLU.svg, as(svg)
