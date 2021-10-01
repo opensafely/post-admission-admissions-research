@@ -61,8 +61,8 @@ mi estimate, eform post: stcox exposed ///
 	i.obese4cat_withmiss 22.timesinceentry#2.obese4cat_withmiss 22.timesinceentry#3.obese4cat_withmiss 22.timesinceentry#4.obese4cat_withmiss ///
 	i.obese4cat_withmiss 82.timesinceentry#2.obese4cat_withmiss 82.timesinceentry#3.obese4cat_withmiss 82.timesinceentry#4.obese4cat_withmiss ///
 	i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat ///
-	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem.cat 22.timesinceentry#2.cancer_exhaem.cat 22.timesinceentry#3.cancer_exhaem.cat ///
-						82.timesinceentry#1.cancer_exhaem.cat 82.timesinceentry#2.cancer_exhaem.cat 82.timesinceentry#3.cancer_exhaem.cat ///
+	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem_cat 22.timesinceentry#2.cancer_exhaem_cat 22.timesinceentry#3.cancer_exhaem_cat ///
+						82.timesinceentry#1.cancer_exhaem_cat 82.timesinceentry#2.cancer_exhaem_cat 82.timesinceentry#3.cancer_exhaem_cat ///
 	i.cancer_haem_cat i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia ///
 	i.other_neuro 22.timesinceentry#1.other_neuro 82.timesinceentry#1.other_neuro ///
 	organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==2 
@@ -96,10 +96,10 @@ estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vsfluU071, r
 *adj non ph
 if "`csoutcome'"=="cancer_ex_nmsc"{
 mi estimate, eform post noisily: stcox exposed i.ethnicity`simplified' i.imd i.obese4cat_withmiss i.smoke htdiag chronic_respiratory_disease i.asthmacat chronic_cardiac_disease i.diabcat ///
-	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem.cat 22.timesinceentry#2.cancer_exhaem.cat 22.timesinceentry#3.cancer_exhaem.cat ///
-						82.timesinceentry#1.cancer_exhaem.cat 82.timesinceentry#2.cancer_exhaem.cat 82.timesinceentry#3.cancer_exhaem.cat ///
-	i.cancer_haem_cat 22.timesinceentry#1.cancer_haem.cat 22.timesinceentry#2.cancer_haem.cat 22.timesinceentry#3.cancer_haem.cat ///
-						82.timesinceentry#1.cancer_haem.cat 82.timesinceentry#2.cancer_haem.cat 82.timesinceentry#3.cancer_haem.cat ///
+	i.cancer_exhaem_cat 22.timesinceentry#1.cancer_exhaem_cat 22.timesinceentry#2.cancer_exhaem_cat 22.timesinceentry#3.cancer_exhaem_cat ///
+						82.timesinceentry#1.cancer_exhaem_cat 82.timesinceentry#2.cancer_exhaem_cat 82.timesinceentry#3.cancer_exhaem_cat ///
+	i.cancer_haem_cat 22.timesinceentry#1.cancer_haem_cat 22.timesinceentry#2.cancer_haem_cat 22.timesinceentry#3.cancer_haem_cat ///
+						82.timesinceentry#1.cancer_haem_cat 82.timesinceentry#2.cancer_haem_cat 82.timesinceentry#3.cancer_haem_cat ///
 i.reduced_kidney_function_cat2 chronic_liver_disease stroke dementia other_neuro organ_transplant spleen ra_sle_psoriasis `other_immunosuppression' if group==1|group==4, strata(setid)
 estimates save analysis/output/models/an_SAcausespecific`csoutcome'_vs2019gpADJNONPH, replace
 }
