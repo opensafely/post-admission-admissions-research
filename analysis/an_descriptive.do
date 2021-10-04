@@ -19,14 +19,27 @@ restore
 
 preserve
 *Round entry dates into monthly bins for histogram
+*Add small cell suppression - <=5 replaced with 5
 
-gen datehist = mdy(month(discharged1_date),15,2020) if group==1
+gen yearentry = year(discharged1_date) if group==1|group==2
+replace yearentry = 2019 if group==4
+gen yearmonth = yearentry+10000*monthentry
+table yearmonth group, c(freq) replace
+gen year = mod(tearmonth, 10000)
+gen month = (yearmonth - year)/10000
+
+replace table1=5 if table1<=5
+
+gen datehist = mdy(month,15,year)
+
+/*gen datehist = mdy(month(discharged1_date),15,2020) if group==1
 replace datehist = mdy(monthentry,15,2019) if group==4
 replace datehist = mdy(month(discharged1_date),15,year(discharged1_date)) if group==2
+*/
 
 format %d datehist 
 
-histogram datehist if (group==1|group==2|group==4), by(group, cols(1)) bin(48) xtitle(Entry date)
+histogram datehist if (group==1|group==2|group==4) [fw=table1], by(group, cols(1)) bin(48) xtitle(Entry date)
 graph export analysis/output/an_descriptive_EVENTSBYTIME.svg, as(svg) replace
 
 restore 
