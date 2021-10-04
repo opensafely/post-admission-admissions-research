@@ -25,7 +25,7 @@ gen yearentry = year(discharged1_date) if group==1|group==2
 replace yearentry = 2019 if group==4
 gen yearmonth = yearentry+10000*monthentry
 table yearmonth group, c(freq) replace
-gen year = mod(tearmonth, 10000)
+gen year = mod(yearmonth, 10000)
 gen month = (yearmonth - year)/10000
 
 replace table1=5 if table1<=5
