@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- This is a Stata 16.1 generated SVG file (http://www.stata.com) -->
+
+<svg version="1.1" width="5.50in" height="4.00in" viewBox="0 0 3960 2880" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>Stata Graph - Graph</desc>
+	<rect x="0" y="0" width="3960" height="2880" style="fill:#EAF2F3;stroke:none"/>
+	<rect x="0.00" y="0.00" width="3959.88" height="2880.00" style="fill:#EAF2F3"/>
+	<rect x="2.88" y="2.88" width="3954.12" height="2874.24" style="fill:none;stroke:#EAF2F3;stroke-width:5.76"/>
+	<rect x="147.39" y="204.07" width="867.36" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="149.11" y="205.80" width="863.91" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="581.13" y1="628.17" x2="581.13" y2="570.63" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="541.79" x2="581.13" y2="484.13" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="455.41" x2="581.13" y2="397.74" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="369.03" x2="581.13" y2="311.36" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="282.53" x2="581.13" y2="224.98" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="1083.93" y="204.07" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="1085.65" y="205.80" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="1517.67" y1="628.17" x2="1517.67" y2="570.63" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="541.79" x2="1517.67" y2="484.13" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="455.41" x2="1517.67" y2="397.74" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="369.03" x2="1517.67" y2="311.36" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="282.53" x2="1517.67" y2="224.98" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="2020.47" y="204.07" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="2022.19" y="205.80" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="2454.21" y1="628.17" x2="2454.21" y2="570.63" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="541.79" x2="2454.21" y2="484.13" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="455.41" x2="2454.21" y2="397.74" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="369.03" x2="2454.21" y2="311.36" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="282.53" x2="2454.21" y2="224.98" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="2957.01" y="204.07" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="2958.73" y="205.80" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="3390.75" y1="628.17" x2="3390.75" y2="570.63" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="541.79" x2="3390.75" y2="484.13" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="455.41" x2="3390.75" y2="397.74" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="369.03" x2="3390.75" y2="311.36" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="282.53" x2="3390.75" y2="224.98" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="147.39" y="766.04" width="867.36" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="149.11" y="767.76" width="863.91" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="581.13" y1="1190.14" x2="581.13" y2="1132.60" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="1103.76" x2="581.13" y2="1046.22" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="1017.38" x2="581.13" y2="959.71" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="931.00" x2="581.13" y2="873.33" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="844.50" x2="581.13" y2="786.95" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="1083.93" y="766.04" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="1085.65" y="767.76" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="1517.67" y1="1190.14" x2="1517.67" y2="1132.60" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="1103.76" x2="1517.67" y2="1046.22" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="1017.38" x2="1517.67" y2="959.71" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="931.00" x2="1517.67" y2="873.33" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="844.50" x2="1517.67" y2="786.95" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="2020.47" y="766.04" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="2022.19" y="767.76" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="2454.21" y1="1190.14" x2="2454.21" y2="1132.60" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="1103.76" x2="2454.21" y2="1046.22" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="1017.38" x2="2454.21" y2="959.71" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="931.00" x2="2454.21" y2="873.33" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="844.50" x2="2454.21" y2="786.95" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="2957.01" y="766.04" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="2958.73" y="767.76" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="3390.75" y1="1190.14" x2="3390.75" y2="1132.60" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="1103.76" x2="3390.75" y2="1046.22" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="1017.38" x2="3390.75" y2="959.71" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="931.00" x2="3390.75" y2="873.33" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="844.50" x2="3390.75" y2="786.95" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="147.39" y="1328.00" width="867.36" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="149.11" y="1329.73" width="863.91" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="581.13" y1="1752.11" x2="581.13" y2="1694.56" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="1665.73" x2="581.13" y2="1608.18" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="1579.35" x2="581.13" y2="1521.68" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="1492.97" x2="581.13" y2="1435.30" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="1406.59" x2="581.13" y2="1348.92" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="1083.93" y="1328.00" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="1085.65" y="1329.73" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="1517.67" y1="1752.11" x2="1517.67" y2="1694.56" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="1665.73" x2="1517.67" y2="1608.18" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="1579.35" x2="1517.67" y2="1521.68" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="1492.97" x2="1517.67" y2="1435.30" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="1406.59" x2="1517.67" y2="1348.92" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="2020.47" y="1328.00" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="2022.19" y="1329.73" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="2454.21" y1="1752.11" x2="2454.21" y2="1694.56" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="1665.73" x2="2454.21" y2="1608.18" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="1579.35" x2="2454.21" y2="1521.68" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="1492.97" x2="2454.21" y2="1435.30" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="2454.21" y1="1406.59" x2="2454.21" y2="1348.92" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="2957.01" y="1328.00" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="2958.73" y="1329.73" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="3390.75" y1="1752.11" x2="3390.75" y2="1694.56" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="1665.73" x2="3390.75" y2="1608.18" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="1579.35" x2="3390.75" y2="1521.68" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="1492.97" x2="3390.75" y2="1435.30" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="3390.75" y1="1406.59" x2="3390.75" y2="1348.92" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="147.39" y="1998.01" width="867.36" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="149.11" y="1999.73" width="863.91" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="581.13" y1="2422.11" x2="581.13" y2="2364.57" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="2335.73" x2="581.13" y2="2278.06" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="2249.35" x2="581.13" y2="2191.68" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="2162.97" x2="581.13" y2="2105.30" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="581.13" y1="2076.47" x2="581.13" y2="2018.92" style="stroke:#C10534;stroke-width:5.18"/>
+	<rect x="1083.93" y="1998.01" width="867.49" height="424.10" style="fill:#FFFFFF"/>
+	<rect x="1085.65" y="1999.73" width="864.03" height="420.65" style="fill:none;stroke:#FFFFFF;stroke-width:3.46"/>
+	<line x1="1517.67" y1="2422.11" x2="1517.67" y2="2364.57" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="2335.73" x2="1517.67" y2="2278.06" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="2249.35" x2="1517.67" y2="2191.68" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="2162.97" x2="1517.67" y2="2105.30" style="stroke:#C10534;stroke-width:5.18"/>
+	<line x1="1517.67" y1="2076.47" x2="1517.67" y2="2018.92" style="stroke:#C10534;stroke-width:5.18"/>
+	<circle cx="716.51" cy="590.31" r="15.83" style="fill:#1A476F"/>
+	<circle cx="716.51" cy="590.31" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="718.25" cy="503.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="718.25" cy="503.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="713.29" cy="416.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="713.29" cy="416.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="718.00" cy="329.19" r="15.83" style="fill:#1A476F"/>
+	<circle cx="718.00" cy="329.19" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="710.57" y1="590.18" x2="722.45" y2="590.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="722.45" y1="603.42" x2="722.45" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="710.57" y1="603.42" x2="710.57" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="712.43" y1="503.18" x2="724.18" y2="503.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="724.18" y1="516.42" x2="724.18" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="712.43" y1="516.42" x2="712.43" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="706.98" y1="416.18" x2="719.73" y2="416.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="719.73" y1="429.43" x2="719.73" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="706.98" y1="429.43" x2="706.98" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="712.18" y1="329.06" x2="723.94" y2="329.06" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="723.94" y1="342.30" x2="723.94" y2="315.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="712.18" y1="342.30" x2="712.18" y2="315.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="210.62" y="602.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="210.62" y="515.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj non-PH</text>
+	<text x="210.62" y="428.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="210.62" y="341.70" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="1779.28" cy="590.31" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1779.28" cy="590.31" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1782.49" cy="503.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1782.49" cy="503.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1788.06" cy="416.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1788.06" cy="416.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="1766.65" y1="590.18" x2="1792.15" y2="590.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1792.15" y1="603.42" x2="1792.15" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1766.65" y1="603.42" x2="1766.65" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1768.76" y1="503.18" x2="1796.23" y2="503.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1796.23" y1="516.42" x2="1796.23" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1768.76" y1="516.42" x2="1768.76" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1775.57" y1="416.18" x2="1800.69" y2="416.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1800.69" y1="429.43" x2="1800.69" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1775.57" y1="429.43" x2="1775.57" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="1147.16" y="602.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="1147.16" y="515.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="1147.16" y="428.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="2657.16" cy="590.31" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2657.16" cy="590.31" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2639.71" cy="503.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2639.71" cy="503.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2652.58" cy="416.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2652.58" cy="416.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2660.25" cy="329.19" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2660.25" cy="329.19" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="2629.44" y1="590.18" x2="2685.13" y2="590.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2685.13" y1="603.42" x2="2685.13" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2629.44" y1="603.42" x2="2629.44" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2615.21" y1="503.18" x2="2664.46" y2="503.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2664.46" y1="516.42" x2="2664.46" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2615.21" y1="516.42" x2="2615.21" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2621.89" y1="416.18" x2="2683.39" y2="416.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2683.39" y1="429.43" x2="2683.39" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2621.89" y1="429.43" x2="2621.89" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2632.53" y1="329.06" x2="2687.97" y2="329.06" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2687.97" y1="342.30" x2="2687.97" y2="315.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2632.53" y1="342.30" x2="2632.53" y2="315.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="2083.70" y="602.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="2083.70" y="515.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="2083.70" y="428.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="2083.70" y="341.70" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="3475.39" cy="590.31" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3475.39" cy="590.31" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3471.81" cy="503.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3471.81" cy="503.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3498.54" cy="416.18" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3498.54" cy="416.18" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3462.28" cy="329.19" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3462.28" cy="329.19" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3474.41" cy="242.19" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3474.41" cy="242.19" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="3450.77" y1="590.18" x2="3500.02" y2="590.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3500.02" y1="603.42" x2="3500.02" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3450.77" y1="603.42" x2="3450.77" y2="577.06" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3447.06" y1="503.18" x2="3496.80" y2="503.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3496.80" y1="516.42" x2="3496.80" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3447.06" y1="516.42" x2="3447.06" y2="490.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3478.86" y1="416.18" x2="3518.34" y2="416.18" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3518.34" y1="429.43" x2="3518.34" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3478.86" y1="429.43" x2="3478.86" y2="403.07" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3435.05" y1="329.06" x2="3489.63" y2="329.06" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3489.63" y1="342.30" x2="3489.63" y2="315.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3435.05" y1="342.30" x2="3435.05" y2="315.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3450.03" y1="242.06" x2="3499.03" y2="242.06" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3499.03" y1="255.30" x2="3499.03" y2="228.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3450.03" y1="255.30" x2="3450.03" y2="228.94" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="3020.37" y="602.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="3020.37" y="515.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj non-PH</text>
+	<text x="3020.37" y="428.82" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="3020.37" y="341.70" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="3020.37" y="254.70" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="751.04" cy="1152.27" r="15.83" style="fill:#1A476F"/>
+	<circle cx="751.04" cy="1152.27" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="713.29" cy="1065.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="713.29" cy="1065.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="750.54" cy="978.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="750.54" cy="978.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="751.41" cy="891.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="751.41" cy="891.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="713.42" y1="1152.15" x2="788.78" y2="1152.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="788.78" y1="1165.39" x2="788.78" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="713.42" y1="1165.39" x2="713.42" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="680.25" y1="1065.15" x2="746.46" y2="1065.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="746.46" y1="1078.39" x2="746.46" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="680.25" y1="1078.39" x2="680.25" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="709.83" y1="978.15" x2="791.38" y2="978.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="791.38" y1="991.39" x2="791.38" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="709.83" y1="991.39" x2="709.83" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="713.91" y1="891.03" x2="788.91" y2="891.03" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="788.91" y1="904.27" x2="788.91" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="713.91" y1="904.27" x2="713.91" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="210.62" y="1164.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="210.62" y="1077.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="210.62" y="990.79" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="210.62" y="903.66" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="1745.74" cy="1152.27" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1745.74" cy="1152.27" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1708.12" cy="1065.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1708.12" cy="1065.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1746.11" cy="978.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1746.11" cy="978.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1748.71" cy="891.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1748.71" cy="891.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="1701.32" y1="1152.15" x2="1790.17" y2="1152.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1790.17" y1="1165.39" x2="1790.17" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1701.32" y1="1165.39" x2="1701.32" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1674.83" y1="1065.15" x2="1741.41" y2="1065.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1741.41" y1="1078.39" x2="1741.41" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1674.83" y1="1078.39" x2="1674.83" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1698.22" y1="978.15" x2="1794.13" y2="978.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1794.13" y1="991.39" x2="1794.13" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1698.22" y1="991.39" x2="1698.22" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1704.53" y1="891.03" x2="1792.89" y2="891.03" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1792.89" y1="904.27" x2="1792.89" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1704.53" y1="904.27" x2="1704.53" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="1147.16" y="1164.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="1147.16" y="1077.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="1147.16" y="990.79" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="1147.16" y="903.66" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="2585.51" cy="1152.27" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2585.51" cy="1152.27" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2577.96" cy="1065.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2577.96" cy="1065.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2579.20" cy="978.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2579.20" cy="978.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2590.71" cy="891.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2590.71" cy="891.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="2550.86" y1="1152.15" x2="2620.41" y2="1152.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2620.41" y1="1165.39" x2="2620.41" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2550.86" y1="1165.39" x2="2550.86" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2546.65" y1="1065.15" x2="2609.39" y2="1065.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2609.39" y1="1078.39" x2="2609.39" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2546.65" y1="1078.39" x2="2546.65" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2540.96" y1="978.15" x2="2617.44" y2="978.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2617.44" y1="991.39" x2="2617.44" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2540.96" y1="991.39" x2="2540.96" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2556.18" y1="891.03" x2="2625.23" y2="891.03" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2625.23" y1="904.27" x2="2625.23" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2556.18" y1="904.27" x2="2556.18" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="2083.70" y="1164.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="2083.70" y="1077.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="2083.70" y="990.79" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="2083.70" y="903.66" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="3546.30" cy="1152.27" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3546.30" cy="1152.27" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3524.40" cy="1065.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3524.40" cy="1065.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3539.25" cy="978.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3539.25" cy="978.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3547.66" cy="891.15" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3547.66" cy="891.15" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="3531.08" y1="1152.15" x2="3561.53" y2="1152.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3561.53" y1="1165.39" x2="3561.53" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3531.08" y1="1165.39" x2="3531.08" y2="1139.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3510.29" y1="1065.15" x2="3538.51" y2="1065.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3538.51" y1="1078.39" x2="3538.51" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3510.29" y1="1078.39" x2="3510.29" y2="1052.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3522.91" y1="978.15" x2="3555.83" y2="978.15" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3555.83" y1="991.39" x2="3555.83" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3522.91" y1="991.39" x2="3522.91" y2="965.03" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3532.57" y1="891.03" x2="3562.76" y2="891.03" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3562.76" y1="904.27" x2="3562.76" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3532.57" y1="904.27" x2="3532.57" y2="877.91" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="3020.37" y="1164.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="3020.37" y="1077.78" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="3020.37" y="990.79" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="3020.37" y="903.66" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="942.98" cy="1714.24" r="15.83" style="fill:#1A476F"/>
+	<circle cx="942.98" cy="1714.24" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="948.30" cy="1627.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="948.30" cy="1627.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="909.44" cy="1540.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="909.44" cy="1540.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="947.80" cy="1453.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="947.80" cy="1453.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="948.17" cy="1366.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="948.17" cy="1366.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="925.53" y1="1714.11" x2="960.67" y2="1714.11" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="960.67" y1="1727.36" x2="960.67" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="925.53" y1="1727.36" x2="925.53" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="930.97" y1="1627.12" x2="965.75" y2="1627.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="965.75" y1="1640.36" x2="965.75" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="930.97" y1="1640.36" x2="930.97" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="894.84" y1="1540.12" x2="924.16" y2="1540.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="924.16" y1="1553.36" x2="924.16" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="894.84" y1="1553.36" x2="894.84" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="928.74" y1="1453.12" x2="966.98" y2="1453.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="966.98" y1="1466.36" x2="966.98" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="928.74" y1="1466.36" x2="928.74" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="930.85" y1="1366.00" x2="965.62" y2="1366.00" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="965.62" y1="1379.24" x2="965.62" y2="1352.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="930.85" y1="1379.24" x2="930.85" y2="1352.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="210.62" y="1726.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="210.62" y="1639.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj non-PH</text>
+	<text x="210.62" y="1552.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="210.62" y="1465.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="210.62" y="1378.63" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="1762.69" cy="1714.24" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1762.69" cy="1714.24" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1767.77" cy="1627.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1767.77" cy="1627.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1732.13" cy="1540.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1732.13" cy="1540.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1740.42" cy="1453.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1740.42" cy="1453.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1767.40" cy="1366.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1767.40" cy="1366.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="1737.57" y1="1714.11" x2="1787.82" y2="1714.11" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1787.82" y1="1727.36" x2="1787.82" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1737.57" y1="1727.36" x2="1737.57" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1742.77" y1="1627.12" x2="1792.89" y2="1627.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1792.89" y1="1640.36" x2="1792.89" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1742.77" y1="1640.36" x2="1742.77" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1711.59" y1="1540.12" x2="1752.67" y2="1540.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1752.67" y1="1553.36" x2="1752.67" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1711.59" y1="1553.36" x2="1711.59" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1712.58" y1="1453.12" x2="1768.39" y2="1453.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1768.39" y1="1466.36" x2="1768.39" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1712.58" y1="1466.36" x2="1712.58" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1742.52" y1="1366.00" x2="1792.52" y2="1366.00" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1792.52" y1="1379.24" x2="1792.52" y2="1352.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1742.52" y1="1379.24" x2="1742.52" y2="1352.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="1147.16" y="1726.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="1147.16" y="1639.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj non-PH</text>
+	<text x="1147.16" y="1552.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="1147.16" y="1465.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="1147.16" y="1378.63" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="2514.48" cy="1714.24" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2514.48" cy="1714.24" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2509.77" cy="1627.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2509.77" cy="1627.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2508.78" cy="1540.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2508.78" cy="1540.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="2513.61" cy="1453.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="2513.61" cy="1453.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="2498.64" y1="1714.11" x2="2530.56" y2="1714.11" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2530.56" y1="1727.36" x2="2530.56" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2498.64" y1="1727.36" x2="2498.64" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2494.43" y1="1627.12" x2="2525.37" y2="1627.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2525.37" y1="1640.36" x2="2525.37" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2494.43" y1="1640.36" x2="2494.43" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2491.46" y1="1540.12" x2="2526.36" y2="1540.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2526.36" y1="1553.36" x2="2526.36" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2491.46" y1="1553.36" x2="2491.46" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2497.77" y1="1453.12" x2="2529.57" y2="1453.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2529.57" y1="1466.36" x2="2529.57" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="2497.77" y1="1466.36" x2="2497.77" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="2083.70" y="1726.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="2083.70" y="1639.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="2083.70" y="1552.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="2083.70" y="1465.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="3435.92" cy="1714.24" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3435.92" cy="1714.24" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3425.40" cy="1627.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3425.40" cy="1627.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3433.20" cy="1540.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3433.20" cy="1540.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="3431.71" cy="1453.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="3431.71" cy="1453.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="3414.76" y1="1714.11" x2="3457.20" y2="1714.11" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3457.20" y1="1727.36" x2="3457.20" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3414.76" y1="1727.36" x2="3414.76" y2="1701.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3405.48" y1="1627.12" x2="3445.45" y2="1627.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3445.45" y1="1640.36" x2="3445.45" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3405.48" y1="1640.36" x2="3405.48" y2="1614.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3410.67" y1="1540.12" x2="3455.97" y2="1540.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3455.97" y1="1553.36" x2="3455.97" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3410.67" y1="1553.36" x2="3410.67" y2="1527.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3410.67" y1="1453.12" x2="3452.87" y2="1453.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3452.87" y1="1466.36" x2="3452.87" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="3410.67" y1="1466.36" x2="3410.67" y2="1440.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="3020.37" y="1726.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="3020.37" y="1639.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="3020.37" y="1552.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="3020.37" y="1465.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="709.83" cy="2384.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="709.83" cy="2384.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="685.82" cy="2297.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="685.82" cy="2297.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="712.68" cy="2210.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="712.68" cy="2210.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="709.46" cy="2123.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="709.46" cy="2123.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="688.92" y1="2384.12" x2="730.74" y2="2384.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="730.74" y1="2397.36" x2="730.74" y2="2371.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="688.92" y1="2397.36" x2="688.92" y2="2371.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="666.64" y1="2297.12" x2="705.13" y2="2297.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="705.13" y1="2310.36" x2="705.13" y2="2284.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="666.64" y1="2310.36" x2="666.64" y2="2284.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="690.52" y1="2210.00" x2="735.08" y2="2210.00" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="735.08" y1="2223.24" x2="735.08" y2="2196.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="690.52" y1="2223.24" x2="690.52" y2="2196.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="688.79" y1="2123.00" x2="730.37" y2="2123.00" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="730.37" y1="2136.24" x2="730.37" y2="2109.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="688.79" y1="2136.24" x2="688.79" y2="2109.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="210.62" y="2396.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="210.62" y="2309.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="210.62" y="2222.63" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="210.62" y="2135.63" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<circle cx="1648.97" cy="2384.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1648.97" cy="2384.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1624.47" cy="2297.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1624.47" cy="2297.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1644.51" cy="2210.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1644.51" cy="2210.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<circle cx="1646.87" cy="2123.12" r="15.83" style="fill:#1A476F"/>
+	<circle cx="1646.87" cy="2123.12" r="13.24" style="fill:none;stroke:#1A476F;stroke-width:5.18"/>
+	<line x1="1629.05" y1="2384.12" x2="1669.02" y2="2384.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1669.02" y1="2397.36" x2="1669.02" y2="2371.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1629.05" y1="2397.36" x2="1629.05" y2="2371.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1606.28" y1="2297.12" x2="1642.90" y2="2297.12" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1642.90" y1="2310.36" x2="1642.90" y2="2284.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1606.28" y1="2310.36" x2="1606.28" y2="2284.00" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1623.11" y1="2210.00" x2="1666.17" y2="2210.00" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1666.17" y1="2223.24" x2="1666.17" y2="2196.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1623.11" y1="2223.24" x2="1623.11" y2="2196.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1627.07" y1="2123.00" x2="1666.66" y2="2123.00" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1666.66" y1="2136.24" x2="1666.66" y2="2109.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<line x1="1627.07" y1="2136.24" x2="1627.07" y2="2109.88" stroke-linecap="round" style="stroke:#90353B;stroke-width:5.18"/>
+	<text x="1147.16" y="2396.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Adj care home</text>
+	<text x="1147.16" y="2309.75" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Fine &amp; Gray model</text>
+	<text x="1147.16" y="2222.63" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Confirmed COVID-19</text>
+	<text x="1147.16" y="2135.63" style="font-family:'Helvetica';font-size:36.01px;fill:#55752f">Primary analysis</text>
+	<line x1="147.39" y1="628.17" x2="147.39" y2="204.07" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="147.39" y1="1190.14" x2="147.39" y2="766.04" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="147.39" y1="1752.11" x2="147.39" y2="1328.00" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="147.39" y1="2422.11" x2="147.39" y2="1998.01" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="2020.47" y1="1752.11" x2="2887.95" y2="1752.11" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="2454.21" y1="1752.11" x2="2454.21" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="2454.21" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">1</text>
+	<line x1="2573.38" y1="1752.11" x2="2573.38" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="2573.38" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">2</text>
+	<line x1="2730.79" y1="1752.11" x2="2730.79" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="2730.79" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">5</text>
+	<line x1="2849.96" y1="1752.11" x2="2849.96" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="2849.96" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">10</text>
+	<line x1="2957.01" y1="1752.11" x2="3824.49" y2="1752.11" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="3390.75" y1="1752.11" x2="3390.75" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="3390.75" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">1</text>
+	<line x1="3509.92" y1="1752.11" x2="3509.92" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="3509.92" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">2</text>
+	<line x1="3667.33" y1="1752.11" x2="3667.33" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="3667.33" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">5</text>
+	<line x1="3786.50" y1="1752.11" x2="3786.50" y2="1776.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="3786.50" y="1830.07" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">10</text>
+	<line x1="147.39" y1="2422.11" x2="1014.75" y2="2422.11" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="581.13" y1="2422.11" x2="581.13" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="581.13" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">1</text>
+	<line x1="700.18" y1="2422.11" x2="700.18" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="700.18" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">2</text>
+	<line x1="857.71" y1="2422.11" x2="857.71" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="857.71" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">5</text>
+	<line x1="976.76" y1="2422.11" x2="976.76" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="976.76" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">10</text>
+	<line x1="1083.93" y1="2422.11" x2="1951.41" y2="2422.11" style="stroke:#000000;stroke-width:3.46"/>
+	<line x1="1517.67" y1="2422.11" x2="1517.67" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="1517.67" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">1</text>
+	<line x1="1636.72" y1="2422.11" x2="1636.72" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="1636.72" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">2</text>
+	<line x1="1794.25" y1="2422.11" x2="1794.25" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="1794.25" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">5</text>
+	<line x1="1913.42" y1="2422.11" x2="1913.42" y2="2446.12" style="stroke:#000000;stroke-width:3.46"/>
+	<text x="1913.42" y="2500.08" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">10</text>
+	<rect x="147.39" y="135.39" width="867.36" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="149.11" y="137.11" width="863.91" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="581.13" y="179.21" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Composite hosp/death</text>
+	<rect x="1083.93" y="135.39" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="1085.65" y="137.11" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="1517.67" y="179.21" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">All-cause mortality</text>
+	<rect x="2020.47" y="135.39" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="2022.19" y="137.11" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="2454.21" y="179.21" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Other infections (A)</text>
+	<rect x="2957.01" y="135.39" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="2958.73" y="137.11" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="3390.75" y="179.21" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Cancers (C ex C44)</text>
+	<rect x="147.39" y="697.35" width="867.36" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="149.11" y="699.08" width="863.91" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="581.13" y="741.17" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Endocr, nutr, metabol (E)</text>
+	<rect x="1083.93" y="697.35" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="1085.65" y="699.08" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="1517.67" y="741.17" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Mental health/cognitive (F/G30/X60-84)</text>
+	<rect x="2020.47" y="697.35" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="2022.19" y="699.08" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="2454.21" y="741.17" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Nervous system (G ex G30)</text>
+	<rect x="2957.01" y="697.35" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="2958.73" y="699.08" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="3390.75" y="741.17" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Circulatory (I)</text>
+	<rect x="147.39" y="1259.32" width="867.36" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="149.11" y="1261.05" width="863.91" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="581.13" y="1303.14" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Covid/flu/LRTI (J09-22, U071-2)</text>
+	<rect x="1083.93" y="1259.32" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="1085.65" y="1261.05" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="1517.67" y="1303.14" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Other respiratory (J23-99)</text>
+	<rect x="2020.47" y="1259.32" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="2022.19" y="1261.05" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="2454.21" y="1303.14" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Digestive (K)</text>
+	<rect x="2957.01" y="1259.32" width="867.49" height="68.68" style="fill:#D9E6EB"/>
+	<rect x="2958.73" y="1261.05" width="864.03" height="65.23" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="3390.75" y="1303.14" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Musculoskeletal (M)</text>
+	<rect x="147.39" y="1929.20" width="867.36" height="68.81" style="fill:#D9E6EB"/>
+	<rect x="149.11" y="1930.93" width="863.91" height="65.35" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="581.13" y="1973.14" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">Genitourinary (N)</text>
+	<rect x="1083.93" y="1929.20" width="867.49" height="68.81" style="fill:#D9E6EB"/>
+	<rect x="1085.65" y="1930.93" width="864.03" height="65.35" style="fill:none;stroke:#D9E6EB;stroke-width:3.46"/>
+	<text x="1517.67" y="1973.14" style="font-family:'Helvetica';font-size:48.02px;fill:#000000" text-anchor="middle">External (S-Y ex U/X60-84)</text>
+	<text x="1980.00" y="2634.61" style="font-family:'Helvetica';font-size:99.99px;fill:#000000" text-anchor="middle">HR/sHR &amp; 95% CI</text>
+	<text x="118.06" y="2737.89" style="font-family:'Helvetica';font-size:79.94px;fill:#000000">Graphs by outcome</text>
+</svg>
