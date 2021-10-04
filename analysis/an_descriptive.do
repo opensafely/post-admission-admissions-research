@@ -24,6 +24,8 @@ gen datehist = mdy(month(discharged1_date),15,2020) if group==1
 replace datehist = mdy(monthentry,15,2019) if group==4
 replace datehist = mdy(month(discharged1_date),15,year(discharged1_date)) if group==2
 
+format %d datehist 
+
 histogram datehist if (group==1|group==2|group==4), by(group, cols(1)) bin(48) xtitle(Entry date)
 graph export analysis/output/an_descriptive_EVENTSBYTIME.svg, as(svg) replace
 
