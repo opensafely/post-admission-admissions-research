@@ -1,4 +1,4 @@
-# Hospital admissions and deaths after an initial COVID-19 admission
+# Overall and cause-specific hospitalisation and death after COVID-19 hospitalisation in England: a cohort study using linked primary care, secondary care and death registration data in the OpenSAFELY platform
 
 * Analysis outputs will be in `released_analysis_results`/`released_outputs`
 * If you are interested in how we defined our variables, take a look at the [study definition](analysis/study_definition.py); this is written in `python`, but non-programmers should be able to understand what is going on there
