@@ -1,10 +1,6 @@
-# OpenSAFELY Research Template
+# Hospital admissions and deaths after an initial COVID-19 admission
 
-This is a template repository for making new OpenSAFELY resarch projects.
-
-# Description of hospital admissions after an initial COVID-19 admission
-
-* Raw model outputs, including charts, crosstabs, etc, will be in `released_analysis_results`
+* Analysis outputs will be in `released_analysis_results`/`released_outputs`
 * If you are interested in how we defined our variables, take a look at the [study definition](analysis/study_definition.py); this is written in `python`, but non-programmers should be able to understand what is going on there
 * If you are interested in how we defined our code lists, look in the [codelists folder](./codelists/).
 * Developers and epidemiologists interested in the framework should review [the OpenSAFELY documentation](https://docs.opensafely.org)
